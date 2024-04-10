@@ -2,12 +2,15 @@ package firstTast.com.in;
 
 import firstTast.com.exceptions.NotUniqueUserNameException;
 import firstTast.com.model.ConsoleUser;
+import firstTast.com.model.Workout;
 import firstTast.com.service.AuthenticationService;
 import firstTast.com.service.UserActionService;
+import firstTast.com.service.WorkoutService;
 import firstTast.com.util.MenuOptions;
 import firstTast.com.util.UtilScanner;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -20,6 +23,7 @@ public class TrainingDiaryApplication {
 
     private AuthenticationService authenticationService;
     private UserActionService userService;
+    private WorkoutService workoutService;
     private ConsoleUser consoleUser;
 
 
@@ -73,19 +77,19 @@ public class TrainingDiaryApplication {
             System.out.println(MenuOptions.usersMenu);
             menuChoice = UtilScanner.getScanner().nextLine();
             switch (menuChoice) {
-                case "1" -> {
-                    userService.addNewWorkout(consoleUser);
+                case "1", "Добавить тренировку" -> {
+                    System.out.println(userService.addNewWorkout(consoleUser).getType() + " - тренировака добавлена");
                 }
-                case "2" -> {
-                    userService.changeWorkout(consoleUser, 2);
+                case "2", "Редактировать тренировку" -> {
+//                    userService.changeWorkout(consoleUser, getWorkoutByIndex());
                 }
-                case "3" -> {
+                case "3", "Просмотреть тренировки" -> {
                     System.out.println(userService.showAllWorkoutsDateSorted(consoleUser));
                 }
-                case "4" -> {
+                case "4", "Статистика тренировок" -> {
                     System.out.println(userService.getWorkoutStatistics(consoleUser));
                 }
-                case "5" -> {
+                case "5", "Выйти" -> {
 
                 }
                 default -> {
@@ -93,5 +97,38 @@ public class TrainingDiaryApplication {
                 }
             }
         } while (!menuChoice.equals("5") && !menuChoice.equals("Выйти"));
+    }
+    private void changeWorkout(){
+        String option = "";
+        Scanner scanner = UtilScanner.getScanner();
+        do{
+            System.out.println(MenuOptions.workoutEditorMenu);
+            option = scanner.nextLine();
+            switch (option){
+                case "1" -> {
+                    System.out.print("Введите новое название тренировки : ");
+                    String s = scanner.nextLine();
+                    workoutService.changeType(consoleUser, s);
+                }
+                case "2" -> {
+
+                }
+                case "3" -> {
+
+                }
+                case "4" -> {
+
+                }
+                case "5" -> {
+                        workoutService.deleteWorkout(consoleUser);
+                }
+                case "6" -> {
+
+                }
+                default -> {
+                    System.out.println("Неверная опция");
+                }
+            }
+        }while ();
     }
 }

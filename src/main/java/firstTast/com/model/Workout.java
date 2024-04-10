@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
+@ToString
 public class Workout {
     private LocalDate timeOfWorkout;
     private String type;

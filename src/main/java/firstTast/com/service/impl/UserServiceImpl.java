@@ -3,45 +3,62 @@ package firstTast.com.service.impl;
 import firstTast.com.model.ConsoleUser;
 import firstTast.com.model.Workout;
 import firstTast.com.service.UserActionService;
+import firstTast.com.util.UtilScanner;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class UserServiceImpl implements UserActionService {
     @Override
     public Workout addNewWorkout(ConsoleUser consoleUser) {
-        return null;
+        Scanner scanner = UtilScanner.getScanner();
+        String date = scanner.nextLine();
+        LocalDate localDate = LocalDate.parse(date);
+        String type = scanner.nextLine();
+        int time = scanner.nextInt();
+        int calories = scanner.nextInt();
+        String additional = scanner.nextLine();
+
+        Workout build = Workout.builder()
+                .timeOfWorkout(localDate)
+                .type(type)
+                .minuteDuration(time)
+                .caloriesBurned(calories)
+                .additionalInfo(additional)
+                .build();
+
+        consoleUser.getWorkouts().add(build);
+
+        return build;
     }
 
     @Override
-    public ArrayList<Workout> showAllWorkoutsDateSorted(ConsoleUser consoleUser) {
+    public String showAllWorkoutsDateSorted(ConsoleUser consoleUser) {
         ArrayList<Workout> workouts = consoleUser.getWorkouts();
+        if (workouts.isEmpty()) {
+            return "Нет активных тренировок";
+        }
         workouts.sort(Comparator.comparing(Workout::getTimeOfWorkout));
-        return workouts;
-    }
-
-    @Override
-    public Workout changeWorkout(ConsoleUser consoleUser ,Integer id) {
-        Workout workout = consoleUser.getWorkouts().get(id);
-
-        return null;
+        return workouts.toString();
     }
 
     @Override
     public String getWorkoutStatistics(ConsoleUser consoleUser) {
-        IntSummaryStatistics calorieStatistics = consoleUser.getWorkouts().stream()
+        ArrayList<Workout> workouts = consoleUser.getWorkouts();
+        if (workouts.isEmpty()) {
+            return "Нет активных тренировок";
+        }
+        IntSummaryStatistics calorieStatistics = workouts.stream()
                 .mapToInt(Workout::getCaloriesBurned)
                 .summaryStatistics();
 
-        StringJoiner stringJoiner = new StringJoiner(" ");
-
-        stringJoiner
-                .add("Всего каллорий сожжено : ")
-                .add(String.valueOf(calorieStatistics.getSum())).add("\n")
-                .add("Максимально сожжено : ")
-                .add(String.valueOf(calorieStatistics.getMax())).add("\n")
-                .add("В среднем вы сжигаете : ")
-                .add(String.valueOf(calorieStatistics.getAverage()));
-
-        return stringJoiner.toString();
+        return new StringBuilder()
+                .append("Всего каллорий сожжено : ")
+                .append(calorieStatistics.getSum()).append("\n")
+                .append("Максимально сожжено : ")
+                .append(calorieStatistics.getMax()).append("\n")
+                .append("В среднем вы сжигаете : ")
+                .append(calorieStatistics.getAverage())
+                .toString();
     }
 }

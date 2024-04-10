@@ -7,8 +7,7 @@ import java.util.ArrayList;
 
 public interface UserActionService {
     Workout addNewWorkout(ConsoleUser consoleUser);
-    ArrayList<Workout> showAllWorkoutsDateSorted(ConsoleUser consoleUser);
-    Workout changeWorkout(ConsoleUser consoleUser,Integer id);
+    String showAllWorkoutsDateSorted(ConsoleUser consoleUser);
 
     String getWorkoutStatistics(ConsoleUser consoleUser);
 

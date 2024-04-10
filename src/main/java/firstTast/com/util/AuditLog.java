@@ -25,8 +25,6 @@ public class AuditLog {
 
     public static void main(String[] args) {
         AuditLog auditLog = new AuditLog();
-        auditLog.addLogEntry("User X added workout Y");
-        auditLog.addLogEntry("User Y updated profile information");
         auditLog.displayLogs();
     }
 }
