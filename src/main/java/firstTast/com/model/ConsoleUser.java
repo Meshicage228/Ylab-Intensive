@@ -8,13 +8,21 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Builder
 public class ConsoleUser {
     private String username;
     private String password;
     private Integer age;
-    @ToString.Exclude
     private ArrayList<Workout> workouts;
     private String role;
+
+    @Override
+    public String toString() {
+        return "Пользователь{" +
+                "имя ='" + username + '\'' +
+                ", возраст : " + age +
+                ", \nтренировки : " + workouts +
+                ", роль : '" + role + '\'' +
+                '}' + "\n";
+    }
 }

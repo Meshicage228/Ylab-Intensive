@@ -9,11 +9,21 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-@ToString
 public class Workout {
     private LocalDate timeOfWorkout;
     private String type;
-    private Integer minuteDuration;
-    private Integer caloriesBurned;
+    private Double minuteDuration;
+    private Double caloriesBurned;
     private String additionalInfo;
+
+    @Override
+    public String toString() {
+        return "Тренировка : {" +
+                "Время выполнения : " + timeOfWorkout +
+                ", тип : '" + type + '\'' +
+                ", длительность : " + minuteDuration +
+                ", сожжённые калории :  " + caloriesBurned +
+                ", Доп. информация : '" + additionalInfo + '\'' +
+                '}';
+    }
 }

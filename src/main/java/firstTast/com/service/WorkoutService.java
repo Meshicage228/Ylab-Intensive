@@ -11,9 +11,9 @@ public interface WorkoutService {
 
     Workout changeAdditionalInfo(ConsoleUser consoleUser, String newAddInfo);
 
-    Workout changeCalories(ConsoleUser consoleUser, Integer changeCalories);
+    Workout changeCalories(ConsoleUser consoleUser, Double changeCalories);
 
-    Workout changeMinuteDuration (ConsoleUser consoleUser, Integer changeDuration);
+    Workout changeMinuteDuration (ConsoleUser consoleUser, Double changeDuration);
 
     void deleteWorkout(ConsoleUser consoleUser);
 

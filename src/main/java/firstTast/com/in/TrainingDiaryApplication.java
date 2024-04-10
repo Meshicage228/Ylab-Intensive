@@ -1,16 +1,17 @@
 package firstTast.com.in;
 
 import firstTast.com.exceptions.NotUniqueUserNameException;
+import firstTast.com.exceptions.NotUniqueWorkoutTypeException;
 import firstTast.com.model.ConsoleUser;
-import firstTast.com.model.Workout;
 import firstTast.com.service.AuthenticationService;
 import firstTast.com.service.UserActionService;
-import firstTast.com.service.WorkoutService;
+import firstTast.com.service.impl.WorkoutUpdateServiceImpl;
+import firstTast.com.util.AuditLog;
 import firstTast.com.util.MenuOptions;
 import firstTast.com.util.UtilScanner;
 import lombok.*;
 
-import java.util.ArrayList;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -20,25 +21,26 @@ import java.util.Scanner;
 @Getter
 @ToString
 public class TrainingDiaryApplication {
-
     private AuthenticationService authenticationService;
     private UserActionService userService;
-    private WorkoutService workoutService;
+    private WorkoutUpdateServiceImpl workoutService;
     private ConsoleUser consoleUser;
-
+    private AuditLog auditLog;
 
     public void startApplication() {
         while (true) {
-            enterApplication();
+            if(!enterApplication()){
+                System.out.println("Завершение программы...");
+                return;
+            };
             userAction();
         }
     }
 
-    private void enterApplication() {
-        boolean flag = true;
+    private boolean enterApplication() {
         do {
-            System.out.print(MenuOptions.enterMenu);
             Scanner scanner = UtilScanner.getScanner();
+            System.out.println(MenuOptions.enterMenu);
             String input = scanner.nextLine();
 
             switch (input) {
@@ -50,7 +52,8 @@ public class TrainingDiaryApplication {
                     Optional<ConsoleUser> user = authenticationService.logIn(userName, password);
                     if (user.isPresent()) {
                         consoleUser = user.get();
-                        flag = false;
+                        System.out.println("Привет, " + userName);
+                        return true;
                     }
                 }
                 case "2", "Регистрация" -> {
@@ -63,72 +66,111 @@ public class TrainingDiaryApplication {
                     } catch (NotUniqueUserNameException e) {
                         System.out.println(e.getMessage());
                     }
+                    System.out.println("Успешная регистрация! Теперь войдите в аккаунт!");
                 }
-                default -> {
-                    System.out.println("Неподдерживаемый тип");
+                case "3" -> {
+                    return false;
                 }
             }
-        } while (flag);
+        } while (true);
     }
 
+    private void handleMenuChoice(String menuChoice, ConsoleUser consoleUser) {
+        switch (menuChoice) {
+            case "1", "Добавить тренировку" -> {
+                try {
+                    System.out.println(userService.addNewWorkout(consoleUser).getType() + " - тренировка добавлена");
+                } catch (DateTimeParseException e) {
+                    System.out.println("Неверна введена дата");
+                } catch (NotUniqueWorkoutTypeException e){
+                    System.out.println(e.getMessage());
+                }
+            }
+            case "2", "Редактировать тренировку" -> {
+                changeWorkout();
+            }
+            case "3", "Просмотреть тренировки" -> {
+                System.out.println(userService.showAllWorkoutsDateSorted(consoleUser));
+            }
+            case "4", "Статистика тренировок" -> {
+                System.out.println(userService.getWorkoutStatistics(consoleUser));
+            }
+            case "5" -> {
+                if (consoleUser.getRole().equals("ADMIN")) {
+                    System.out.println(userService.getAllWorkouts());
+                } else {
+                    System.out.println("У вас недостаточно прав");
+                }
+            }
+            case "6" -> {
+                if (consoleUser.getRole().equals("ADMIN")) {
+                    System.out.println(userService.getAllLogs(auditLog));
+                } else {
+                    System.out.println("У вас недостаточно прав");
+                }
+            }
+            case "7", "Назад" -> {
+            }
+            default -> {
+                System.out.println("Неподдерживаемая опция");
+            }
+        }
+    }
     private void userAction() {
         String menuChoice = "";
         do {
-            System.out.println(MenuOptions.usersMenu);
+            System.out.println(MenuOptions.userMenu);
             menuChoice = UtilScanner.getScanner().nextLine();
-            switch (menuChoice) {
-                case "1", "Добавить тренировку" -> {
-                    System.out.println(userService.addNewWorkout(consoleUser).getType() + " - тренировака добавлена");
-                }
-                case "2", "Редактировать тренировку" -> {
-//                    userService.changeWorkout(consoleUser, getWorkoutByIndex());
-                }
-                case "3", "Просмотреть тренировки" -> {
-                    System.out.println(userService.showAllWorkoutsDateSorted(consoleUser));
-                }
-                case "4", "Статистика тренировок" -> {
-                    System.out.println(userService.getWorkoutStatistics(consoleUser));
-                }
-                case "5", "Выйти" -> {
-
-                }
-                default -> {
-                    System.out.println("Неподдерживаемая опция");
-                }
-            }
-        } while (!menuChoice.equals("5") && !menuChoice.equals("Выйти"));
+            handleMenuChoice(menuChoice, consoleUser);
+        } while (!menuChoice.equals("7") && !menuChoice.equals("Назад"));
     }
-    private void changeWorkout(){
-        String option = "";
+
+    private void changeWorkout() {
         Scanner scanner = UtilScanner.getScanner();
-        do{
-            System.out.println(MenuOptions.workoutEditorMenu);
-            option = scanner.nextLine();
-            switch (option){
-                case "1" -> {
-                    System.out.print("Введите новое название тренировки : ");
-                    String s = scanner.nextLine();
-                    workoutService.changeType(consoleUser, s);
-                }
-                case "2" -> {
+        Integer workoutByIndex = workoutService.getWorkoutByIndex(consoleUser);
 
-                }
-                case "3" -> {
+        if (workoutByIndex < 0) {
+            System.out.println("Нет активных тренировок");
+            return;
+        }
 
-                }
-                case "4" -> {
-
-                }
-                case "5" -> {
-                        workoutService.deleteWorkout(consoleUser);
-                }
-                case "6" -> {
-
-                }
-                default -> {
-                    System.out.println("Неверная опция");
-                }
+        System.out.println(MenuOptions.workoutEditorMenu);
+        switch (scanner.nextLine()) {
+            case "1" -> {
+                System.out.print("Введите новое название тренировки : ");
+                String workoutType = scanner.nextLine();
+                workoutService.changeType(consoleUser, workoutType);
             }
-        }while ();
+            case "2" -> {
+                System.out.print("Введите новую дату тренировки : ");
+                String newDate = scanner.nextLine();
+                workoutService.changeDate(consoleUser, newDate);
+            }
+            case "3" -> {
+                System.out.print("Введите новую продолжительность тренировки : ");
+                Double newTime = scanner.nextDouble();
+                workoutService.changeMinuteDuration(consoleUser, newTime);
+            }
+            case "4" -> {
+                System.out.print("Введите новые калории : ");
+                Double newCalories = scanner.nextDouble();
+                workoutService.changeCalories(consoleUser, newCalories);
+            }
+            case "5" -> {
+                System.out.print("Введите новое описание : ");
+                String newAdditional = scanner.nextLine();
+                workoutService.changeAdditionalInfo(consoleUser, newAdditional);
+            }
+            case "6" -> {
+                workoutService.deleteWorkout(consoleUser);
+                System.out.println("Запись успешно удалена!");
+            }
+            case "7" -> {
+
+            }
+            default -> {
+                System.out.println("Неверная опция");
+            }
+        }
     }
 }

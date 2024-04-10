@@ -5,8 +5,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
-@Getter
-@Setter
 public class UserStorage {
-    private ArrayList<ConsoleUser> allUsers = new ArrayList<>();
+    @Getter
+    @Setter
+    private static ArrayList<ConsoleUser> allUsers = new ArrayList<>();
 }

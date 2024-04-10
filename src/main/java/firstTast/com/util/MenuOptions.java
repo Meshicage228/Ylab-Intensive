@@ -4,14 +4,17 @@ public class MenuOptions {
     public static String enterMenu = """
             1. Вход
             2. Регистрация
+            3. Завершить программу
             """;
 
-    public static String usersMenu = """
+    public static String userMenu = """
             1. Добавить тренировку
             2. Редактировать тренировку
             3. Просмотреть тренировки
             4. Статистика тренировок
-            5. Выйти
+            5. Тренировки всех пользователей
+            6. Просмотреть логи
+            7. Назад
             """;
 
     public static String workoutEditorMenu = """
@@ -19,6 +22,8 @@ public class MenuOptions {
             2. Новая дата
             3. Новая длительность
             4. Другие каллории
-            5. Удалить
+            5. Редактировать описание
+            6. Удалить
+            7. Назад
             """;
 }
