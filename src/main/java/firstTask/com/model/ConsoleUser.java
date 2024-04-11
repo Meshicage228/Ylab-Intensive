@@ -1,8 +1,16 @@
-package firstTast.com.model;
+package firstTask.com.model;
 
 import lombok.*;
 
 import java.util.ArrayList;
+
+
+/**
+ * <p>
+ * Класс, представляющий информацию о пользователе
+ *  @see Workout - тренировка
+ * </p>
+ *  **/
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,9 +18,13 @@ import java.util.ArrayList;
 @Setter
 @Builder
 public class ConsoleUser {
+    /** имя пользователя */
     private String username;
+    /** Пароль пользователя */
     private String password;
+    /** Все личные тренировки пользователя */
     private ArrayList<Workout> workouts;
+    /** Роль пользователя в приложении */
     private String role;
 
     @Override

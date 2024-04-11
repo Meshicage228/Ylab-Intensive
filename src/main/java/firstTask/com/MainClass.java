@@ -1,10 +1,10 @@
-package firstTast.com;
+package firstTask.com;
 
-import firstTast.com.in.TrainingDiaryApplication;
-import firstTast.com.model.ConsoleUser;
-import firstTast.com.service.AuthenticationService;
-import firstTast.com.service.impl.UserServiceImpl;
-import firstTast.com.service.impl.WorkoutUpdateServiceImpl;
+import firstTask.com.in.TrainingDiaryApplication;
+import firstTask.com.model.ConsoleUser;
+import firstTask.com.service.AuthenticationService;
+import firstTask.com.service.impl.UserServiceImpl;
+import firstTask.com.service.impl.WorkoutUpdateServiceImpl;
 
 public class MainClass {
     public static void main(String[] args) {
