@@ -6,7 +6,6 @@ import firstTast.com.model.ConsoleUser;
 import firstTast.com.service.AuthenticationService;
 import firstTast.com.service.UserActionService;
 import firstTast.com.service.impl.WorkoutUpdateServiceImpl;
-import firstTast.com.util.AuditLog;
 import firstTast.com.util.MenuOptions;
 import firstTast.com.util.UtilScanner;
 import lombok.*;
@@ -14,22 +13,22 @@ import lombok.*;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
-@ToString
 public class TrainingDiaryApplication {
+    final static Logger logger = Logger.getLogger(String.valueOf(TrainingDiaryApplication.class));
+
     private AuthenticationService authenticationService;
     private UserActionService userService;
     private WorkoutUpdateServiceImpl workoutService;
     private ConsoleUser consoleUser;
-    private AuditLog auditLog;
 
     public void startApplication() {
         while (true) {
             if(!enterApplication()){
+                logger.info("Пользователь завершает работу...");
                 System.out.println("Завершение программы...");
                 return;
             };
@@ -53,8 +52,10 @@ public class TrainingDiaryApplication {
                     if (user.isPresent()) {
                         consoleUser = user.get();
                         System.out.println("Привет, " + userName);
+                        logger.info(userName + " вход в аккаунт : SUCCESS");
                         return true;
                     }
+                    logger.info(userName + " вошел в аккаунт : FAIL");
                 }
                 case "2", "Регистрация" -> {
                     System.out.print("Введите имя пользователя: ");
@@ -63,10 +64,12 @@ public class TrainingDiaryApplication {
                     String password = scanner.nextLine();
                     try {
                         authenticationService.registrationProcess(userName, password);
+                        System.out.println("Успешная регистрация! Теперь войдите в аккаунт!");
+                        logger.info(userName + " регистрация аккауна : SUCCESS");
                     } catch (NotUniqueUserNameException e) {
                         System.out.println(e.getMessage());
+                        logger.info(userName + " регистрация аккауна : FAIL");
                     }
-                    System.out.println("Успешная регистрация! Теперь войдите в аккаунт!");
                 }
                 case "3" -> {
                     return false;
@@ -80,10 +83,13 @@ public class TrainingDiaryApplication {
             case "1", "Добавить тренировку" -> {
                 try {
                     System.out.println(userService.addNewWorkout(consoleUser).getType() + " - тренировка добавлена");
+                    logger.info(consoleUser.getUsername() + " добавление тренировки: SUCCESS");
                 } catch (DateTimeParseException e) {
                     System.out.println("Неверна введена дата");
+                    logger.info(consoleUser.getUsername() + " добавление тренировки: FAIL");
                 } catch (NotUniqueWorkoutTypeException e){
                     System.out.println(e.getMessage());
+                    logger.info(consoleUser.getUsername() + " добавление тренировки: FAIL");
                 }
             }
             case "2", "Редактировать тренировку" -> {
@@ -94,6 +100,7 @@ public class TrainingDiaryApplication {
             }
             case "4", "Статистика тренировок" -> {
                 System.out.println(userService.getWorkoutStatistics(consoleUser));
+                logger.info(consoleUser.getUsername() + " получение статистики: SUCCESS");
             }
             case "5" -> {
                 if (consoleUser.getRole().equals("ADMIN")) {
@@ -102,14 +109,7 @@ public class TrainingDiaryApplication {
                     System.out.println("У вас недостаточно прав");
                 }
             }
-            case "6" -> {
-                if (consoleUser.getRole().equals("ADMIN")) {
-                    System.out.println(userService.getAllLogs(auditLog));
-                } else {
-                    System.out.println("У вас недостаточно прав");
-                }
-            }
-            case "7", "Назад" -> {
+            case "7" -> {
             }
             default -> {
                 System.out.println("Неподдерживаемая опция");
@@ -131,6 +131,7 @@ public class TrainingDiaryApplication {
 
         if (workoutByIndex < 0) {
             System.out.println("Нет активных тренировок");
+            logger.info(consoleUser.getUsername() + " изменение тренировки: FAIL");
             return;
         }
 
@@ -140,30 +141,36 @@ public class TrainingDiaryApplication {
                 System.out.print("Введите новое название тренировки : ");
                 String workoutType = scanner.nextLine();
                 workoutService.changeType(consoleUser, workoutType);
+                logger.info(consoleUser.getUsername() + " новое название тренировки: SUCCESS");
             }
             case "2" -> {
                 System.out.print("Введите новую дату тренировки : ");
                 String newDate = scanner.nextLine();
                 workoutService.changeDate(consoleUser, newDate);
+                logger.info(consoleUser.getUsername() + " новая дату тренировки: SUCCESS");
             }
             case "3" -> {
                 System.out.print("Введите новую продолжительность тренировки : ");
                 Double newTime = scanner.nextDouble();
                 workoutService.changeMinuteDuration(consoleUser, newTime);
+                logger.info(consoleUser.getUsername() + " новая продолжительность тренировки: SUCCESS");
             }
             case "4" -> {
                 System.out.print("Введите новые калории : ");
                 Double newCalories = scanner.nextDouble();
                 workoutService.changeCalories(consoleUser, newCalories);
+                logger.info(consoleUser.getUsername() + " новые калории: SUCCESS");
             }
             case "5" -> {
                 System.out.print("Введите новое описание : ");
                 String newAdditional = scanner.nextLine();
                 workoutService.changeAdditionalInfo(consoleUser, newAdditional);
+                logger.info(consoleUser.getUsername() + " новое описание: SUCCESS");
             }
             case "6" -> {
                 workoutService.deleteWorkout(consoleUser);
                 System.out.println("Запись успешно удалена!");
+                logger.info(consoleUser.getUsername() + " удаление тренировки: SUCCESS");
             }
             case "7" -> {
 

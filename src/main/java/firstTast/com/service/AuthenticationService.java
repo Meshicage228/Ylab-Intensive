@@ -3,7 +3,6 @@ package firstTast.com.service;
 import firstTast.com.model.ConsoleUser;
 import firstTast.com.model.UserStorage;
 import firstTast.com.exceptions.NotUniqueUserNameException;
-import firstTast.com.util.AuditLog;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;

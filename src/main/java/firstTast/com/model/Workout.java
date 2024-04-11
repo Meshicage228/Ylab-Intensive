@@ -24,6 +24,6 @@ public class Workout {
                 ", длительность : " + minuteDuration +
                 ", сожжённые калории :  " + caloriesBurned +
                 ", Доп. информация : '" + additionalInfo + '\'' +
-                '}';
+                '}' + "\n";
     }
 }

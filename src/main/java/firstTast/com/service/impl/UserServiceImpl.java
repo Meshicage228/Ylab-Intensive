@@ -5,15 +5,15 @@ import firstTast.com.model.ConsoleUser;
 import firstTast.com.model.UserStorage;
 import firstTast.com.model.Workout;
 import firstTast.com.service.UserActionService;
-import firstTast.com.util.AuditLog;
 import firstTast.com.util.UtilScanner;
 
-import java.sql.SQLOutput;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.logging.Logger;
+
 
 public class UserServiceImpl implements UserActionService {
+    final static Logger logger = Logger.getLogger(String.valueOf(UserServiceImpl.class));
     @Override
     public Workout addNewWorkout(ConsoleUser consoleUser) throws NotUniqueWorkoutTypeException {
         System.out.println("Введите дату вашей тренировки в виде YYYY-MM-DD : ");
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserActionService {
         if (workouts.isEmpty()) {
             return "Нет активных тренировок";
         }
-        workouts.sort(Comparator.comparing(Workout::getTimeOfWorkout));
+        workouts.sort(Comparator.comparing(Workout::getTimeOfWorkout).reversed());
         return workouts.toString();
     }
 
@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserActionService {
     public String getWorkoutStatistics(ConsoleUser consoleUser) {
         ArrayList<Workout> workouts = consoleUser.getWorkouts();
         if (workouts.isEmpty()) {
+            logger.info(consoleUser.getUsername() + " получение статистики: FAIL");
             return "Нет активных тренировок";
         }
         DoubleSummaryStatistics calorieStatistics = workouts.stream()
@@ -91,10 +92,5 @@ public class UserServiceImpl implements UserActionService {
             return "Нет активных тренировок в приложении";
         }
         return allUsers.toString();
-    }
-
-    @Override
-    public String getAllLogs(AuditLog auditLog) {
-        return auditLog.displayLogs().toString();
     }
 }

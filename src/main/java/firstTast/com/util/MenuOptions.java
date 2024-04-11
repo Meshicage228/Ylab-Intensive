@@ -13,8 +13,7 @@ public class MenuOptions {
             3. Просмотреть тренировки
             4. Статистика тренировок
             5. Тренировки всех пользователей
-            6. Просмотреть логи
-            7. Назад
+            6. Назад
             """;
 
     public static String workoutEditorMenu = """

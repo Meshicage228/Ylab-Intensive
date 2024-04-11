@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class ConsoleUser {
     private String username;
     private String password;
-    private Integer age;
     private ArrayList<Workout> workouts;
     private String role;
 
@@ -20,7 +19,6 @@ public class ConsoleUser {
     public String toString() {
         return "Пользователь{" +
                 "имя ='" + username + '\'' +
-                ", возраст : " + age +
                 ", \nтренировки : " + workouts +
                 ", роль : '" + role + '\'' +
                 '}' + "\n";
