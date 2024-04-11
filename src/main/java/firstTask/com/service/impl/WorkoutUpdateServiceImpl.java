@@ -14,7 +14,7 @@ import java.util.Scanner;
  * @see WorkoutService
  * */
 public class WorkoutUpdateServiceImpl implements WorkoutService {
-    /** Индекс текущей тренировки для изменения */
+    /** индекс текущей тренировки для изменения */
     private Integer indexToChange;
 
     /** Выбранная тренировка для изменения */

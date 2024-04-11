@@ -71,6 +71,7 @@ public class TrainingDiaryApplication {
                         logger.info(userName + " вход в аккаунт : SUCCESS");
                         return true;
                     }
+                    System.out.println("Неверный логин или пароль");
                     logger.info(userName + " вошел в аккаунт : FAIL");
                 }
                 case "2", "Регистрация" -> {
