@@ -10,6 +10,6 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class NotUniqueWorkoutTypeException extends Throwable {
+public class NotUniqueWorkoutException extends Throwable {
     private String message;
 }

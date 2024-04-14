@@ -31,6 +31,8 @@ public class Workout {
     /** Дополнительная информация */
     private String additionalInfo;
 
+    private LocalDate dateOfAdding;
+
     /**
      Переопределенный метод toString, возвращающий информацию о тренировке.
      @return строковое представление объекта тренировки
@@ -39,6 +41,7 @@ public class Workout {
     public String toString() {
         return "Тренировка : {" +
                 "Время выполнения : " + timeOfWorkout +
+                ", Дата добавления : " + dateOfAdding +
                 ", тип : '" + type + '\'' +
                 ", длительность : " + minuteDuration +
                 ", сожжённые калории :  " + caloriesBurned +

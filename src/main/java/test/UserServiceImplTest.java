@@ -1,10 +1,11 @@
 package test;
 
-import firstTask.com.exceptions.NotUniqueWorkoutTypeException;
+import firstTask.com.exceptions.NotUniqueWorkoutException;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.Workout;
 import firstTask.com.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.when;
  * Класс, тестирующий {@link UserServiceImpl} класс
  *  **/
 @ExtendWith(MockitoExtension.class)
+@DisplayName("Тест действий пользователя над тренировками")
 class UserServiceImplTest {
     @Mock
     private ConsoleUser consoleUser;
@@ -31,6 +33,7 @@ class UserServiceImplTest {
     private static ArrayList<Workout> mockWorkouts;
 
     @BeforeAll
+    @DisplayName("Добавление данных о тренировках перед тестами")
     public static void addWorkouts(){
         mockWorkouts = new ArrayList<>();
 
@@ -46,6 +49,8 @@ class UserServiceImplTest {
                 .build());
     }
     @Test
+    @DisplayName("Вывод тренировок, отсортированных по введенной дате")
+
     void showAllWorkoutsDateSorted() {
         when(consoleUser.getWorkouts()).thenReturn(mockWorkouts);
 
@@ -55,6 +60,7 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Получение статистики исходя из тренировок")
     void getWorkoutStatistics() {
         when(consoleUser.getWorkouts()).thenReturn(mockWorkouts);
 
@@ -64,7 +70,8 @@ class UserServiceImplTest {
     }
 
     @Test
-    void addNewWorkout() throws NotUniqueWorkoutTypeException {
+    @DisplayName("Проверка добавления тренировки")
+    void addNewWorkout() throws NotUniqueWorkoutException {
         Workout newWorkout = Workout.builder()
                 .caloriesBurned(1000d)
                 .type("youga123")

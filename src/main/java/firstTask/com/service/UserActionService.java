@@ -2,7 +2,7 @@ package firstTask.com.service;
 
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.Workout;
-import firstTask.com.exceptions.NotUniqueWorkoutTypeException;
+import firstTask.com.exceptions.NotUniqueWorkoutException;
 
 import java.util.ArrayList;
 
@@ -15,10 +15,10 @@ public interface UserActionService {
      *
      * @param consoleUser {@link ConsoleUser пользователь приложения}
      * @param workout {@link Workout новая тренировка}
-     * @exception NotUniqueWorkoutTypeException исключение при попытке добавить такой же тип тренировки
+     * @exception NotUniqueWorkoutException исключение при попытке добавить такой же тип тренировки
      * @return workout : сохраненная тренировка
      */
-    Workout addNewWorkout(ConsoleUser consoleUser, Workout workout) throws NotUniqueWorkoutTypeException;
+    Workout addNewWorkout(ConsoleUser consoleUser, Workout workout) throws NotUniqueWorkoutException;
 
     /**
      * Метод получения всех тренировок пользователя, сортированных по новейшей дате.

@@ -23,7 +23,7 @@ public class AuthenticationService {
      * @see ConsoleUser пользователь приложения
      **/
     public void registrationProcess(String username, String password) throws NotUniqueUserNameException {
-        if (!userIsExists(username)) {
+        if (!userIsExists(username, password)) {
             String role = "USER";
             if(username.toLowerCase().equals("admin")){
                 role = "ADMIN";
@@ -35,7 +35,7 @@ public class AuthenticationService {
                     .role(role)
                     .build();
 
-            UserStorage.getAllUsers().add(newUser);
+            UserStorage.getAllUsers().put(username + password, newUser);
         } else {
             throw new NotUniqueUserNameException("Пользователь с таким именем уже существует");
         }
@@ -48,9 +48,7 @@ public class AuthenticationService {
      * @return Optional<ConsoleUser> : optional обёртка полученного зарегестрированного пользователя
      **/
     public Optional<ConsoleUser> logIn(String username, String password) {
-        return UserStorage.getAllUsers().stream()
-                    .filter(consoleUser -> consoleUser.getUsername().equals(username) && consoleUser.getPassword().equals(password))
-                    .findFirst();
+        return Optional.ofNullable(UserStorage.getAllUsers().get(username + password));
     }
 
     /**
@@ -59,8 +57,7 @@ public class AuthenticationService {
      * @see ConsoleUser пользователь приложения
      * @return boolean : наличие / отсутствие пользователя
      **/
-    public boolean userIsExists(String username) {
-        return UserStorage.getAllUsers().stream()
-                .anyMatch(user -> user.getUsername().equals(username));
+    public boolean userIsExists(String username, String password) {
+        return UserStorage.getAllUsers().containsKey(username + password);
     }
 }
