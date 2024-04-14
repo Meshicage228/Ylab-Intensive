@@ -50,7 +50,6 @@ class UserServiceImplTest {
     }
     @Test
     @DisplayName("Вывод тренировок, отсортированных по введенной дате")
-
     void showAllWorkoutsDateSorted() {
         when(consoleUser.getWorkouts()).thenReturn(mockWorkouts);
 
