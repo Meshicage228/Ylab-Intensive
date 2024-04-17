@@ -18,6 +18,8 @@ import java.util.LinkedList;
 @Setter
 @Builder
 public class ConsoleUser {
+    /** id пользователя в базе данных */
+    private Integer id;
     /** имя пользователя */
     private String username;
     /** Пароль пользователя */

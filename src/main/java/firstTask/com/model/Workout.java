@@ -20,6 +20,10 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class Workout {
+    /** id тренировки в базе данных */
+    private Integer id;
+    /** id пользователя этой тренировки в базе данных */
+    private Integer user_id;
     /** Дата внесенной тренировки YYYY-MM-DD */
     private LocalDate timeOfWorkout;
     /** Тип тренировки */
