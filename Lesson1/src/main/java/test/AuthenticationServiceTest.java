@@ -1,16 +1,13 @@
 package test;
 
-import firstTask.com.exceptions.NotUniqueUserNameException;
-import firstTask.com.service.AuthenticationService;
+import com.service.AuthenticationService;
+import com.exceptions.NotUniqueUserNameException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Класс, тестирующий {@link AuthenticationService} класс аунтификации */
@@ -25,7 +22,7 @@ class AuthenticationServiceTest {
     void registrationProcessFail(){
         Mockito.doReturn(true).when(service).userIsExists(Mockito.any(), Mockito.any());
 
-        assertThrows(NotUniqueUserNameException.class, () -> service.registrationProcess(Mockito.anyString(), Mockito.anyString()));
+        Assertions.assertThrows(NotUniqueUserNameException.class, () -> service.registrationProcess(Mockito.anyString(), Mockito.anyString()));
     }
 
 }

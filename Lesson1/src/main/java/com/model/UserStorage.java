@@ -1,12 +1,9 @@
-package firstTask.com.model;
+package com.model;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /** Класс хранит (имитирует) хранение всех пользователей, подобно базе данных

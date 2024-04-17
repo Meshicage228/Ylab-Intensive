@@ -1,8 +1,8 @@
-package firstTask.com.service;
+package com.service;
 
-import firstTask.com.exceptions.NotUniqueUserNameException;
-import firstTask.com.model.ConsoleUser;
-import firstTask.com.model.UserStorage;
+import com.exceptions.NotUniqueUserNameException;
+import com.model.ConsoleUser;
+import com.model.UserStorage;
 import lombok.AllArgsConstructor;
 
 import java.util.LinkedList;

@@ -1,4 +1,4 @@
-package firstTask.com.util;
+package com.util;
 
 import java.util.Scanner;
 

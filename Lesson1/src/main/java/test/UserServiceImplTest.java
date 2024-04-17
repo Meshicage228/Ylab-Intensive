@@ -1,22 +1,20 @@
 package test;
 
-import firstTask.com.exceptions.NotUniqueWorkoutException;
-import firstTask.com.model.ConsoleUser;
-import firstTask.com.model.Workout;
-import firstTask.com.service.impl.UserServiceImpl;
+import com.model.ConsoleUser;
+import com.model.Workout;
+import com.exceptions.NotUniqueWorkoutException;
+import com.service.impl.UserServiceImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
-
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 
 /**
@@ -51,21 +49,21 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Вывод тренировок, отсортированных по введенной дате")
     void showAllWorkoutsDateSorted() {
-        when(consoleUser.getWorkouts()).thenReturn(mockWorkouts);
+        Mockito.when(consoleUser.getWorkouts()).thenReturn(mockWorkouts);
 
         LinkedList<Workout> workouts = userService.showAllWorkoutsDateSorted(consoleUser);
 
-        assertEquals(workouts.get(0).getTimeOfWorkout(), LocalDate.parse("2024-12-12"));
+        Assertions.assertEquals(workouts.get(0).getTimeOfWorkout(), LocalDate.parse("2024-12-12"));
     }
 
     @Test
     @DisplayName("Получение статистики исходя из тренировок")
     void getWorkoutStatistics() {
-        when(consoleUser.getWorkouts()).thenReturn(mockWorkouts);
+        Mockito.when(consoleUser.getWorkouts()).thenReturn(mockWorkouts);
 
         String workouts = userService.getWorkoutStatistics(consoleUser);
 
-        assertTrue(workouts.contains("Максимально сожжено : 1200.0"));
+        Assertions.assertTrue(workouts.contains("Максимально сожжено : 1200.0"));
     }
 
     @Test
@@ -80,10 +78,10 @@ class UserServiceImplTest {
                 .build();
 
         int size = mockWorkouts.size();
-        when(consoleUser.getWorkouts()).thenReturn(mockWorkouts);
+        Mockito.when(consoleUser.getWorkouts()).thenReturn(mockWorkouts);
 
         userService.addNewWorkout(consoleUser, newWorkout);
 
-        assertNotEquals(size, mockWorkouts.size());
+        Assertions.assertNotEquals(size, mockWorkouts.size());
     }
 }

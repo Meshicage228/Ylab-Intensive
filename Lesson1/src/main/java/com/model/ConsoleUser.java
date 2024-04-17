@@ -1,4 +1,4 @@
-package firstTask.com.model;
+package com.model;
 
 import lombok.*;
 

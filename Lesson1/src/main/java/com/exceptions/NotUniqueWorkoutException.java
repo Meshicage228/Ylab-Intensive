@@ -1,4 +1,4 @@
-package firstTask.com.exceptions;
+package com.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

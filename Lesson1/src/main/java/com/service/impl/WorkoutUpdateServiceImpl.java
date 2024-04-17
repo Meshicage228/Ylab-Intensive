@@ -1,12 +1,11 @@
-package firstTask.com.service.impl;
+package com.service.impl;
 
-import firstTask.com.model.ConsoleUser;
-import firstTask.com.service.WorkoutService;
-import firstTask.com.util.UtilScanner;
-import firstTask.com.model.Workout;
+import com.model.ConsoleUser;
+import com.model.Workout;
+import com.util.UtilScanner;
+import com.service.WorkoutService;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;

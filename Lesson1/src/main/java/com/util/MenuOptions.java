@@ -1,4 +1,4 @@
-package firstTask.com.util;
+package com.util;
 
 /**
  * Класс, содержащий все меню-опции приложения

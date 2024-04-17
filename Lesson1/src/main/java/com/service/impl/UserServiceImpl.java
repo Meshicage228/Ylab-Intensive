@@ -1,10 +1,10 @@
-package firstTask.com.service.impl;
+package com.service.impl;
 
-import firstTask.com.model.ConsoleUser;
-import firstTask.com.model.UserStorage;
-import firstTask.com.exceptions.NotUniqueWorkoutException;
-import firstTask.com.model.Workout;
-import firstTask.com.service.UserActionService;
+import com.exceptions.NotUniqueWorkoutException;
+import com.model.ConsoleUser;
+import com.model.UserStorage;
+import com.model.Workout;
+import com.service.UserActionService;
 
 import java.time.LocalDate;
 import java.util.*;

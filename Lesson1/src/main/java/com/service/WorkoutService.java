@@ -1,7 +1,7 @@
-package firstTask.com.service;
+package com.service;
 
-import firstTask.com.model.ConsoleUser;
-import firstTask.com.model.Workout;
+import com.model.ConsoleUser;
+import com.model.Workout;
 
 /**
  * интерфейс, предоставляющий контракт для изменения состояния тренировки

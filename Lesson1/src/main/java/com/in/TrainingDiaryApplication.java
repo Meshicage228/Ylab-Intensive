@@ -1,15 +1,15 @@
-package firstTask.com.in;
+package com.in;
 
-import firstTask.com.model.ConsoleUser;
-import firstTask.com.util.AuditLog;
-import firstTask.com.util.MenuOptions;
-import firstTask.com.util.UtilScanner;
-import firstTask.com.exceptions.NotUniqueUserNameException;
-import firstTask.com.exceptions.NotUniqueWorkoutException;
-import firstTask.com.model.Workout;
-import firstTask.com.service.AuthenticationService;
-import firstTask.com.service.UserActionService;
-import firstTask.com.service.impl.WorkoutUpdateServiceImpl;
+import com.model.ConsoleUser;
+import com.model.Workout;
+import com.service.AuthenticationService;
+import com.util.AuditLog;
+import com.util.MenuOptions;
+import com.util.UtilScanner;
+import com.exceptions.NotUniqueUserNameException;
+import com.exceptions.NotUniqueWorkoutException;
+import com.service.UserActionService;
+import com.service.impl.WorkoutUpdateServiceImpl;
 import lombok.*;
 
 import java.time.LocalDate;

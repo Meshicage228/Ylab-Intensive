@@ -1,11 +1,10 @@
-package firstTask.com.util;
+package com.util;
 
-import firstTask.com.in.TrainingDiaryApplication;
-import firstTask.com.model.ConsoleUser;
-import firstTask.com.service.AuthenticationService;
-import firstTask.com.service.impl.UserServiceImpl;
-import firstTask.com.service.impl.WorkoutUpdateServiceImpl;
-import firstTask.com.util.AuditLog;
+import com.model.ConsoleUser;
+import com.service.AuthenticationService;
+import com.in.TrainingDiaryApplication;
+import com.service.impl.UserServiceImpl;
+import com.service.impl.WorkoutUpdateServiceImpl;
 
 public class TrainingDiaryApplicationFactory {
     public static TrainingDiaryApplication createTrainingDiaryApplication() {

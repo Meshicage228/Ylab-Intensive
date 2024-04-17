@@ -1,8 +1,8 @@
-package firstTask.com.service;
+package com.service;
 
-import firstTask.com.model.ConsoleUser;
-import firstTask.com.model.Workout;
-import firstTask.com.exceptions.NotUniqueWorkoutException;
+import com.exceptions.NotUniqueWorkoutException;
+import com.model.ConsoleUser;
+import com.model.Workout;
 
 import java.util.LinkedList;
 
