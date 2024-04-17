@@ -17,6 +17,7 @@ ext {
             commonsLang: '3.13.0',
             mockitoJunit: '5.11.0',
             junit: '4.12',
+            postgresql: '42.7.1',
             assertjCore: '3.24.2',
             junitJupiterApi: '5.10.0',
             junitJupiterEngine: '5.10.0'
@@ -25,12 +26,14 @@ ext {
 dependencies {
     compileOnly "org.projectlombok:lombok:${versions.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+    implementation group: 'org.liquibase', name: 'liquibase-core', version: '4.27.0'
     testImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junitJupiter}"
     implementation "log4j:log4j:${versions.log4j}"
     implementation "org.apache.commons:commons-collections4:${versions.commonsCollections}"
     implementation "org.apache.commons:commons-lang3:${versions.commonsLang}"
     implementation "org.mockito:mockito-junit-jupiter:${versions.mockitoJunit}"
     testCompileOnly "junit:junit:${versions.junit}"
+    implementation "org.postgresql:postgresql:${versions.postgresql}"
     implementation "org.assertj:assertj-core:${versions.assertjCore}"
     implementation "org.junit.jupiter:junit-jupiter-api:${versions.junitJupiterApi}"
     implementation "org.junit.jupiter:junit-jupiter-engine:${versions.junitJupiterEngine}"
