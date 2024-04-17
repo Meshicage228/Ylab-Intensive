@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,12 +30,12 @@ class UserServiceImplTest {
 
     private final UserServiceImpl userService = new UserServiceImpl();
 
-    private static ArrayList<Workout> mockWorkouts;
+    private static LinkedList<Workout> mockWorkouts;
 
     @BeforeAll
     @DisplayName("Добавление данных о тренировках перед тестами")
     public static void addWorkouts(){
-        mockWorkouts = new ArrayList<>();
+        mockWorkouts = new LinkedList<>();
 
         mockWorkouts.add(Workout.builder()
                 .type("youga")
@@ -53,7 +53,7 @@ class UserServiceImplTest {
     void showAllWorkoutsDateSorted() {
         when(consoleUser.getWorkouts()).thenReturn(mockWorkouts);
 
-        ArrayList<Workout> workouts = userService.showAllWorkoutsDateSorted(consoleUser);
+        LinkedList<Workout> workouts = userService.showAllWorkoutsDateSorted(consoleUser);
 
         assertEquals(workouts.get(0).getTimeOfWorkout(), LocalDate.parse("2024-12-12"));
     }

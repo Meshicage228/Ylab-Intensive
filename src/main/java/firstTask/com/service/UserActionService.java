@@ -4,7 +4,7 @@ import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.Workout;
 import firstTask.com.exceptions.NotUniqueWorkoutException;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * интерфейс, предоставляющий контракт для действий над тренировками
@@ -26,7 +26,7 @@ public interface UserActionService {
      * @param consoleUser {@link ConsoleUser пользователь приложения}
      * @return ArrayList<Workout> : тренировки, сортированные по новейшей дате
      */
-    ArrayList<Workout> showAllWorkoutsDateSorted(ConsoleUser consoleUser);
+    LinkedList<Workout> showAllWorkoutsDateSorted(ConsoleUser consoleUser);
 
     /**
      * Метод получения статистики по калориям со всех тренировок пользователя.

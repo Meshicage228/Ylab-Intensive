@@ -3,10 +3,9 @@ package firstTask.com.service;
 import firstTask.com.exceptions.NotUniqueUserNameException;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.UserStorage;
-import firstTask.com.model.Workout;
 import lombok.AllArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Optional;
 
 /**
@@ -31,7 +30,7 @@ public class AuthenticationService {
             ConsoleUser newUser = ConsoleUser.builder()
                     .username(username)
                     .password(password)
-                    .workouts(new ArrayList<>())
+                    .workouts(new LinkedList<>())
                     .role(role)
                     .build();
 

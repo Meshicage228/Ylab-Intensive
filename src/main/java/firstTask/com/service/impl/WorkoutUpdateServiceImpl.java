@@ -8,6 +8,7 @@ import firstTask.com.model.Workout;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 /** Класс для изменений выбранной тренировки
@@ -118,7 +119,7 @@ public class WorkoutUpdateServiceImpl implements WorkoutService {
             return -1;
         }
         int index = -1;
-        ArrayList<Workout> workouts = consoleUser.getWorkouts();
+        LinkedList<Workout> workouts = consoleUser.getWorkouts();
         System.out.println("Выберите тренировку для изменения : ");
         do {
             Scanner scanner = UtilScanner.getInstance();

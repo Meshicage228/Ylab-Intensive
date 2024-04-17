@@ -5,7 +5,6 @@ import firstTask.com.model.UserStorage;
 import firstTask.com.exceptions.NotUniqueWorkoutException;
 import firstTask.com.model.Workout;
 import firstTask.com.service.UserActionService;
-import firstTask.com.util.AuditLog;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -44,10 +43,10 @@ public class UserServiceImpl implements UserActionService {
      * @return список тренировок, отсортированных по дате
      **/
     @Override
-    public ArrayList<Workout> showAllWorkoutsDateSorted(ConsoleUser consoleUser) {
-        ArrayList<Workout> workouts = consoleUser.getWorkouts();
+    public LinkedList<Workout> showAllWorkoutsDateSorted(ConsoleUser consoleUser) {
+        LinkedList<Workout> workouts = consoleUser.getWorkouts();
         if (workouts.isEmpty()) {
-            return new ArrayList<>();
+            return new LinkedList<>();
         }
         workouts.sort(Comparator.comparing(Workout::getTimeOfWorkout).reversed());
         return workouts;
@@ -60,7 +59,7 @@ public class UserServiceImpl implements UserActionService {
      **/
     @Override
     public String getWorkoutStatistics(ConsoleUser consoleUser) {
-        ArrayList<Workout> workouts = consoleUser.getWorkouts();
+        LinkedList<Workout> workouts = consoleUser.getWorkouts();
         if (workouts.isEmpty()) {
             return "Нет активных тренировок";
         }
