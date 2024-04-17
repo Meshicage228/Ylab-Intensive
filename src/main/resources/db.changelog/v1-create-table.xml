@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db.changelog-master.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create-userTable" author="Vlad">
+        <createTable tableName="users" schemaName="entities">
+            <column name="user_id" type="BIGINT" defaultValueComputed="nextval('sequences.users-sequence')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-workoutsTable" author="Vlad">
+        <createTable tableName="workouts" schemaName="entities">
+            <column name="workout_id" type="BIGINT" defaultValueComputed="nextval('sequences.workout-sequence')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_user_id" references="entities.users(user_id)"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="calories_burned" type="decimal">
+                <constraints nullable="false"/>
+            </column>
+            <column name="minute_duration" type="decimal">
+                <constraints nullable="false"/>
+            </column>
+            <column name="additional_info" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="adding_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="training_date_creation" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-auditLogTable" author="Vlad">
+        <createTable tableName="audit_logs" schemaName="audit_log">
+            <column name="log_id" type="BIGINT" defaultValueComputed="nextval('sequences.audit-sequence')">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="time_of_action" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action_description" type="VARCHAR(255)">
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
