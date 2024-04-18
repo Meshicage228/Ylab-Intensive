@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog logicalFilePath="db.changelog-master.xml" xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="insert_data_users_table" author="Vlad">
+      <!--  <preConditions>
+            <not>
+                <tableIsEmpty schemaName="entities"></tableIsEmpty>
+            </not>
+        </preConditions>-->
+        <insert tableName="users" schemaName="entities">
+            <column name="user_id" value="1" />
+            <column name="username" value="Vlad" />
+            <column name="password" value="123" />
+            <column name="role" value="USER" />
+        </insert>
+
+        <insert tableName="users" schemaName="entities">
+            <column name="user_id" value="2" />
+            <column name="username" value="admin" />
+            <column name="password" value="123" />
+            <column name="role" value="ADMIN" />
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="insert_data_workouts_table" author="Vlad">
+        <!--  <preConditions>
+              <not>
+                  <tableIsEmpty schemaName="entities"></tableIsEmpty>
+              </not>
+          </preConditions>-->
+        <insert tableName="workouts" schemaName="entities">
+            <column name="workout_id" value="1" />
+            <column name="user_id" value="1" />
+            <column name="type" value="пробежка" />
+            <column name="minute_duration" value="120" />
+            <column name="calories_burned" value="120" />
+            <column name="additional_info" value="Взбодрит по утрам"/>
+            <column name="training_date_creation" value="2024-04-18"/>
+            <column name="adding_date" value="2024-04-18"/>
+        </insert>
+
+        <insert tableName="workouts" schemaName="entities">
+            <column name="workout_id" value="2" />
+            <column name="user_id" value="1" />
+            <column name="type" value="Отжимания" />
+            <column name="minute_duration" value="20" />
+            <column name="calories_burned" value="240" />
+            <column name="additional_info" value="Каждое утро"/>
+            <column name="training_date_creation" value="2024-04-18"/>
+            <column name="adding_date" value="2024-04-18"/>
+        </insert>
+
+        <insert tableName="workouts" schemaName="entities">
+            <column name="workout_id" value="3" />
+            <column name="user_id" value="2" />
+            <column name="type" value="Йога" />
+            <column name="minute_duration" value="30" />
+            <column name="calories_burned" value="10" />
+            <column name="additional_info" value="Нормализует ЦНС"/>
+            <column name="training_date_creation" value="2024-04-16"/>
+            <column name="adding_date" value="2024-04-16"/>
+        </insert>
+
+        <rollback/>
+    </changeSet>
+
+</databaseChangeLog>

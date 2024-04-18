@@ -13,6 +13,8 @@
             </column>
             <column name="password" type="VARCHAR(255)">
             </column>
+            <column name="role" type="VARCHAR(255)">
+            </column>
         </createTable>
     </changeSet>
 
@@ -36,13 +38,11 @@
             <column name="additional_info" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="adding_date" type="date">
+            <column name="adding_date" type="date" >
                 <constraints nullable="false"/>
             </column>
             <column name="training_date_creation" type="date">
                 <constraints nullable="false"/>
-            </column>
-            <column name="password" type="VARCHAR(255)">
             </column>
         </createTable>
     </changeSet>
