@@ -12,8 +12,10 @@ import firstTask.com.service.impl.WorkoutUpdateServiceImpl;
 public class TrainingDiaryApplicationFactory {
     public static TrainingDiaryApplication createTrainingDiaryApplication() {
         AuditLog auditLog = new AuditLog(new AuditRepository());
-        AuthenticationService authenticationService = new AuthenticationService(new UserRepository(new WorkoutRepository()));
-        UserServiceImpl userService = new UserServiceImpl(new WorkoutRepository(), new UserRepository(new WorkoutRepository()));
+
+        UserRepository userRepository = new UserRepository(new WorkoutRepository());
+        AuthenticationService authenticationService = new AuthenticationService(userRepository);
+        UserServiceImpl userService = new UserServiceImpl(new WorkoutRepository(), userRepository);
         WorkoutUpdateServiceImpl workoutUpdateService = new WorkoutUpdateServiceImpl(new WorkoutRepository());
         ConsoleUser userInterface = new ConsoleUser();
 

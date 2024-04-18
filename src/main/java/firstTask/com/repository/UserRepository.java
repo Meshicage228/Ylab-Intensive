@@ -2,11 +2,9 @@ package firstTask.com.repository;
 
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.config.DataBaseConfig;
-import firstTask.com.model.Workout;
 import lombok.AllArgsConstructor;
 
 import java.sql.*;
-import java.util.LinkedList;
 
 @AllArgsConstructor
 public class UserRepository {
@@ -67,14 +65,14 @@ public class UserRepository {
             while (resultSet.next()) {
                 String userName = resultSet.getString("username");
                 int id = resultSet.getInt("user_id");
-                System.out.println("Имя пользователя: " + userName + "Его тренировки :");
+                System.out.println("Username : " + userName + " and trainings :");
 
                 Statement innerStatement = connection.createStatement();
                 ResultSet result = innerStatement.executeQuery("SELECT * FROM entities.workouts WHERE user_id = '" + id + "'");
 
                 while (result.next()) {
                     String answer =
-                            "Название тренировки : %s; Соженные калории : %s, Дата проведения : %s, продолжительность тренировки : %s";
+                            "Training type : %s; Burned calories : %s, Date of training : %s, Training duration : %s";
                     String format = String.format(answer,
                             result.getString("type"),
                             result.getDouble("calories_burned"),

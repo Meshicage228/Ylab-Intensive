@@ -6,6 +6,7 @@ import firstTask.com.model.Workout;
 import firstTask.com.repository.UserRepository;
 import firstTask.com.repository.WorkoutRepository;
 import firstTask.com.service.impl.UserServiceImpl;
+import net.bytebuddy.utility.dispatcher.JavaDispatcher;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,6 @@ class UserServiceImplTest {
     private final UserServiceImpl userService = new UserServiceImpl(new WorkoutRepository(), new UserRepository(new WorkoutRepository()));
 
     private static LinkedList<Workout> mockWorkouts;
-
     @BeforeAll
     @DisplayName("Добавление данных о тренировках перед тестами")
     public static void addWorkouts(){
