@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 
 public class DataBaseConfig {
@@ -31,7 +32,12 @@ public class DataBaseConfig {
 
     public static Connection getConnection() {
         try {
-            return DriverManager.getConnection (URL, USER, PASSWORD);
+            Properties info = new Properties();
+            info.setProperty("user", USER);
+            info.setProperty("password",PASSWORD);
+            info.setProperty("useUnicode","true");
+            info.setProperty("characterEncoding","utf8");
+            return DriverManager.getConnection (URL, info);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

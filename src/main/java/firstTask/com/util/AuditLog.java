@@ -1,18 +1,22 @@
 package firstTask.com.util;
 
+import firstTask.com.repository.AuditRepository;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
+@RequiredArgsConstructor
 public class AuditLog {
-    private ArrayList<String> logList;
-
-    public AuditLog() {
-        this.logList = new ArrayList<>();
-    }
+    private ArrayList<String> logList = new ArrayList<>();
+    @NonNull
+    private AuditRepository repository;
 
     public void addLogEntry(String eventDescription) {
-        Date timestamp = new Date();
-        String logEntry = timestamp.toString() + ": " + eventDescription;
+        repository.saveAudit(eventDescription);
+        String logEntry = LocalDate.now().toString() + ": " + eventDescription;
         logList.add(logEntry);
         System.out.println(logEntry);
     }

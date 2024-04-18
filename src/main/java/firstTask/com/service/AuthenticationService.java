@@ -2,7 +2,7 @@ package firstTask.com.service;
 
 import firstTask.com.exceptions.NotUniqueUserNameException;
 import firstTask.com.model.ConsoleUser;
-import firstTask.com.model.UserStorage;
+import firstTask.com.repository.UserRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.LinkedList;
@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class AuthenticationService {
+    private UserRepository userRepository;
     /**
      * Метод регистрации пользователя.
      * @param username уникальное имя пользователя
@@ -22,7 +23,7 @@ public class AuthenticationService {
      * @see ConsoleUser пользователь приложения
      **/
     public void registrationProcess(String username, String password) throws NotUniqueUserNameException {
-        if (!userIsExists(username, password)) {
+        if (!userIsExists(username)) {
             String role = "USER";
             if(username.toLowerCase().equals("admin")){
                 role = "ADMIN";
@@ -33,8 +34,7 @@ public class AuthenticationService {
                     .workouts(new LinkedList<>())
                     .role(role)
                     .build();
-
-            UserStorage.getAllUsers().put(username + password, newUser);
+            userRepository.save(newUser);
         } else {
             throw new NotUniqueUserNameException("Пользователь с таким именем уже существует");
         }
@@ -47,7 +47,7 @@ public class AuthenticationService {
      * @return Optional<ConsoleUser> : optional обёртка полученного зарегестрированного пользователя
      **/
     public Optional<ConsoleUser> logIn(String username, String password) {
-        return Optional.ofNullable(UserStorage.getAllUsers().get(username + password));
+        return Optional.ofNullable(userRepository.findByUsernameAndPassword(username, password));
     }
 
     /**
@@ -56,7 +56,7 @@ public class AuthenticationService {
      * @see ConsoleUser пользователь приложения
      * @return boolean : наличие / отсутствие пользователя
      **/
-    public boolean userIsExists(String username, String password) {
-        return UserStorage.getAllUsers().containsKey(username + password);
+    public boolean userIsExists(String username) {
+        return userRepository.findUserByUsername(username);
     }
 }

@@ -3,6 +3,8 @@ package test;
 import firstTask.com.exceptions.NotUniqueWorkoutException;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.Workout;
+import firstTask.com.repository.UserRepository;
+import firstTask.com.repository.WorkoutRepository;
 import firstTask.com.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +30,7 @@ class UserServiceImplTest {
     @Mock
     private ConsoleUser consoleUser;
 
-    private final UserServiceImpl userService = new UserServiceImpl();
+    private final UserServiceImpl userService = new UserServiceImpl(new WorkoutRepository());
 
     private static LinkedList<Workout> mockWorkouts;
 

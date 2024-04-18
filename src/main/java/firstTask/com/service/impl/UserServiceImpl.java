@@ -1,10 +1,11 @@
 package firstTask.com.service.impl;
 
 import firstTask.com.model.ConsoleUser;
-import firstTask.com.model.UserStorage;
 import firstTask.com.exceptions.NotUniqueWorkoutException;
 import firstTask.com.model.Workout;
+import firstTask.com.repository.WorkoutRepository;
 import firstTask.com.service.UserActionService;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -14,7 +15,10 @@ import java.util.*;
  * Класс обрабатывает действия пользователя
  * @see UserActionService
  */
+
+@AllArgsConstructor
 public class UserServiceImpl implements UserActionService {
+    private WorkoutRepository workoutRepository;
     /**
      * Метод добавления новой тренировки:
      * @param consoleUser {@link ConsoleUser пользователь приложения}
@@ -33,6 +37,7 @@ public class UserServiceImpl implements UserActionService {
         }
 
         consoleUser.getWorkouts().add(workoutNew);
+        workoutRepository.saveWorkout(workoutNew);
 
         return workoutNew;
     }
@@ -83,11 +88,12 @@ public class UserServiceImpl implements UserActionService {
      **/
     @Override
     public String getAllWorkouts() {
-        HashMap<String, ConsoleUser> allUsers = UserStorage.getAllUsers();
+        /*HashMap<String, ConsoleUser> allUsers = UserStorage.getAllUsers();
 
         if(allUsers.keySet().isEmpty()){
             return "Нет активных тренировок в приложении";
         }
-        return allUsers.toString();
+        return allUsers.toString();*/
+        return "";
     }
 }
