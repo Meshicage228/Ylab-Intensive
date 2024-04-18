@@ -1,6 +1,6 @@
 package firstTask.com.repository;
 
-import firstTask.com.util.DataBaseConfig;
+import firstTask.com.config.DataBaseConfig;
 
 import java.sql.Connection;
 import java.sql.Date;

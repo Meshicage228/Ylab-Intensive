@@ -1,4 +1,4 @@
-package firstTask.com.util;
+package firstTask.com.config;
 
 import liquibase.Liquibase;
 import liquibase.database.Database;

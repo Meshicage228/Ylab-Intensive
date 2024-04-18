@@ -3,6 +3,7 @@ package firstTask.com.service.impl;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.exceptions.NotUniqueWorkoutException;
 import firstTask.com.model.Workout;
+import firstTask.com.repository.UserRepository;
 import firstTask.com.repository.WorkoutRepository;
 import firstTask.com.service.UserActionService;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.*;
 @AllArgsConstructor
 public class UserServiceImpl implements UserActionService {
     private WorkoutRepository workoutRepository;
+    private UserRepository userRepository;
     /**
      * Метод добавления новой тренировки:
      * @param consoleUser {@link ConsoleUser пользователь приложения}
@@ -88,12 +90,6 @@ public class UserServiceImpl implements UserActionService {
      **/
     @Override
     public String getAllWorkouts() {
-        /*HashMap<String, ConsoleUser> allUsers = UserStorage.getAllUsers();
-
-        if(allUsers.keySet().isEmpty()){
-            return "Нет активных тренировок в приложении";
-        }
-        return allUsers.toString();*/
-        return "";
+        return userRepository.getAll();
     }
 }

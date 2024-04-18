@@ -4,11 +4,11 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <changeSet id="create_user_sequence" author="Vlad">
-        <createSequence sequenceName="users-sequence" incrementBy="1" minValue="0" maxValue="500" schemaName="sequences"/>
+        <createSequence sequenceName="users-sequence" incrementBy="1" minValue="3" maxValue="500" schemaName="sequences"/>
     </changeSet>
 
     <changeSet id="create_workout_sequence" author="Vlad">
-        <createSequence sequenceName="workout-sequence" incrementBy="1" minValue="0" maxValue="500" schemaName="sequences"/>
+        <createSequence sequenceName="workout-sequence" incrementBy="1" minValue="4" maxValue="500" schemaName="sequences"/>
     </changeSet>
 
     <changeSet id="create_auditLog_sequence" author="Vlad">

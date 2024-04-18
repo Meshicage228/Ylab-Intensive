@@ -30,7 +30,7 @@ class UserServiceImplTest {
     @Mock
     private ConsoleUser consoleUser;
 
-    private final UserServiceImpl userService = new UserServiceImpl(new WorkoutRepository());
+    private final UserServiceImpl userService = new UserServiceImpl(new WorkoutRepository(), new UserRepository(new WorkoutRepository()));
 
     private static LinkedList<Workout> mockWorkouts;
 

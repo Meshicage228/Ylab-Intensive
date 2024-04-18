@@ -1,20 +1,31 @@
 package firstTask.com.service.impl;
 
 import firstTask.com.model.ConsoleUser;
+import firstTask.com.repository.WorkoutRepository;
 import firstTask.com.service.WorkoutService;
 import firstTask.com.util.UtilScanner;
 import firstTask.com.model.Workout;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Scanner;
+
+import static java.util.Objects.nonNull;
+import static org.junit.platform.commons.util.Preconditions.notNull;
 
 /** Класс для изменений выбранной тренировки
  * @see WorkoutService
  * */
+
+@RequiredArgsConstructor
 public class WorkoutUpdateServiceImpl implements WorkoutService {
+    @NonNull
+    private WorkoutRepository workoutRepository;
+
     /** индекс текущей тренировки для изменения */
     private Integer indexToChange;
 
@@ -30,10 +41,12 @@ public class WorkoutUpdateServiceImpl implements WorkoutService {
      */
     @Override
     public Workout changeDate(ConsoleUser consoleUser, String newDate) {
-        LocalDate localDate = LocalDate.parse(newDate);
-        currentWorkout.setTimeOfWorkout(localDate);
+        Workout workout = workoutRepository.changeDate(currentWorkout.getId(), LocalDate.parse(newDate));
 
-        consoleUser.getWorkouts().set(indexToChange, currentWorkout);
+        if(nonNull(workout)){
+            consoleUser.getWorkouts().set(indexToChange, workout);
+            return workout;
+        }
         return currentWorkout;
     }
 
@@ -46,9 +59,12 @@ public class WorkoutUpdateServiceImpl implements WorkoutService {
      */
     @Override
     public Workout changeType(ConsoleUser consoleUser, String newType) {
-        currentWorkout.setType(newType);
+        Workout workout = workoutRepository.changeType(currentWorkout.getId(), newType);
 
-        consoleUser.getWorkouts().set(indexToChange, currentWorkout);
+        if(nonNull(workout)){
+            consoleUser.getWorkouts().set(indexToChange, workout);
+            return workout;
+        }
         return currentWorkout;
     }
 
@@ -61,10 +77,14 @@ public class WorkoutUpdateServiceImpl implements WorkoutService {
      */
     @Override
     public Workout changeAdditionalInfo(ConsoleUser consoleUser, String newAddInfo) {
-        currentWorkout.setAdditionalInfo(newAddInfo);
+        Workout workout = workoutRepository.changeAdditional(currentWorkout.getId(), newAddInfo);
 
-        consoleUser.getWorkouts().set(indexToChange, currentWorkout);
+        if(nonNull(workout)){
+            consoleUser.getWorkouts().set(indexToChange, workout);
+            return workout;
+        }
         return currentWorkout;
+
     }
 
     /**
@@ -76,9 +96,12 @@ public class WorkoutUpdateServiceImpl implements WorkoutService {
      */
     @Override
     public Workout changeCalories(ConsoleUser consoleUser, Double changeCalories) {
-        currentWorkout.setCaloriesBurned(changeCalories);
+        Workout workout = workoutRepository.changeCalories(currentWorkout.getId(), changeCalories);
 
-        consoleUser.getWorkouts().set(indexToChange, currentWorkout);
+        if(nonNull(workout)){
+            consoleUser.getWorkouts().set(indexToChange, workout);
+            return workout;
+        }
         return currentWorkout;
     }
 
@@ -91,9 +114,12 @@ public class WorkoutUpdateServiceImpl implements WorkoutService {
      */
     @Override
     public Workout changeMinuteDuration(ConsoleUser consoleUser, Double changeDuration) {
-        currentWorkout.setMinuteDuration(changeDuration);
+        Workout workout = workoutRepository.updateMinutes(currentWorkout.getId(), changeDuration);
 
-        consoleUser.getWorkouts().set(indexToChange, currentWorkout);
+        if(nonNull(workout)){
+            consoleUser.getWorkouts().set(indexToChange, workout);
+            return workout;
+        }
         return currentWorkout;
     }
 
@@ -105,6 +131,7 @@ public class WorkoutUpdateServiceImpl implements WorkoutService {
 
     @Override
     public void deleteWorkout(ConsoleUser consoleUser) {
+        workoutRepository.deleteWorkout(currentWorkout.getId(), consoleUser.getId());
         consoleUser.getWorkouts().remove(currentWorkout);
     }
 

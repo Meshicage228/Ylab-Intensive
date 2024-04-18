@@ -162,6 +162,7 @@ public class TrainingDiaryApplication {
         return Workout.builder()
                 .timeOfWorkout(localDate)
                 .type(type)
+                .user_id(consoleUser.getId())
                 .dateOfAdding(LocalDate.now())
                 .minuteDuration(time)
                 .caloriesBurned(calories)
@@ -187,6 +188,7 @@ public class TrainingDiaryApplication {
         }
 
         System.out.println(MenuOptions.workoutEditorMenu);
+        scanner.nextLine();
         switch (scanner.nextLine()) {
             case "1" -> {
                 System.out.print("Введите новое название тренировки : ");
