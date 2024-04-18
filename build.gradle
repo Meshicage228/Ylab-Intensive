@@ -42,7 +42,7 @@ dependencies {
     implementation "org.assertj:assertj-core:${versions.assertjCore}"
     implementation "org.mockito:mockito-junit-jupiter:${versions.mockitoJunit}"
     implementation "org.testcontainers:junit-jupiter:${versions.testcontainers}"
-    implementation group: 'org.testcontainers', name: 'postgresql', version: '1.19.7'
+    implementation "org.testcontainers:postgresql:${versions.testcontainers}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junitJupiter}"
     testCompileOnly "junit:junit:${versions.junit}"
     implementation "org.junit.jupiter:junit-jupiter-api:${versions.junitJupiterApi}"
