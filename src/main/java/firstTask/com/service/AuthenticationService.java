@@ -4,6 +4,8 @@ import firstTask.com.exceptions.NotUniqueUserNameException;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.Generated;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.LinkedList;

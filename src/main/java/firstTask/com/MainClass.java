@@ -1,6 +1,6 @@
 package firstTask.com;
 
-import firstTask.com.in.TrainingDiaryApplication;;
+import firstTask.com.in.TrainingDiaryApplication;
 import firstTask.com.config.DataBaseConfig;
 import firstTask.com.util.TrainingDiaryApplicationFactory;
 
