@@ -64,6 +64,6 @@ class UserServiceImplTest {
 
         String workouts = userService.getWorkoutStatistics(consoleUser);
 
-        assertTrue(workouts.contains("Максимально сожжено : 1200.0"));
+        assertTrue(workouts.contains("РњР°РєСЃРёРјР°Р»СЊРЅРѕ СЃРѕР¶Р¶РµРЅРѕ : 1200.0"));
     }
 }

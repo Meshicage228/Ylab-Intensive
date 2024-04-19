@@ -1,20 +1,13 @@
-package test.test_containers;
+package test.test_containers.service;
 
 import firstTask.com.config.DataBaseConfig;
+import firstTask.com.exceptions.NotUniqueWorkoutException;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.Workout;
 import firstTask.com.repository.UserRepository;
 import firstTask.com.repository.WorkoutRepository;
 import firstTask.com.service.impl.UserServiceImpl;
-import liquibase.Liquibase;
-import liquibase.database.Database;
-import liquibase.database.DatabaseFactory;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.resource.ClassLoaderResourceAccessor;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,9 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.postgresql.Driver;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.*;
@@ -42,59 +32,15 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("“ест действий пользовател€ над тренировками")
 @Testcontainers
-class UserServiceImplDBTest {
+class UserServiceImplDBTest extends BaseTestDB {
     @Mock
     private ConsoleUser consoleUser;
 
     private final UserServiceImpl userService = new UserServiceImpl(new WorkoutRepository(), new UserRepository(new WorkoutRepository()));
 
-    @Container
-    private static final PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:14.3-alpine")
-            .withDatabaseName("y_labTest")
-            .withUsername("test")
-            .withPassword("123");
-
-    private static String JDBCURL = "";
-    private static String USERNAME = "";
-    private static String PASSWORD= "";
-
-    private static Connection connection;
-
-
-    @BeforeAll
-    @SneakyThrows
-    public static void setup(){
-        JDBCURL = postgresContainer.getJdbcUrl();
-        USERNAME = postgresContainer.getUsername();
-        PASSWORD = postgresContainer.getPassword();
-        DriverManager.registerDriver(new Driver());
-
-        connection = DriverManager.getConnection(JDBCURL, USERNAME, PASSWORD);
-
-        Statement statement = connection.createStatement();
-
-        String schemaName = "service_liquibase";
-        String createSchemaQuery = "CREATE SCHEMA IF NOT EXISTS " + schemaName;
-
-        statement.executeUpdate(createSchemaQuery);
-        Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-
-        database.setDefaultSchemaName("service_liquibase");
-        Liquibase liquibase = new Liquibase("db.changelog/change-logs.xml", new ClassLoaderResourceAccessor(), database);
-        liquibase.update();
-    }
-
-    @AfterAll
-    @SneakyThrows
-    public static void teardown(){
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-        }
-    }
 
     @BeforeEach
-    @SneakyThrows
-    public void beforeEachTest(){
+    public void beforeEachTest() throws SQLException {
         String deleteQuery = "DELETE FROM entities.workouts";
         try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
             statement.executeUpdate();
@@ -103,8 +49,7 @@ class UserServiceImplDBTest {
 
     @Test
     @DisplayName("ѕроверка добавлени€ тренировки в базу данных")
-    @SneakyThrows
-    void addNewWorkout(){
+    void addNewWorkout() throws NotUniqueWorkoutException, SQLException {
         Workout newWorkout = Workout.builder()
                 .caloriesBurned(1000d)
                 .type("youga123")
