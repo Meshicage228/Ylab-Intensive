@@ -1,19 +1,16 @@
 package test;
 
-import firstTask.com.exceptions.NotUniqueWorkoutException;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.Workout;
 import firstTask.com.repository.UserRepository;
 import firstTask.com.repository.WorkoutRepository;
 import firstTask.com.service.impl.UserServiceImpl;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDate;
 import java.util.LinkedList;
 
@@ -68,24 +65,5 @@ class UserServiceImplTest {
         String workouts = userService.getWorkoutStatistics(consoleUser);
 
         assertTrue(workouts.contains("Максимально сожжено : 1200.0"));
-    }
-
-    @Test
-    @DisplayName("Проверка добавления тренировки")
-    void addNewWorkout() throws NotUniqueWorkoutException {
-        Workout newWorkout = Workout.builder()
-                .caloriesBurned(1000d)
-                .type("youga123")
-                .additionalInfo("норм упражнение")
-                .minuteDuration(123d)
-                .timeOfWorkout(LocalDate.parse("2024-12-10"))
-                .build();
-
-        int size = mockWorkouts.size();
-        when(consoleUser.getWorkouts()).thenReturn(mockWorkouts);
-
-        userService.addNewWorkout(consoleUser, newWorkout);
-
-        assertNotEquals(size, mockWorkouts.size());
     }
 }

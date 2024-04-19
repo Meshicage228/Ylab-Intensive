@@ -4,6 +4,7 @@ import firstTask.com.exceptions.NotUniqueUserNameException;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.LinkedList;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import java.util.Optional;
  */
 
 @AllArgsConstructor
+@NoArgsConstructor
 public class AuthenticationService {
     private UserRepository userRepository;
     /**
