@@ -24,7 +24,6 @@
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
             <column name="user_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_user_id" references="entities.users(user_id)"/>
             </column>
             <column name="type" type="VARCHAR(255)">
                 <constraints nullable="false"/>
@@ -45,6 +44,15 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="modify-fk-user_id" author="Vlad">
+        <addForeignKeyConstraint baseTableName="workouts" baseColumnNames="user_id"
+                                 baseTableSchemaName="entities"
+                                 constraintName="fk_user_id" referencedTableName="users"
+                                 referencedTableSchemaName="entities"
+                                 referencedColumnNames="user_id"
+                                 onDelete="CASCADE"/>
     </changeSet>
 
     <changeSet id="create-auditLogTable" author="Vlad">
