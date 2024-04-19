@@ -13,4 +13,4 @@
 
 
 ### Стек
-Использовал Java Core, Junit5, Mockito, Log4j, Lombok, StringUtils, Liquibase.
+Использовал Java Core, Junit5, Mockito, Log4j, Lombok, StringUtils, Liquibase .
