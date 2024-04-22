@@ -7,6 +7,7 @@ import firstTask.com.repository.UserRepository;
 import firstTask.com.repository.WorkoutRepository;
 import firstTask.com.service.UserActionService;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -18,6 +19,7 @@ import java.util.*;
  */
 
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserServiceImpl implements UserActionService {
     private WorkoutRepository workoutRepository;
     private UserRepository userRepository;
@@ -31,7 +33,8 @@ public class UserServiceImpl implements UserActionService {
     @Override
     public Workout addNewWorkout(ConsoleUser consoleUser, Workout workoutNew) throws NotUniqueWorkoutException {
         Optional<Workout> first = consoleUser.getWorkouts().stream()
-                .filter(workout -> workout.getType().equals(workoutNew.getType()) && workout.getDateOfAdding().equals(LocalDate.now()))
+                .filter(workout -> workout.getWorkoutType().equals(workoutNew.getWorkoutType())
+                        && workout.getDateOfAdding().equals(LocalDate.now()))
                 .findAny();
 
         if (first.isPresent()){
@@ -39,9 +42,8 @@ public class UserServiceImpl implements UserActionService {
         }
 
         consoleUser.getWorkouts().add(workoutNew);
-        workoutRepository.saveWorkout(workoutNew);
 
-        return workoutNew;
+        return workoutRepository.saveWorkout(workoutNew);
     }
 
     /**

@@ -27,7 +27,7 @@ public class Workout {
     /** Дата внесенной тренировки YYYY-MM-DD */
     private LocalDate timeOfWorkout;
     /** Тип тренировки */
-    private String type;
+    private WorkoutType workoutType;
     /** Длительность тренировки */
     private Double minuteDuration;
     /** Сожженные калории */
@@ -46,7 +46,7 @@ public class Workout {
         return "Тренировка : {" +
                 "Время выполнения : " + timeOfWorkout +
                 ", Дата добавления : " + dateOfAdding +
-                ", тип : '" + type + '\'' +
+                ", тип : '" + workoutType + '\'' +
                 ", длительность : " + minuteDuration +
                 ", сожжённые калории :  " + caloriesBurned +
                 ", Доп. информация : '" + additionalInfo + '\'' +

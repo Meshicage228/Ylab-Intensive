@@ -3,44 +3,58 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="create-userTable" author="Vlad">
-        <createTable tableName="users" schemaName="entities">
-            <column name="user_id" type="BIGINT" defaultValueComputed="nextval('sequences.users-sequence')">
+    <changeSet id="create-workoutTypes" author="Vlad">
+        <createTable tableName="types" schemaName="entities">
+            <column name="type_id" type="BIGINT" defaultValueComputed="nextval('sequences.users-sequence')"
+                    remarks="workout type ID">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
-            <column name="username" type="VARCHAR(255)">
+            <column name="type" type="VARCHAR(255)" remarks="title of workout type">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-userTable" author="Vlad">
+        <createTable tableName="users" schemaName="entities">
+            <column name="user_id" type="BIGINT" defaultValueComputed="nextval('sequences.users-sequence')"
+                    remarks="user ID">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="username" type="VARCHAR(255)" remarks="username">
                 <constraints nullable="false"/>
             </column>
-            <column name="password" type="VARCHAR(255)">
+            <column name="password" type="VARCHAR(255)" remarks="users password">
             </column>
-            <column name="role" type="VARCHAR(255)">
+            <column name="role" type="VARCHAR(255)" remarks="users role">
             </column>
         </createTable>
     </changeSet>
 
     <changeSet id="create-workoutsTable" author="Vlad">
         <createTable tableName="workouts" schemaName="entities">
-            <column name="workout_id" type="BIGINT" defaultValueComputed="nextval('sequences.workout-sequence')">
+            <column name="workout_id" type="BIGINT" defaultValueComputed="nextval('sequences.workout-sequence')"
+                    remarks="workout ID">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
-            <column name="user_id" type="BIGINT">
+            <column name="user_id" type="BIGINT" remarks="User ID for this workout">
             </column>
-            <column name="type" type="VARCHAR(255)">
+            <column name="workout_type_id" type="BIGINT" remarks="type ID for this workout">
                 <constraints nullable="false"/>
             </column>
-            <column name="calories_burned" type="decimal">
+            <column name="calories_burned" type="decimal" remarks="value of burned calories">
                 <constraints nullable="false"/>
             </column>
-            <column name="minute_duration" type="decimal">
+            <column name="minute_duration" type="decimal" remarks="duration of workout">
                 <constraints nullable="false"/>
             </column>
-            <column name="additional_info" type="VARCHAR(255)">
+            <column name="additional_info" type="VARCHAR(255)" remarks="more info about workout">
                 <constraints nullable="false"/>
             </column>
-            <column name="adding_date" type="date" >
+            <column name="adding_date" type="date" remarks="starting date of workout">
                 <constraints nullable="false"/>
             </column>
-            <column name="training_date_creation" type="date">
+            <column name="training_date_creation" type="date" remarks="date of creation this workout in app">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -55,17 +69,37 @@
                                  onDelete="CASCADE"/>
     </changeSet>
 
+    <changeSet id="modify_fk_type_id" author="Vlad">
+        <addForeignKeyConstraint baseTableName="workouts" baseColumnNames="workout_type_id"
+                                 baseTableSchemaName="entities"
+                                 constraintName="fk_type_id" referencedTableName="types"
+                                 referencedTableSchemaName="entities"
+                                 referencedColumnNames="type_id"
+                                 onDelete="SET NULL"/>
+    </changeSet>
+
     <changeSet id="create-auditLogTable" author="Vlad">
-        <createTable tableName="audit_logs" schemaName="audit_log">
+        <createTable tableName="audit_logs" schemaName="audit_log" remarks="auditLog ID">
             <column name="log_id" type="BIGINT" defaultValueComputed="nextval('sequences.audit-sequence')">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
-            <column name="time_of_action" type="date">
+            <column name="time_of_action" type="date" remarks="time of log">
                 <constraints nullable="false"/>
             </column>
-            <column name="action_description" type="VARCHAR(255)">
+            <column name="action_description" type="VARCHAR(255)" remarks="action description">
+            </column>
+            <column name="user_id" type="BIGINT" remarks="owner of this action">
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="modify_audit_fk-user_id" author="Vlad">
+        <addForeignKeyConstraint baseTableName="audit_logs" baseColumnNames="user_id"
+                                 baseTableSchemaName="audit_log"
+                                 constraintName="fk_user_id" referencedTableName="users"
+                                 referencedTableSchemaName="entities"
+                                 referencedColumnNames="user_id"
+                                 onDelete="CASCADE"/>
     </changeSet>
 
 </databaseChangeLog>

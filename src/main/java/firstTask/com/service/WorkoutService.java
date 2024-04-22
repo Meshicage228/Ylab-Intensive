@@ -2,6 +2,9 @@ package firstTask.com.service;
 
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.Workout;
+import firstTask.com.model.WorkoutType;
+
+import java.util.ArrayList;
 
 /**
  * интерфейс, предоставляющий контракт для изменения состояния тренировки
@@ -61,5 +64,13 @@ public interface WorkoutService {
      */
 
     void deleteWorkout(ConsoleUser consoleUser);
+
+    /**
+     * Метод получения всех типов тренировок.
+     *
+     * @return список всех типов тренировок
+     */
+
+    ArrayList<WorkoutType> getAllTypes();
 
 }

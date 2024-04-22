@@ -6,10 +6,21 @@ import lombok.AllArgsConstructor;
 
 import java.sql.*;
 
+/**
+ * Класс - репозиторий, который связывается с базой данных users
+ *
+ * @see WorkoutRepository Класс-репозиторий для связи с тренировками
+ *  **/
+
 @AllArgsConstructor
 public class UserRepository {
     private WorkoutRepository workoutRepository;
 
+    /**
+     * Метод сохранения нового пользователя
+     * @param newUser {@link ConsoleUser пользователь приложения}
+     * @return Сохраненный пользователь приложения
+     *  **/
     public ConsoleUser save(ConsoleUser newUser) {
         String saveSql = "INSERT INTO entities.users (username, password, role) VALUES (?,?,?)";
         try(Connection connection = DataBaseConfig.getConnection();
@@ -23,6 +34,12 @@ public class UserRepository {
         }
         return newUser;
     }
+
+    /**
+     * Метод поиска пользователя по имени
+     * @param username имя пользователя
+     * @return true/false - пользователь найден/не найден
+     *  **/
     public boolean findUserByUsername(String username) {
         String findUserByUsernameSql = "SELECT * FROM entities.users WHERE username = ?";
         try(Connection connection = DataBaseConfig.getConnection();
@@ -37,6 +54,12 @@ public class UserRepository {
         return false;
     }
 
+    /**
+     * Метод поиска пользователя по имени и паролю
+     * @param username имя пользователя
+     * @param password пароль пользователя
+     * @return true/false - пользователь найден/не найден
+     *  **/
     public ConsoleUser findByUsernameAndPassword(String username, String password) {
         String findByUsernameAndPasswordSql = "SELECT * FROM entities.users WHERE username = ? AND password = ?";
         try(Connection connection = DataBaseConfig.getConnection();
@@ -57,6 +80,10 @@ public class UserRepository {
         }
     }
 
+    /**
+     * Метод администратора для вывода всех тренировок в приложении
+     * @return результирущая строка вывода всех тренировок; "Нет активных тренировок" - при отутствии тренировок в приложении
+     *  **/
     public String getAll() {
         String allUsersSql = "SELECT user_id, username FROM entities.users";
         try (Connection connection = DataBaseConfig.getConnection();
@@ -73,13 +100,11 @@ public class UserRepository {
                 while (result.next()) {
                     String answer =
                             "Training type : %s; Burned calories : %s, Date of training : %s, Training duration : %s";
-                    String format = String.format(answer,
+                    return String.format(answer,
                             result.getString("type"),
                             result.getDouble("calories_burned"),
                             result.getDate("adding_date"),
                             result.getDouble("minute_duration"));
-
-                    System.out.println(format);
                 }
             }
         } catch (SQLException e) {

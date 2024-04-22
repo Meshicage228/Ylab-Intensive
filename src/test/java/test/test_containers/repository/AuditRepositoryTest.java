@@ -33,7 +33,7 @@ class AuditRepositoryTest extends BaseTestDB {
     void saveAudit() throws SQLException {
         try (MockedStatic<DataBaseConfig> utilities = Mockito.mockStatic(DataBaseConfig.class)) {
             utilities.when(DataBaseConfig::getConnection).thenReturn(DriverManager.getConnection(JDBCURL, USERNAME, PASSWORD));
-            auditRepository.saveAudit("123");
+            auditRepository.saveAudit("123", Mockito.anyInt());
         }
 
         String selectQuery = "SELECT COUNT(*) FROM audit_log.audit_logs";

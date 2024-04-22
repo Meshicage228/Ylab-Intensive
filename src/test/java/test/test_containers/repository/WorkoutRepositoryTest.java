@@ -1,7 +1,6 @@
 package test.test_containers.repository;
 
 import firstTask.com.config.DataBaseConfig;
-import firstTask.com.model.Workout;
 import firstTask.com.repository.WorkoutRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +14,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

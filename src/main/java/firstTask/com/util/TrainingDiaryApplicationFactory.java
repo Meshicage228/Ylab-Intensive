@@ -5,9 +5,10 @@ import firstTask.com.model.ConsoleUser;
 import firstTask.com.repository.AuditRepository;
 import firstTask.com.repository.UserRepository;
 import firstTask.com.repository.WorkoutRepository;
+import firstTask.com.repository.WorkoutTypeRepository;
 import firstTask.com.service.AuthenticationService;
 import firstTask.com.service.impl.UserServiceImpl;
-import firstTask.com.service.impl.WorkoutUpdateServiceImpl;
+import firstTask.com.service.impl.WorkoutServiceImpl;
 
 public class TrainingDiaryApplicationFactory {
     public static TrainingDiaryApplication createTrainingDiaryApplication() {
@@ -16,7 +17,7 @@ public class TrainingDiaryApplicationFactory {
         UserRepository userRepository = new UserRepository(new WorkoutRepository());
         AuthenticationService authenticationService = new AuthenticationService(userRepository);
         UserServiceImpl userService = new UserServiceImpl(new WorkoutRepository(), userRepository);
-        WorkoutUpdateServiceImpl workoutUpdateService = new WorkoutUpdateServiceImpl(new WorkoutRepository());
+        WorkoutServiceImpl workoutUpdateService = new WorkoutServiceImpl(new WorkoutRepository(), new WorkoutTypeRepository());
         ConsoleUser userInterface = new ConsoleUser();
 
         return new TrainingDiaryApplication(auditLog, authenticationService, userService, workoutUpdateService, userInterface);

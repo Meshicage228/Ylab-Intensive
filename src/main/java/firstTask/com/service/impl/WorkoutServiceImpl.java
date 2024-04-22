@@ -1,7 +1,9 @@
 package firstTask.com.service.impl;
 
 import firstTask.com.model.ConsoleUser;
+import firstTask.com.model.WorkoutType;
 import firstTask.com.repository.WorkoutRepository;
+import firstTask.com.repository.WorkoutTypeRepository;
 import firstTask.com.service.WorkoutService;
 import firstTask.com.util.UtilScanner;
 import firstTask.com.model.Workout;
@@ -9,9 +11,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.Scanner;
 
 import static java.util.Objects.nonNull;
@@ -22,9 +24,12 @@ import static org.junit.platform.commons.util.Preconditions.notNull;
  * */
 
 @RequiredArgsConstructor
-public class WorkoutUpdateServiceImpl implements WorkoutService {
+public class WorkoutServiceImpl implements WorkoutService {
     @NonNull
     private WorkoutRepository workoutRepository;
+
+    @NonNull
+    private WorkoutTypeRepository workoutTypeRepository;
 
     /** индекс текущей тренировки для изменения */
     private Integer indexToChange;
@@ -48,6 +53,11 @@ public class WorkoutUpdateServiceImpl implements WorkoutService {
             return workout;
         }
         return currentWorkout;
+    }
+
+    @Override
+    public ArrayList<WorkoutType> getAllTypes() {
+        return workoutTypeRepository.findAll();
     }
 
     /**
@@ -134,7 +144,7 @@ public class WorkoutUpdateServiceImpl implements WorkoutService {
         workoutRepository.deleteWorkout(currentWorkout.getId(), consoleUser.getId());
         consoleUser.getWorkouts().remove(currentWorkout);
     }
-
+    // TODO : smth wrong with get update
     /**
      * Метод, присваивающий тренировку, над которой будет происходить изменение; индекс, Присваивающий позицию изменения тренировки
      *
@@ -152,7 +162,7 @@ public class WorkoutUpdateServiceImpl implements WorkoutService {
             Scanner scanner = UtilScanner.getInstance();
 
             for (int i = 0; i < workouts.size(); i++) {
-                System.out.println(i + 1 + " " + workouts.get(i).getType());
+                System.out.println(i + 1 + " " + workouts.get(i).getWorkoutType().getTypeTitle());
             }
 
             try {

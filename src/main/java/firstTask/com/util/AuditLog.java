@@ -4,7 +4,6 @@ import firstTask.com.repository.AuditRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -14,8 +13,8 @@ public class AuditLog {
     @NonNull
     private AuditRepository repository;
 
-    public void addLogEntry(String eventDescription) {
-        repository.saveAudit(eventDescription);
+    public void addLogEntry(String eventDescription, Integer user_id) {
+        repository.saveAudit(eventDescription, user_id);
         String logEntry = LocalDate.now().toString() + ": " + eventDescription;
         logList.add(logEntry);
         System.out.println(logEntry);

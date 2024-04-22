@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-
 public class DataBaseConfig {
 
     private static final String CONFIG_FILE = "src/main/resources/configs/dataBase.properties";
