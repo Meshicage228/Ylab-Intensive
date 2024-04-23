@@ -3,6 +3,7 @@ package test.test_containers.service;
 import firstTask.com.exceptions.NotUniqueWorkoutException;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.Workout;
+import firstTask.com.model.WorkoutType;
 import firstTask.com.repository.WorkoutRepository;
 import firstTask.com.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -17,16 +18,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-
 /**
- * Класс, тестирующий {@link UserServiceImpl} класс с базой данных
+ * РљР»Р°СЃСЃ, С‚РµСЃС‚РёСЂСѓСЋС‰РёР№ {@link UserServiceImpl} РїРѕ СЂР°Р±РѕС‚Рµ СЃ Р±Рґ
  *  **/
 @ExtendWith(MockitoExtension.class)
-@DisplayName("Тест действий пользователя над тренировками")
+@DisplayName("РўРµСЃС‚ user service")
 @Testcontainers
 class UserServiceImplDBTest extends BaseTestDB {
     @Mock
@@ -40,11 +39,11 @@ class UserServiceImplDBTest extends BaseTestDB {
 
 
     @Test
-    @DisplayName("Проверка добавления тренировки в базу данных")
+    @DisplayName("Р”РѕР±Р°РІР»РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј С‚СЂРµРЅРёСЂРѕРІРєРё")
     void addNewWorkout() throws NotUniqueWorkoutException {
         Workout newWorkout = Workout.builder()
                 .caloriesBurned(1000d)
-                .type("youga123")
+                .workoutType(new WorkoutType(1, "type"))
                 .user_id(1)
                 .dateOfAdding(LocalDate.now())
                 .additionalInfo("good")

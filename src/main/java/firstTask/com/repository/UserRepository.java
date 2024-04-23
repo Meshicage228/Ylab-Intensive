@@ -7,63 +7,65 @@ import lombok.AllArgsConstructor;
 import java.sql.*;
 
 /**
- * Класс - репозиторий, который связывается с базой данных users
+ * РљР»Р°СЃСЃ - СЂРµРїРѕР·РёС‚РѕСЂРёР№, РѕС‚РІРµС‚СЃС‚РІРµРЅРЅС‹Р№ Р·Р° СЃРѕРµРґРёРЅРµРЅРёРµ СЃ Р±Рґ users
  *
- * @see WorkoutRepository Класс-репозиторий для связи с тренировками
- *  **/
+ * @see WorkoutRepository РєР»Р°СЃСЃ-СЂРµРїРѕР·РёС‚РѕСЂРёР№ workouts
+ **/
 
 @AllArgsConstructor
 public class UserRepository {
     private WorkoutRepository workoutRepository;
-
     /**
-     * Метод сохранения нового пользователя
-     * @param newUser {@link ConsoleUser пользователь приложения}
-     * @return Сохраненный пользователь приложения
-     *  **/
+     * РњРµС‚РѕРґ СЃРѕС…СЂР°РЅРµРЅРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+     *
+     * @param newUser {@link ConsoleUser РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РїСЂРёР»РѕР¶РµРЅРёСЏ}
+     * @return ConsoleUser - СЃРѕС…СЂР°РЅРµРЅРЅС‹Р№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ
+     **/
     public ConsoleUser save(ConsoleUser newUser) {
         String saveSql = "INSERT INTO entities.users (username, password, role) VALUES (?,?,?)";
-        try(Connection connection = DataBaseConfig.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(saveSql)){
+        try (Connection connection = DataBaseConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(saveSql)) {
             preparedStatement.setString(1, newUser.getUsername());
             preparedStatement.setString(2, newUser.getPassword());
             preparedStatement.setString(3, newUser.getRole());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Fail to register your account!");
+            new RuntimeException("Error while saving user: " + newUser.getUsername(), e);
         }
         return newUser;
     }
 
     /**
-     * Метод поиска пользователя по имени
-     * @param username имя пользователя
-     * @return true/false - пользователь найден/не найден
-     *  **/
+     * РњРµС‚РѕРґ РїРѕРёСЃРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ РёРјРµРЅРё
+     *
+     * @param username РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+     * @return true/false РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅР°Р№РґРµРЅ / РЅРµ РЅР°Р№РґРµРЅ
+     **/
     public boolean findUserByUsername(String username) {
         String findUserByUsernameSql = "SELECT * FROM entities.users WHERE username = ?";
-        try(Connection connection = DataBaseConfig.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(findUserByUsernameSql)){
+        try (Connection connection = DataBaseConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(findUserByUsernameSql)) {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             return resultSet.next();
         } catch (SQLException e) {
-            System.out.println("Fail to find your account by username!");
+            new RuntimeException("Error while finding user: " + username, e);
         }
         return false;
     }
 
     /**
-     * Метод поиска пользователя по имени и паролю
-     * @param username имя пользователя
-     * @param password пароль пользователя
-     * @return true/false - пользователь найден/не найден
-     *  **/
+     * РњРµС‚РѕРґ РїРѕРёСЃРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ РёРјРµРЅРё Рё РїР°СЂРѕР»СЋ
+     *
+     * @param username РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+     * @param password РїР°СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+     * @return ConsoleUser РЅР°Р№РґРµРЅРЅС‹Р№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ
+     **/
     public ConsoleUser findByUsernameAndPassword(String username, String password) {
         String findByUsernameAndPasswordSql = "SELECT * FROM entities.users WHERE username = ? AND password = ?";
-        try(Connection connection = DataBaseConfig.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(findByUsernameAndPasswordSql)){
+        try (Connection connection = DataBaseConfig.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(findByUsernameAndPasswordSql)) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -76,40 +78,42 @@ public class UserRepository {
                     .build() : null;
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error while finding user: " + username, e);
         }
     }
 
     /**
-     * Метод администратора для вывода всех тренировок в приложении
-     * @return результирущая строка вывода всех тренировок; "Нет активных тренировок" - при отутствии тренировок в приложении
-     *  **/
+     * РњРµС‚РѕРґ РїРѕР»СѓС‡РµРЅРёСЏ РІСЃРµС… С‚СЂРµРЅРёСЂРѕРІРѕРє РѕС‚ РІСЃРµС… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
+     *
+     * @return Р РµР·СѓР»СЊС‚РёСЂСѓСЋС‰Р°СЏ СЃС‚СЂРѕРєР° СЃРѕ РІСЃРµР№ РёРЅС„РѕСЂРјР°С†РёРµР№
+     **/
     public String getAll() {
-        String allUsersSql = "SELECT user_id, username FROM entities.users";
+        String query = """
+                SELECT username, type, calories_burned, adding_date, minute_duration FROM entities.workouts as w 
+                LEFT JOIN entities.types as tp ON w.workout_type_id = tp.type_id
+                LEFT JOIN entities.users as us ON w.user_id = us.user_id
+                """;
+        StringBuilder stringBuilder = new StringBuilder();
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement statement = connection.prepareStatement(allUsersSql)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String userName = resultSet.getString("username");
-                int id = resultSet.getInt("user_id");
-                System.out.println("Username : " + userName + " and trainings :");
 
-                Statement innerStatement = connection.createStatement();
-                ResultSet result = innerStatement.executeQuery("SELECT * FROM entities.workouts WHERE user_id = '" + id + "'");
+                String answer =
+                        "Username : %s and training : \n " +
+                                "Training type : %s; Burned calories : %s, Date of training : %s, Training duration : %s \n";
+                String format = String.format(answer,
+                        resultSet.getString("username"),
+                        resultSet.getString("type"),
+                        resultSet.getDouble("calories_burned"),
+                        resultSet.getDate("adding_date"),
+                        resultSet.getDouble("minute_duration"));
 
-                while (result.next()) {
-                    String answer =
-                            "Training type : %s; Burned calories : %s, Date of training : %s, Training duration : %s";
-                    return String.format(answer,
-                            result.getString("type"),
-                            result.getDouble("calories_burned"),
-                            result.getDate("adding_date"),
-                            result.getDouble("minute_duration"));
-                }
+                stringBuilder.append(format);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error while finding workouts: " + ex.getMessage(), ex);
         }
-        return "Нет активных тренировок";
+        return stringBuilder.toString();
     }
 }

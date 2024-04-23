@@ -9,11 +9,10 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 
 /**
- * Класс - репозиторий, который связывается с базой данных workouts
+ * РљР»Р°СЃСЃ - СЂРµРїРѕР·РёС‚РѕСЂРёР№, РѕС‚РІРµС‚СЃС‚РІРµРЅРЅС‹Р№ Р·Р° СЃРѕРµРґРёРЅРµРЅРёРµ СЃ Р±Рґ workouts
  *  **/
 public class WorkoutRepository {
 
-    // TODO подумать
     public LinkedList<Workout> getWorkoutsByUserId(int userId) {
         LinkedList<Workout> workouts = new LinkedList<>();
 
@@ -50,7 +49,7 @@ public class WorkoutRepository {
     }
 
     public Workout getWorkoutById(int workoutId) {
-        String query = "SELECT * FROM entities.workouts as w LEFT JOIN entities.types as tp on w.workoutType_id = tp.type_id WHERE workout_id = ?";
+        String query = "SELECT * FROM entities.workouts as w LEFT JOIN entities.types as tp on w.workout_type_id = tp.type_id WHERE workout_id = ?";
 
         try (Connection connection = DataBaseConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -82,9 +81,9 @@ public class WorkoutRepository {
     }
 
     /**
-     * Метод сохранения новой тренировки
-     * @param workout {@link Workout тренировка пользователя}
-     * @return Сохраненная тренировка
+     * РњРµС‚РѕРґ СЃРѕС…СЂР°РЅРµРЅРёСЏ РЅРѕРІРѕР№ С‚СЂРµРЅРёСЂРѕРІРєРё
+     * @param workout {@link Workout С‚СЂРµРЅРёСЂРѕРІРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ}
+     * @return СЃРѕС…СЂР°РЅРµРЅРЅР°СЏ С‚СЂРµРЅРёСЂРѕРІРєР°
      *  **/
     public Workout saveWorkout(Workout workout) {
         String query = "INSERT INTO entities.workouts (user_id, training_date_creation, adding_date, additional_info, workout_type_id, calories_burned, minute_duration)" +
@@ -107,10 +106,10 @@ public class WorkoutRepository {
     }
 
     /**
-     * Метод обновления продолжнительности тренировки
-     * @param id идентификатор тренировки в базе данных
-     * @param changeDuration Новая продолжительность тренировки
-     * @return Обновленная тренировка
+     * РњРµС‚РѕРґ РѕР±РЅРѕРІР»РµРЅРёСЏ РїСЂРѕРґРѕР»Р¶РёС‚РµР»СЊРЅРѕСЃС‚Рё С‚СЂРµРЅРёСЂРѕРІРєРё
+     * @param id Р°Р№РґРё С‚СЂРµРЅРёСЂРѕРІРєРё РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ
+     * @param changeDuration РЅРѕРІР°СЏ РїСЂРѕРґРѕР»Р¶РёС‚РµР»СЊРЅРѕСЃС‚СЊ С‚СЂРµРЅРёСЂРѕРІРєРё
+     * @return РѕР±РЅРѕРІР»РµРЅРЅР°СЏ С‚СЂРµРЅРёСЂРѕРІРєР°
      *  **/
     public Workout updateMinutes(Integer id, Double changeDuration) {
         String query = "UPDATE entities.workouts SET minute_duration = ? WHERE workout_id = ?";
@@ -127,10 +126,10 @@ public class WorkoutRepository {
     }
 
     /**
-     * Метод обновления калорий тренировки
-     * @param id идентификатор тренировки в базе данных
-     * @param changeCalories Новые соженные калории
-     * @return Обновленная тренировка
+     * РњРµС‚РѕРґ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃРѕР¶С‘РЅРЅС‹С… РєР°Р»РѕСЂРёР№ С‚СЂРµРЅРёСЂРѕРІРєРё
+     * @param id Р°Р№РґРё С‚СЂРµРЅРёСЂРѕРІРєРё РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ
+     * @param changeCalories РЅРѕРІС‹Рµ СЃРѕР¶РµРЅРЅС‹Рµ РєР°Р»РѕСЂРёРё
+     * @return РѕР±РЅРѕРІР»РµРЅРЅР°СЏ С‚СЂРµРЅРёСЂРѕРІРєР°
      *  **/
     public Workout changeCalories(Integer id, Double changeCalories) {
         String query = "UPDATE entities.workouts SET calories_burned = ? WHERE workout_id = ?";
@@ -147,10 +146,10 @@ public class WorkoutRepository {
     }
 
     /**
-     * Метод обновления дополнительной инофрмации тренировки
-     * @param id идентификатор тренировки в базе данных
-     * @param newAddInfo Новое описание тренировки
-     * @return Обновленная тренировка
+     * РњРµС‚РѕРґ РѕР±РЅРѕРІР»РµРЅРёСЏ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё С‚СЂРµРЅРёСЂРѕРІРєРё
+     * @param id Р°Р№РґРё С‚СЂРµРЅРёСЂРѕРІРєРё РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ
+     * @param newAddInfo РЅРѕРІР°СЏ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚СЂРµРЅРёСЂРѕРІРєРµ
+     * @return РѕР±РЅРѕРІР»РµРЅРЅР°СЏ С‚СЂРµРЅРёСЂРѕРІРєР°
      *  **/
     public Workout changeAdditional(Integer id, String newAddInfo) {
         String query = "UPDATE entities.workouts SET additional_info = ? WHERE workout_id = ?";
@@ -167,10 +166,10 @@ public class WorkoutRepository {
     }
 
     /**
-     * Метод обновления типа тренировки
-     * @param id идентификатор тренировки в базе данных
-     * @param newType Новый тип тренировки
-     * @return Обновленная тренировка
+     * РњРµС‚РѕРґ РѕР±РЅРѕРІР»РµРЅРёСЏ С‚РёРїР° С‚СЂРµРЅРёСЂРѕРІРєРё
+     * @param id Р°Р№РґРё С‚СЂРµРЅРёСЂРѕРІРєРё РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ
+     * @param newType РЅРѕРІС‹Р№ С‚РёРї С‚СЂРµРЅРёСЂРѕРІРєРё
+     * @return РѕР±РЅРѕРІР»РµРЅРЅР°СЏ С‚СЂРµРЅРёСЂРѕРІРєР°
      *  **/
     public Workout changeType(Integer id, String newType) {
         String query = "UPDATE entities.workouts SET type = ? WHERE workout_id = ?";
@@ -187,10 +186,10 @@ public class WorkoutRepository {
     }
 
     /**
-     * Метод обновления старта тренировки
-     * @param id идентификатор тренировки в базе данных
-     * @param newDate Новая дата тренировки
-     * @return Обновленная тренировка
+     * РњРµС‚РѕРґ РѕР±РЅРѕРІР»РµРЅРёСЏ РґР°С‚С‹-РЅР°С‡Р°Р»Р° С‚СЂРµРЅРёСЂРѕРІРєРё
+     * @param id Р°Р№РґРё С‚СЂРµРЅРёСЂРѕРІРєРё РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ
+     * @param newDate РЅРѕРІР°СЏ РґР°С‚Р° С‚СЂРµРЅРёСЂРѕРІРєРё
+     * @return РѕР±РЅРѕРІР»РµРЅРЅР°СЏ С‚СЂРµРЅРёСЂРѕРІРєР°
      *  **/
     public Workout changeDate(Integer id, LocalDate newDate) {
         String query = "UPDATE entities.workouts SET adding_date = ? WHERE workout_id = ?";
@@ -207,9 +206,9 @@ public class WorkoutRepository {
     }
 
     /**
-     * Метод удаления тренировки
-     * @param workout_id идентификатор тренировки в базе данных
-     * @param user_id идентификатор владельца тренировки
+     * РњРµС‚РѕРґ РѕР±РЅРѕРІР»РµРЅРёСЏ СѓРґР°Р»РµРЅРёСЏ С‚СЂРµРЅРёСЂРѕРІРєРё
+     * @param workout_id Р°Р№РґРё С‚СЂРµРЅРёСЂРѕРІРєРё РґР»СЏ СѓРґР°Р»РµРЅРёСЏ
+     * @param user_id Р°Р№РґРё РІР»Р°РґРµР»СЊС†Р° С‚СЂРµРЅРёСЂРѕРІРєРё
      *  **/
     public void deleteWorkout(Integer workout_id, Integer user_id) {
         String query = "DELETE FROM entities.workouts WHERE workout_id = ? AND user_id = ?";

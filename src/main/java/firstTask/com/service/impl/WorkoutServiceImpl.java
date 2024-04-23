@@ -1,5 +1,6 @@
 package firstTask.com.service.impl;
 
+import firstTask.com.exceptions.NotUniqueTypeTitleException;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.WorkoutType;
 import firstTask.com.repository.WorkoutRepository;
@@ -55,9 +56,25 @@ public class WorkoutServiceImpl implements WorkoutService {
         return currentWorkout;
     }
 
+    /**
+     * Метод извлекающий из бд все типы тренировок.
+     * @return ArrayList<WorkoutType> : список тренировок
+     */
     @Override
     public ArrayList<WorkoutType> getAllTypes() {
         return workoutTypeRepository.findAll();
+    }
+
+    /**
+     * Метод сохранения нового типа тренировки.
+     *
+     * @param type новый тип тренировки
+     * @throws NotUniqueTypeTitleException при неуникальном типе тренировки
+     * @return workout : обновлённая тренировка
+     */
+    @Override
+    public WorkoutType saveWorkoutType(String type) throws NotUniqueTypeTitleException {
+        return workoutTypeRepository.saveNewType(type);
     }
 
     /**
@@ -144,7 +161,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         workoutRepository.deleteWorkout(currentWorkout.getId(), consoleUser.getId());
         consoleUser.getWorkouts().remove(currentWorkout);
     }
-    // TODO : smth wrong with get update
+
     /**
      * Метод, присваивающий тренировку, над которой будет происходить изменение; индекс, Присваивающий позицию изменения тренировки
      *

@@ -1,5 +1,6 @@
 package firstTask.com.in;
 
+import firstTask.com.exceptions.NotUniqueTypeTitleException;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.WorkoutType;
 import firstTask.com.util.AuditLog;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import static firstTask.com.util.UtilScanner.scanner;
+import static java.util.Objects.isNull;
 
 
 /**
@@ -51,7 +53,6 @@ public class TrainingDiaryApplication {
                 System.out.println("Завершение программы...");
                 return;
             }
-            ;
             userAction();
         }
     }
@@ -114,13 +115,27 @@ public class TrainingDiaryApplication {
                     auditLog.addLogEntry(consoleUser.getUsername() + " добавление тренировки: FAIL", consoleUser.getId());
                 }
             }
-            case "2", "Редактировать тренировку" -> {
+            case "2", "Добавить тип тренировки" -> {
+                WorkoutType workoutType = null;
+                do {
+                    try {
+                        System.out.println("Введите новый тип тренировки :");
+                        String newType = scanner.nextLine();
+                        workoutType =  workoutService.saveWorkoutType(newType);
+                    } catch (NotUniqueTypeTitleException e) {
+                        System.out.println("Такой тип тренировки уже существует!");
+                    }
+                } while (isNull(workoutType));
+                System.out.println("Новый тип тренировки сохранен");
+                auditLog.addLogEntry(consoleUser.getUsername() + " новый тип тренировки: SUCCESS", consoleUser.getId());
+            }
+            case "3", "Редактировать тренировку" -> {
                 changeWorkout();
             }
-            case "3", "Просмотреть тренировки" -> {
+            case "4", "Просмотреть тренировки" -> {
                 System.out.println(userService.showAllWorkoutsDateSorted(consoleUser).toString());
             }
-            case "4", "Статистика тренировок" -> {
+            case "5", "Статистика тренировок" -> {
                 String workoutStatistics = userService.getWorkoutStatistics(consoleUser);
                 if (workoutStatistics.equals("Нет активных тренировок")) {
                     auditLog.addLogEntry(consoleUser.getUsername() + " получение статистики: FAIL", consoleUser.getId());
@@ -130,14 +145,14 @@ public class TrainingDiaryApplication {
                     System.out.println(workoutStatistics);
                 }
             }
-            case "5" -> {
+            case "6" -> {
                 if (consoleUser.getRole().equals("ADMIN")) {
                     System.out.println(userService.getAllWorkouts());
                 } else {
                     System.out.println("У вас недостаточно прав");
                 }
             }
-            case "6" -> {
+            case "7" -> {
 
             }
             default -> {
@@ -193,7 +208,7 @@ public class TrainingDiaryApplication {
             }
         } while (index < 0 || index > allTypes.size());
 
-        return allTypes.get(index);
+        return allTypes.get(index-1);
     }
 
     private void userAction() {
@@ -202,7 +217,7 @@ public class TrainingDiaryApplication {
             System.out.println(MenuOptions.userMenu);
             menuChoice = UtilScanner.getInstance().nextLine();
             handleMenuChoice(menuChoice, consoleUser);
-        } while (!menuChoice.equals("6") && !menuChoice.equals("Назад"));
+        } while (!menuChoice.equals("7") && !menuChoice.equals("Назад"));
     }
 
     private void changeWorkout() {

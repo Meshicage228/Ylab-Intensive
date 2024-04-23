@@ -20,7 +20,7 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Тесты действий с пользователем в бд")
+@DisplayName("РўРµСЃС‚ СЋР·РµСЂ-СЂРµРїРѕР·РёС‚РѕСЂРёСЏ")
 @Testcontainers
 class UserRepositoryTest extends BaseTestDB {
 
@@ -40,7 +40,7 @@ class UserRepositoryTest extends BaseTestDB {
     }
 
     @Test
-    @DisplayName("Сохранение пользователя в БД")
+    @DisplayName("РЎРѕС…СЂР°РЅРµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ")
     void save() throws SQLException {
         ConsoleUser toSave = ConsoleUser.builder()
                 .username("Vlad")
@@ -72,7 +72,7 @@ class UserRepositoryTest extends BaseTestDB {
     }
 
     @Test
-    @DisplayName("Пользователь по имени не найден")
+    @DisplayName("РџРѕРёСЃРє РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ РёРјРµРЅРё")
     void findUserByUsername() throws SQLException {
         try (MockedStatic<DataBaseConfig> utilities = Mockito.mockStatic(DataBaseConfig.class)) {
             utilities.when(DataBaseConfig::getConnection).thenReturn(DriverManager.getConnection(JDBCURL, USERNAME, PASSWORD));

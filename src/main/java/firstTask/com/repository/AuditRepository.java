@@ -5,8 +5,6 @@ import firstTask.com.config.DataBaseConfig;
 import java.sql.*;
 import java.time.LocalDate;
 
-import static java.util.Objects.isNull;
-
 /**
  * Класс - репозиторий, который связывается с базой данных audit_logs
  *  **/

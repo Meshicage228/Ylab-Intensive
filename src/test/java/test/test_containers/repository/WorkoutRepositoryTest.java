@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @Testcontainers
-@DisplayName("Тесты над тренировками")
+@DisplayName("РўРµСЃС‚ СЂРµРїРѕР·РёС‚РѕСЂРёСЏ С‚СЂРµРЅРёСЂРѕРІРѕРє")
 class WorkoutRepositoryTest extends BaseTestDB {
 
     private static WorkoutRepository workoutRepository;
@@ -31,7 +31,7 @@ class WorkoutRepositoryTest extends BaseTestDB {
     }
 
     @Test
-    @DisplayName("Обновление калорий")
+    @DisplayName("РР·РјРµРЅРµРЅРµ РєР°Р»РѕСЂРёР№ С‚СЂРµРЅРёСЂРѕРІРєРё")
     void changeCalories() throws SQLException {
         try (MockedStatic<DataBaseConfig> utilities = Mockito.mockStatic(DataBaseConfig.class)) {
             utilities.when(DataBaseConfig::getConnection).thenReturn(DriverManager.getConnection(JDBCURL, USERNAME, PASSWORD));

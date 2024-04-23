@@ -16,18 +16,21 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+/**
+ * Класс-конфиг, устанавливающий соединение с базой и миграцией данных
+ **/
 public class DataBaseConfig {
-
+    /** Расположение пакета с зависимостями **/
     private static final String CONFIG_FILE = "src/main/resources/configs/dataBase.properties";
-
+    /** URL базы данных **/
     private static String URL;
-
+    /** имя пользователя базы данных **/
     private static String USER;
-
+    /** Пароль от базы данных **/
     private static String PASSWORD;
-
+    /** Добавление стандарта кодирования **/
     private static String useUnicode;
-
+    /** Режим кодировки в базе данных **/
     private static String characterEncoding;
 
     static {
@@ -53,6 +56,10 @@ public class DataBaseConfig {
         }
     }
 
+    /**
+     * Метод соединения приложения с базой данных
+     * @return Connection : соединение с бд
+     **/
     public static Connection getConnection() {
         try {
             Properties info = new Properties();
@@ -65,7 +72,9 @@ public class DataBaseConfig {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * Метод соединения приложения с миграцией баз данных : liquibase
+     **/
     public static void liquibaseStart(){
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement()){

@@ -2,6 +2,7 @@ package test;
 
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.Workout;
+import firstTask.com.model.WorkoutType;
 import firstTask.com.repository.UserRepository;
 import firstTask.com.repository.WorkoutRepository;
 import firstTask.com.service.impl.UserServiceImpl;
@@ -17,7 +18,6 @@ import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-
 
 /**
  * Класс, тестирующий {@link UserServiceImpl} класс
@@ -37,12 +37,12 @@ class UserServiceImplTest {
         mockWorkouts = new LinkedList<>();
 
         mockWorkouts.add(Workout.builder()
-                .type("youga")
+                .workoutType(new WorkoutType(1, "youga"))
                 .caloriesBurned(1200d)
                 .timeOfWorkout(LocalDate.parse("2022-12-12"))
                 .build());
         mockWorkouts.add(Workout.builder()
-                .type("youga1")
+                .workoutType(new WorkoutType(2, "youga2"))
                 .caloriesBurned(1000d)
                 .timeOfWorkout(LocalDate.parse("2024-12-12"))
                 .build());

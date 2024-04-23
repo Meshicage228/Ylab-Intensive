@@ -17,7 +17,7 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Тесты аудита")
+@DisplayName("РўРµСЃС‚ Р°СѓРґРёС‚-СЂРµРїРѕР·РёС‚РѕСЂРёСЏ")
 @Testcontainers
 class AuditRepositoryTest extends BaseTestDB {
 
@@ -29,11 +29,11 @@ class AuditRepositoryTest extends BaseTestDB {
     }
 
     @Test
-    @DisplayName("Проверка сохранения в бд аудита пользователя")
+    @DisplayName("РЎРѕС…СЂР°РЅРµРЅРёРµ Р°СѓРґРёС‚Р°")
     void saveAudit() throws SQLException {
         try (MockedStatic<DataBaseConfig> utilities = Mockito.mockStatic(DataBaseConfig.class)) {
             utilities.when(DataBaseConfig::getConnection).thenReturn(DriverManager.getConnection(JDBCURL, USERNAME, PASSWORD));
-            auditRepository.saveAudit("123", Mockito.anyInt());
+            auditRepository.saveAudit("123", 1);
         }
 
         String selectQuery = "SELECT COUNT(*) FROM audit_log.audit_logs";

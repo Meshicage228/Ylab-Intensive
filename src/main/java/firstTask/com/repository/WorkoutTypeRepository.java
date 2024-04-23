@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Класс - репозиторий, который связывается с базой данных types
+ * РљР»Р°СЃСЃ-СЂРµРїРѕР·РёС‚РѕСЂРёР№, РѕС‚РІРµС‚СЃС‚РІРµРЅРЅС‹Р№ Р·Р° СЃРѕРµРґРёРЅРµРЅРёРµ СЃ Р±Рґ types
  **/
 public class WorkoutTypeRepository {
     public ArrayList<WorkoutType> findAll() {
@@ -30,50 +30,50 @@ public class WorkoutTypeRepository {
                 workoutTypes.add(build);
             }
         } catch (SQLException e) {
-            System.out.println("Fail to find workout types!");
+            new RuntimeException("Fail while finding workout types", e);
         }
         return workoutTypes;
     }
 
     public WorkoutType saveNewType(String newTypeTitle) throws NotUniqueTypeTitleException  {
         for (WorkoutType workoutType : findAll()) {
-            if (workoutType.getTypeTitle().equals(newTypeTitle)) {
+            if (workoutType.getTypeTitle().toLowerCase().equals(newTypeTitle.toLowerCase())) {
                 throw new NotUniqueTypeTitleException("Not unique workout type!");
             }
         }
 
-        String query = "INSERT INTO entities.types(typeTitle) VALUES (?)";
+        String query = "INSERT INTO entities.types (type) VALUES (?)";
 
         try (Connection connection = DataBaseConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, newTypeTitle);
+            preparedStatement.setString(1, newTypeTitle.toUpperCase());
             preparedStatement.executeUpdate();
 
             return findByTitle(newTypeTitle);
 
         } catch (SQLException e) {
-            System.out.println("Fail to find workout types!");
+            new RuntimeException("Fail to save new workout type!");
         }
         return null;
     }
 
     public WorkoutType findByTitle(String title) {
-        String query = "SELECT * FROM entities.types WHERE typeTitle = ?";
+        String query = "SELECT * FROM entities.types WHERE type = ?";
 
         try (Connection connection = DataBaseConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
+            preparedStatement.setString(1, title.toUpperCase());
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
                 return WorkoutType.builder()
                         .type_id(resultSet.getInt("type_id"))
-                        .typeTitle(resultSet.getString("typeTitle"))
+                        .typeTitle(resultSet.getString("type"))
                         .build();
             }
         } catch (SQLException e) {
-            System.out.println("Fail to find workout type!");
+            new RuntimeException("Fail while finding workout type by title!");
         }
         return null;
     }

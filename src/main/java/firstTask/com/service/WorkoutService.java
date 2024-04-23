@@ -1,5 +1,6 @@
 package firstTask.com.service;
 
+import firstTask.com.exceptions.NotUniqueTypeTitleException;
 import firstTask.com.model.ConsoleUser;
 import firstTask.com.model.Workout;
 import firstTask.com.model.WorkoutType;
@@ -72,5 +73,13 @@ public interface WorkoutService {
      */
 
     ArrayList<WorkoutType> getAllTypes();
+
+
+    /**
+     * Метод сохранения нового типа тренировки.
+     * @throws NotUniqueTypeTitleException выбрасывается, если такой тип уже существует
+     * @return сохраненный тип тренировки
+     */
+    WorkoutType saveWorkoutType(String type) throws NotUniqueTypeTitleException;
 
 }
