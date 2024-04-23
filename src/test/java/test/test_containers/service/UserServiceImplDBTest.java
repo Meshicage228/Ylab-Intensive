@@ -1,11 +1,11 @@
 package test.test_containers.service;
 
-import FirstTask.com.exceptions.NotUniqueWorkoutException;
-import FirstTask.com.model.ConsoleUser;
-import FirstTask.com.model.Workout;
-import FirstTask.com.model.WorkoutType;
-import FirstTask.com.repository.WorkoutRepository;
-import FirstTask.com.service.impl.UserServiceImpl;
+import first_task.com.exceptions.NotUniqueWorkoutException;
+import first_task.com.model.ConsoleUser;
+import first_task.com.model.Workout;
+import first_task.com.model.WorkoutType;
+import first_task.com.repository.WorkoutRepository;
+import first_task.com.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

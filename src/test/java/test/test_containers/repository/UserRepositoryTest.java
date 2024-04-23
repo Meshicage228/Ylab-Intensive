@@ -1,9 +1,9 @@
 package test.test_containers.repository;
 
-import FirstTask.com.config.DataBaseConfig;
-import FirstTask.com.model.ConsoleUser;
-import FirstTask.com.repository.UserRepository;
-import FirstTask.com.repository.WorkoutRepository;
+import first_task.com.config.DataBaseConfig;
+import first_task.com.model.ConsoleUser;
+import first_task.com.repository.UserRepository;
+import first_task.com.repository.WorkoutRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
