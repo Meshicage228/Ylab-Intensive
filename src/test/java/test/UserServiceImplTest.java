@@ -1,11 +1,11 @@
 package test;
 
-import firstTask.com.model.ConsoleUser;
-import firstTask.com.model.Workout;
-import firstTask.com.model.WorkoutType;
-import firstTask.com.repository.UserRepository;
-import firstTask.com.repository.WorkoutRepository;
-import firstTask.com.service.impl.UserServiceImpl;
+import FirstTask.com.model.ConsoleUser;
+import FirstTask.com.model.Workout;
+import FirstTask.com.model.WorkoutType;
+import FirstTask.com.repository.UserRepository;
+import FirstTask.com.repository.WorkoutRepository;
+import FirstTask.com.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

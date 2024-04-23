@@ -1,7 +1,7 @@
 package test.test_containers.repository;
 
-import firstTask.com.config.DataBaseConfig;
-import firstTask.com.repository.WorkoutRepository;
+import FirstTask.com.config.DataBaseConfig;
+import FirstTask.com.repository.WorkoutRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
