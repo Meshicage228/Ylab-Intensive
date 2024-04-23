@@ -78,24 +78,6 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     /**
-     * Метод изменения типа тренировки.
-     *
-     * @param consoleUser {@link ConsoleUser пользователь приложения}
-     * @param newType     новый тип тренировки
-     * @return workout : обновлённая тренировка
-     */
-    @Override
-    public Workout changeType(ConsoleUser consoleUser, String newType) {
-        Workout workout = workoutRepository.changeType(currentWorkout.getId(), newType);
-
-        if(nonNull(workout)){
-            consoleUser.getWorkouts().set(indexToChange, workout);
-            return workout;
-        }
-        return currentWorkout;
-    }
-
-    /**
      * Метод изменения дополнительной информации тренировки.
      *
      * @param consoleUser {@link ConsoleUser пользователь приложения}

@@ -166,26 +166,6 @@ public class WorkoutRepository {
     }
 
     /**
-     * Метод обновления типа тренировки
-     * @param id айди тренировки для изменения
-     * @param newType новый тип тренировки
-     * @return обновленная тренировка
-     *  **/
-    public Workout changeType(Integer id, String newType) {
-        String query = "UPDATE entities.workouts SET type = ? WHERE workout_id = ?";
-
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, newType);
-            preparedStatement.setInt(2, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Fail to update type!");
-        }
-        return getWorkoutById(id);
-    }
-
-    /**
      * Метод обновления даты-начала тренировки
      * @param id айди тренировки для изменения
      * @param newDate новая дата тренировки

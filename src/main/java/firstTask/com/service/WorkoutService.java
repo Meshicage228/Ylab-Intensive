@@ -21,15 +21,6 @@ public interface WorkoutService {
     Workout changeDate(ConsoleUser consoleUser, String newDate);
 
     /**
-     * Метод изменения типа тренировки.
-     *
-     * @param consoleUser {@link ConsoleUser пользователь приложения}
-     * @param newType     новый тип тренировки
-     * @return workout : обновлённая тренировка
-     */
-    Workout changeType(ConsoleUser consoleUser, String newType);
-
-    /**
      * Метод изменения дополнительной информации тренировки.
      *
      * @param consoleUser {@link ConsoleUser пользователь приложения}

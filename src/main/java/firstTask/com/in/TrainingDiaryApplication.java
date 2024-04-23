@@ -234,17 +234,11 @@ public class TrainingDiaryApplication {
         scanner.nextLine();
         switch (scanner.nextLine()) {
             case "1" -> {
-                System.out.print("Введите новое название тренировки : ");
-                String workoutType = scanner.nextLine();
-                workoutService.changeType(consoleUser, workoutType);
-                auditLog.addLogEntry(consoleUser.getUsername() + " новое название тренировки: SUCCESS", consoleUser.getId());
-            }
-            case "2" -> {
                 System.out.print("Введите новую дату тренировки : ");
                 String newDate = scanner.nextLine();
                 workoutService.changeDate(consoleUser, newDate);
             }
-            case "3" -> {
+            case "2" -> {
                 System.out.print("Введите новую продолжительность тренировки : ");
                 Double newTime = scanner.nextDouble();
                 try {
@@ -255,24 +249,24 @@ public class TrainingDiaryApplication {
                     auditLog.addLogEntry(consoleUser.getUsername() + " новая продолжительность тренировки: FAIL", consoleUser.getId());
                 }
             }
-            case "4" -> {
+            case "3" -> {
                 System.out.print("Введите новые калории : ");
                 Double newCalories = scanner.nextDouble();
                 workoutService.changeCalories(consoleUser, newCalories);
                 auditLog.addLogEntry(consoleUser.getUsername() + " новые калории: SUCCESS", consoleUser.getId());
             }
-            case "5" -> {
+            case "4" -> {
                 System.out.print("Введите новое описание : ");
                 String newAdditional = scanner.nextLine();
                 workoutService.changeAdditionalInfo(consoleUser, newAdditional);
                 auditLog.addLogEntry(consoleUser.getUsername() + " новое описание: SUCCESS", consoleUser.getId());
             }
-            case "6" -> {
+            case "5" -> {
                 workoutService.deleteWorkout(consoleUser);
                 System.out.println("Запись успешно удалена!");
                 auditLog.addLogEntry(consoleUser.getUsername() + " удаление тренировки: SUCCESS", consoleUser.getId());
             }
-            case "7" -> {
+            case "6" -> {
 
             }
             default -> {
