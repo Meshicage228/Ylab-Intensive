@@ -47,7 +47,6 @@ dependencies {
     testCompileOnly "junit:junit:${versions.junit}"
     implementation "org.junit.jupiter:junit-jupiter-api:${versions.junitJupiterApi}"
     implementation "org.junit.jupiter:junit-jupiter-engine:${versions.junitJupiterEngine}"
-}
 
 test {
     useJUnitPlatform()
