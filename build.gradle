@@ -8,9 +8,45 @@ version = '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
-
-dependencies {
+ext {
+    versions = [
+            lombok            : '1.18.32',
+            junitJupiter      : '5.10.2',
+            log4j             : '1.2.17',
+            commonsCollections: '4.4',
+            commonsLang       : '3.13.0',
+            mockitoJunit      : '5.11.0',
+            junit             : '4.13.2',
+            postgresql        : '42.7.1',
+            assertjCore       : '3.25.3',
+            junitJupiterApi   : '5.10.2',
+            junitJupiterEngine: '5.10.0',
+            testcontainers    : '1.19.7',
+            liquibase         : '4.27.0'
+    ]
 }
+dependencies {
+    //db
+
+    implementation "org.postgresql:postgresql:${versions.postgresql}"
+    implementation "org.liquibase:liquibase-core:${versions.liquibase}"
+
+    //utils
+    compileOnly "org.projectlombok:lombok:${versions.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+    implementation "org.apache.commons:commons-collections4:${versions.commonsCollections}"
+    implementation "org.apache.commons:commons-lang3:${versions.commonsLang}"
+    implementation "log4j:log4j:${versions.log4j}"
+
+    //tests
+    implementation "org.assertj:assertj-core:${versions.assertjCore}"
+    implementation "org.mockito:mockito-junit-jupiter:${versions.mockitoJunit}"
+    implementation "org.testcontainers:junit-jupiter:${versions.testcontainers}"
+    implementation "org.testcontainers:postgresql:${versions.testcontainers}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junitJupiter}"
+    testCompileOnly "junit:junit:${versions.junit}"
+    implementation "org.junit.jupiter:junit-jupiter-api:${versions.junitJupiterApi}"
+    implementation "org.junit.jupiter:junit-jupiter-engine:${versions.junitJupiterEngine}"
 
 test {
     useJUnitPlatform()
