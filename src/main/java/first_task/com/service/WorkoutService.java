@@ -1,7 +1,8 @@
 package first_task.com.service;
 
+import first_task.com.dto.WorkoutDto;
+import first_task.com.dto.WorkoutTypeDto;
 import first_task.com.exceptions.NotUniqueTypeTitleException;
-import first_task.com.model.ConsoleUser;
 import first_task.com.model.Workout;
 import first_task.com.model.WorkoutType;
 
@@ -14,48 +15,53 @@ public interface WorkoutService {
     /**
      * Метод изменения даты тренировки.
      *
-     * @param consoleUser {@link ConsoleUser пользователь приложения}
-     * @param newDate     новая непарсированая дата
+     * @param user_id id пользователя приложения
+     * @param workout_id id тренировки для изменения
+     * @param newDate новая дата тренировки
      * @return workout : обновлённая тренировка
      */
-    Workout changeDate(ConsoleUser consoleUser, String newDate);
+    WorkoutDto changeDate(Integer user_id, Integer workout_id, String newDate);
 
     /**
      * Метод изменения дополнительной информации тренировки.
      *
-     * @param consoleUser {@link ConsoleUser пользователь приложения}
+     * @param user_id id пользователя приложения
+     * @param workout_id id тренировки для изменения
      * @param newAddInfo  новая дополнительная информация
      * @return workout : обновлённая тренировка
      */
 
-    Workout changeAdditionalInfo(ConsoleUser consoleUser, String newAddInfo);
+    WorkoutDto changeAdditionalInfo(Integer user_id, Integer workout_id, String newAddInfo);
 
     /**
      * Метод изменения сожённых калорий тренировки.
      *
-     * @param consoleUser    {@link ConsoleUser пользователь приложения}
+     * @param user_id id пользователя приложения
+     * @param workout_id id тренировки для изменения
      * @param changeCalories новые калории
      * @return workout : обновлённая тренировка
      */
 
-    Workout changeCalories(ConsoleUser consoleUser, Double changeCalories);
+    WorkoutDto changeCalories(Integer user_id, Integer workout_id, Double changeCalories);
 
     /**
      * Метод изменения длительности тренировки.
      *
-     * @param consoleUser    {@link ConsoleUser пользователь приложения}
+     * @param user_id id пользователя приложения
+     * @param workout_id id тренировки для изменения
      * @param changeDuration новая длительность тренировки
      * @return workout : обновлённая тренировка
      */
-    Workout changeMinuteDuration(ConsoleUser consoleUser, Double changeDuration);
+    WorkoutDto changeMinuteDuration(Integer user_id, Integer workout_id, Double changeDuration);
 
     /**
      * Метод удаления пользователем нужной тренировки.
      *
-     * @param consoleUser {@link ConsoleUser пользователь приложения}
+     * @param user_id id пользователя приложения
+     * @param workout_id id тренировки для изменения
      */
 
-    void deleteWorkout(ConsoleUser consoleUser);
+    void deleteWorkout(Integer user_id, Integer workout_id);
 
     /**
      * Метод получения всех типов тренировок.
@@ -63,7 +69,7 @@ public interface WorkoutService {
      * @return список всех типов тренировок
      */
 
-    ArrayList<WorkoutType> getAllTypes();
+    ArrayList<WorkoutTypeDto> getAllTypes();
 
 
     /**
@@ -71,6 +77,6 @@ public interface WorkoutService {
      * @throws NotUniqueTypeTitleException выбрасывается, если такой тип уже существует
      * @return сохраненный тип тренировки
      */
-    WorkoutType saveWorkoutType(String type) throws NotUniqueTypeTitleException;
+    WorkoutTypeDto saveWorkoutType(Integer user_id, String type) throws NotUniqueTypeTitleException;
 
 }

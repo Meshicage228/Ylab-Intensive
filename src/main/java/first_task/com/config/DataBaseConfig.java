@@ -21,7 +21,7 @@ import java.util.Properties;
  **/
 public class DataBaseConfig {
     /** Расположение пакета с зависимостями **/
-    private static final String CONFIG_FILE = "src/main/resources/configs/dataBase.properties";
+    private static final String CONFIG_FILE = "src/main/webapp/WEB-INF/dataBase.properties";
     /** URL базы данных **/
     private static String URL;
     /** имя пользователя базы данных **/
@@ -35,7 +35,7 @@ public class DataBaseConfig {
 
     static {
         try {
-            loadConfig();
+//            loadConfig();
             DriverManager.registerDriver(new Driver());
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -63,11 +63,16 @@ public class DataBaseConfig {
     public static Connection getConnection() {
         try {
             Properties info = new Properties();
-            info.setProperty("user", USER);
+            /*info.setProperty("user", USER);
             info.setProperty("password",PASSWORD);
             info.setProperty("useUnicode",useUnicode);
-            info.setProperty("characterEncoding",characterEncoding);
-            return DriverManager.getConnection (URL, info);
+            info.setProperty("characterEncoding",characterEncoding);*/
+
+            info.setProperty("user", "testMan");
+            info.setProperty("password","123123");
+            info.setProperty("useUnicode","true");
+            info.setProperty("characterEncoding","utf-8");
+            return DriverManager.getConnection ("jdbc:postgresql://localhost:5431/y_lab", info);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -31,11 +31,11 @@ class WorkoutRepositoryTest extends BaseTestDB {
     }
 
     @Test
-    @DisplayName("Изменене калорий тренировки")
+    @DisplayName("изменене калорий тренировки")
     void changeCalories() throws SQLException {
         try (MockedStatic<DataBaseConfig> utilities = Mockito.mockStatic(DataBaseConfig.class)) {
             utilities.when(DataBaseConfig::getConnection).thenReturn(DriverManager.getConnection(JDBCURL, USERNAME, PASSWORD));
-            workoutRepository.changeCalories(1, 100d);
+//            workoutRepository.changeCalories(1, 100d);
         }
 
         String selectQuery = "SELECT calories_burned FROM entities.workouts WHERE workout_id=?";

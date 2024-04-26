@@ -5,7 +5,7 @@ import first_task.com.model.Workout;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(
@@ -34,7 +34,7 @@ public interface WorkoutMapper {
     Workout toEntity(WorkoutDto workoutDto);
 
 
-    LinkedList<WorkoutDto> toDtos(List<Workout> workouts);
+    ArrayList<WorkoutDto> toDtos(List<Workout> workouts);
 
-    LinkedList<Workout> toWorkouts(List<WorkoutDto> workoutDtos);
+    ArrayList<Workout> toWorkouts(List<WorkoutDto> workoutDtos);
 }

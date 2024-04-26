@@ -5,6 +5,8 @@ import first_task.com.config.DataBaseConfig;
 import lombok.AllArgsConstructor;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Класс - репозиторий, ответственный за соединение с бд users
@@ -87,33 +89,30 @@ public class UserRepository {
      *
      * @return Результирующая строка со всей информацией
      **/
-    public String getAll() {
+    public List<ConsoleUser> getAll() {
         String query = """
                 SELECT username, type, calories_burned, adding_date, minute_duration FROM entities.workouts as w 
                 LEFT JOIN entities.types as tp ON w.workout_type_id = tp.type_id
                 LEFT JOIN entities.users as us ON w.user_id = us.user_id
                 """;
-        StringBuilder stringBuilder = new StringBuilder();
+        ArrayList<ConsoleUser> users = new ArrayList<>();
         try (Connection connection = DataBaseConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                ConsoleUser user = ConsoleUser.builder()
+                        .id(resultSet.getInt("user_id"))
+                        .username(resultSet.getString("username"))
+                        .role(resultSet.getString("role"))
+                        .password(resultSet.getString("password"))
+                        .workouts(workoutRepository.getWorkoutsByUserId(resultSet.getInt("user_id")))
+                        .build();
 
-                String answer =
-                        "Username : %s and training : \n " +
-                                "Training type : %s; Burned calories : %s, Date of training : %s, Training duration : %s \n";
-                String format = String.format(answer,
-                        resultSet.getString("username"),
-                        resultSet.getString("type"),
-                        resultSet.getDouble("calories_burned"),
-                        resultSet.getDate("adding_date"),
-                        resultSet.getDouble("minute_duration"));
-
-                stringBuilder.append(format);
+                users.add(user);
             }
         } catch (SQLException ex) {
             throw new RuntimeException("Error while finding workouts: " + ex.getMessage(), ex);
         }
-        return stringBuilder.toString();
+        return users;
     }
 }

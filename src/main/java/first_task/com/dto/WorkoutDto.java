@@ -2,19 +2,19 @@ package first_task.com.dto;
 
 import lombok.*;
 
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+
 public class WorkoutDto {
     /** id тренировки в базе данных */
     private Integer id;
     /** id пользователя этой тренировки в базе данных */
     private Integer user_id;
     /** Дата внесенной тренировки YYYY-MM-DD */
-    private LocalDate timeOfWorkout;
+    private String timeOfWorkout;
     /** Тип тренировки */
     private WorkoutTypeDto workoutType;
     /** Длительность тренировки */
@@ -24,5 +24,5 @@ public class WorkoutDto {
     /** Дополнительная информация */
     private String additionalInfo;
 
-    private LocalDate dateOfAdding;
+    private String dateOfAdding;
 }

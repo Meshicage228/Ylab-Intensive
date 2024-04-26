@@ -1,28 +1,27 @@
 package first_task.com.service.impl;
 
+import first_task.com.dto.WorkoutDto;
+import first_task.com.dto.WorkoutTypeDto;
 import first_task.com.exceptions.NotUniqueTypeTitleException;
-import first_task.com.model.ConsoleUser;
-import first_task.com.model.WorkoutType;
+import first_task.com.mappers.WorkoutMapper;
+import first_task.com.mappers.WorkoutTypeMapper;
 import first_task.com.repository.WorkoutRepository;
 import first_task.com.repository.WorkoutTypeRepository;
 import first_task.com.service.WorkoutService;
-import first_task.com.util.UtilScanner;
-import first_task.com.model.Workout;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
-import static java.util.Objects.nonNull;
 import static org.junit.platform.commons.util.Preconditions.notNull;
 
-/** Класс для изменений выбранной тренировки
+/**
+ * Класс для изменений выбранной тренировки
+ *
  * @see WorkoutService
- * */
+ */
 
 @RequiredArgsConstructor
 public class WorkoutServiceImpl implements WorkoutService {
@@ -32,149 +31,97 @@ public class WorkoutServiceImpl implements WorkoutService {
     @NonNull
     private WorkoutTypeRepository workoutTypeRepository;
 
-    /** индекс текущей тренировки для изменения */
-    private Integer indexToChange;
+    private final WorkoutTypeMapper workoutTypeMapper = Mappers.getMapper(WorkoutTypeMapper.class);
 
-    /** Выбранная тренировка для изменения */
-    private Workout currentWorkout;
+    private final WorkoutMapper workoutMapper = Mappers.getMapper(WorkoutMapper.class);
 
     /**
      * Метод изменения даты тренировки.
      *
-     * @param consoleUser {@link ConsoleUser пользователь приложения}
-     * @param newDate     новая непарсированая дата
+     * @param user_id    id пользователя приложения
+     * @param workout_id id тренировки для изменения
+     * @param newDate    новая непарсированая дата
      * @return workout : обновлённая тренировка
      */
     @Override
-    public Workout changeDate(ConsoleUser consoleUser, String newDate) {
-        Workout workout = workoutRepository.changeDate(currentWorkout.getId(), LocalDate.parse(newDate));
-
-        if(nonNull(workout)){
-            consoleUser.getWorkouts().set(indexToChange, workout);
-            return workout;
-        }
-        return currentWorkout;
+    public WorkoutDto changeDate(Integer user_id, Integer workout_id, String newDate) {
+        return workoutMapper.toDto(
+                workoutRepository.changeDate(user_id, workout_id, LocalDate.parse(newDate)));
     }
 
     /**
      * Метод извлекающий из бд все типы тренировок.
+     *
      * @return ArrayList<WorkoutType> : список тренировок
      */
     @Override
-    public ArrayList<WorkoutType> getAllTypes() {
-        return workoutTypeRepository.findAll();
+    public ArrayList<WorkoutTypeDto> getAllTypes() {
+        return workoutTypeMapper.toDtos(workoutTypeRepository.findAll());
     }
 
     /**
      * Метод сохранения нового типа тренировки.
      *
      * @param type новый тип тренировки
-     * @throws NotUniqueTypeTitleException при неуникальном типе тренировки
      * @return workout : обновлённая тренировка
+     * @throws NotUniqueTypeTitleException при неуникальном типе тренировки
      */
     @Override
-    public WorkoutType saveWorkoutType(String type) throws NotUniqueTypeTitleException {
-        return workoutTypeRepository.saveNewType(type);
+    public WorkoutTypeDto saveWorkoutType(Integer user_id, String type) throws NotUniqueTypeTitleException {
+        return workoutTypeMapper.toDto(workoutTypeRepository.saveNewType(type));
     }
 
     /**
      * Метод изменения дополнительной информации тренировки.
      *
-     * @param consoleUser {@link ConsoleUser пользователь приложения}
-     * @param newAddInfo  новая дополнительная информация
+     * @param user_id    id владельца тренировки
+     * @param workout_id id тренировки для изменения
+     * @param newAddInfo новая дополнительная информация
      * @return workout : обновлённая тренировка
      */
     @Override
-    public Workout changeAdditionalInfo(ConsoleUser consoleUser, String newAddInfo) {
-        Workout workout = workoutRepository.changeAdditional(currentWorkout.getId(), newAddInfo);
-
-        if(nonNull(workout)){
-            consoleUser.getWorkouts().set(indexToChange, workout);
-            return workout;
-        }
-        return currentWorkout;
-
+    public WorkoutDto changeAdditionalInfo(Integer user_id, Integer workout_id, String newAddInfo) {
+        return workoutMapper.toDto(
+                workoutRepository.changeAdditional(user_id, workout_id, newAddInfo));
     }
 
     /**
      * Метод изменения сожённых калорий тренировки.
      *
-     * @param consoleUser    {@link ConsoleUser пользователь приложения}
+     * @param user_id        id владельца тренировки
+     * @param workout_id     id тренировки для изменения
      * @param changeCalories новые калории
      * @return workout : обновлённая тренировка
      */
     @Override
-    public Workout changeCalories(ConsoleUser consoleUser, Double changeCalories) {
-        Workout workout = workoutRepository.changeCalories(currentWorkout.getId(), changeCalories);
-
-        if(nonNull(workout)){
-            consoleUser.getWorkouts().set(indexToChange, workout);
-            return workout;
-        }
-        return currentWorkout;
+    public WorkoutDto changeCalories(Integer user_id, Integer workout_id, Double changeCalories) {
+        return workoutMapper.toDto(
+                workoutRepository.changeCalories(user_id, workout_id, changeCalories));
     }
 
     /**
      * Метод изменения длительности тренировки.
      *
-     * @param consoleUser    {@link ConsoleUser пользователь приложения}
+     * @param user_id        id владельца тренировки
+     * @param workout_id     id тренировки для изменения
      * @param changeDuration новая длительность тренировки
      * @return workout : обновлённая тренировка
      */
     @Override
-    public Workout changeMinuteDuration(ConsoleUser consoleUser, Double changeDuration) {
-        Workout workout = workoutRepository.updateMinutes(currentWorkout.getId(), changeDuration);
-
-        if(nonNull(workout)){
-            consoleUser.getWorkouts().set(indexToChange, workout);
-            return workout;
-        }
-        return currentWorkout;
+    public WorkoutDto changeMinuteDuration(Integer user_id, Integer workout_id, Double changeDuration) {
+        return workoutMapper.toDto(
+                workoutRepository.updateMinutes(user_id, workout_id, changeDuration));
     }
 
     /**
      * Метод удаления пользователем нужной тренировки.
      *
-     * @param consoleUser {@link ConsoleUser пользователь приложения}
+     * @param user_id        id владельца тренировки
+     * @param workout_id     id тренировки для удаления
      */
 
     @Override
-    public void deleteWorkout(ConsoleUser consoleUser) {
-        workoutRepository.deleteWorkout(currentWorkout.getId(), consoleUser.getId());
-        consoleUser.getWorkouts().remove(currentWorkout);
-    }
-
-    /**
-     * Метод, присваивающий тренировку, над которой будет происходить изменение; индекс, Присваивающий позицию изменения тренировки
-     *
-     * @param consoleUser    {@link ConsoleUser пользователь приложения}
-     * @return integer : индекс вставки новой тренировки. -1 , если тренировок нет; [0; list.size()), если тренировки есть
-     */
-    public Integer getWorkoutByIndex(ConsoleUser consoleUser) {
-        if (consoleUser.getWorkouts().isEmpty()) {
-            return -1;
-        }
-        int index = -1;
-        LinkedList<Workout> workouts = consoleUser.getWorkouts();
-        System.out.println("Выберите тренировку для изменения : ");
-        do {
-            Scanner scanner = UtilScanner.getInstance();
-
-            for (int i = 0; i < workouts.size(); i++) {
-                System.out.println(i + 1 + " " + workouts.get(i).getWorkoutType().getTypeTitle());
-            }
-
-            try {
-                index = scanner.nextInt();
-            } catch (InputMismatchException e) {
-                System.out.println("Введите порядковый номер тренировки");
-            }
-        } while (index < 0 || index > workouts.size());
-
-        indexToChange = index - 1;
-
-        currentWorkout = workouts.get(indexToChange);
-
-        return indexToChange;
+    public void deleteWorkout(Integer user_id, Integer workout_id) {
+        workoutRepository.deleteWorkout(user_id, workout_id);
     }
 }

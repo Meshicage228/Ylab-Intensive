@@ -1,10 +1,14 @@
 package first_task.com.service;
 
+import first_task.com.dto.UserDto;
+import first_task.com.dto.WorkoutDto;
 import first_task.com.model.ConsoleUser;
 import first_task.com.model.Workout;
 import first_task.com.exceptions.NotUniqueWorkoutException;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * интерфейс, предоставляющий контракт для действий над тренировками
@@ -13,35 +17,35 @@ public interface UserActionService {
     /**
      * Метод сохранения новой тренировки.
      *
-     * @param consoleUser {@link ConsoleUser пользователь приложения}
+     * @param user_id пользователя приложения
      * @param workout {@link Workout новая тренировка}
      * @exception NotUniqueWorkoutException исключение при попытке добавить такой же тип тренировки
      * @return workout : сохраненная тренировка
      */
-    Workout addNewWorkout(ConsoleUser consoleUser, Workout workout) throws NotUniqueWorkoutException;
+    WorkoutDto addNewWorkout(Integer user_id, WorkoutDto workout) throws NotUniqueWorkoutException;
 
     /**
      * Метод получения всех тренировок пользователя, сортированных по новейшей дате.
      *
-     * @param consoleUser {@link ConsoleUser пользователь приложения}
+     * @param user_id id владельца тренировок
      * @return ArrayList<Workout> : тренировки, сортированные по новейшей дате
      */
-    LinkedList<Workout> showAllWorkoutsDateSorted(ConsoleUser consoleUser);
+    ArrayList<WorkoutDto> showAllWorkoutsDateSorted(Integer user_id);
 
     /**
      * Метод получения статистики по калориям со всех тренировок пользователя.
      *
-     * @param consoleUser {@link ConsoleUser пользователь приложения}
+     * @param user_id id владельца тренировок
      * @return string : строка статистики по калориям
      */
 
-    String getWorkoutStatistics(ConsoleUser consoleUser);
+    String getWorkoutStatistics(Integer user_id);
 
     /**
-     * Метод администратора для получения всех тренировок в приложении.
+     * Метод администратора для получения всех пользователей в приложении.
      *
-     * @return string : строка всех тренировок
+     * @return ist<UserDto> : вся информация о всех пользователях
      */
-    String getAllWorkouts();
+    List<UserDto> getAllUsers();
 
 }

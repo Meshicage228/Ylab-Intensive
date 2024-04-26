@@ -2,7 +2,7 @@ package first_task.com.dto;
 
 import lombok.*;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +15,7 @@ public class UserDto {
     /** Пароль пользователя */
     private String password;
     /** Все личные тренировки пользователя */
-    private LinkedList<WorkoutDto> workouts;
+    private ArrayList<WorkoutDto> workouts;
     /** Роль пользователя в приложении */
     private String role;
 }
