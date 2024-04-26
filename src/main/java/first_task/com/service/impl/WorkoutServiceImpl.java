@@ -67,8 +67,8 @@ public class WorkoutServiceImpl implements WorkoutService {
      * @throws NotUniqueTypeTitleException при неуникальном типе тренировки
      */
     @Override
-    public WorkoutTypeDto saveWorkoutType(Integer user_id, String type) throws NotUniqueTypeTitleException {
-        return workoutTypeMapper.toDto(workoutTypeRepository.saveNewType(type));
+    public WorkoutTypeDto saveWorkoutType(Integer user_id, WorkoutTypeDto workoutTypeDto) throws NotUniqueTypeTitleException {
+        return workoutTypeMapper.toDto(workoutTypeRepository.saveNewType(workoutTypeDto));
     }
 
     /**

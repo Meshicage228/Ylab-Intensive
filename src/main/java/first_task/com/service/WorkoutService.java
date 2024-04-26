@@ -77,6 +77,6 @@ public interface WorkoutService {
      * @throws NotUniqueTypeTitleException выбрасывается, если такой тип уже существует
      * @return сохраненный тип тренировки
      */
-    WorkoutTypeDto saveWorkoutType(Integer user_id, String type) throws NotUniqueTypeTitleException;
+    WorkoutTypeDto saveWorkoutType(Integer user_id, WorkoutTypeDto workoutTypeDto) throws NotUniqueTypeTitleException;
 
 }

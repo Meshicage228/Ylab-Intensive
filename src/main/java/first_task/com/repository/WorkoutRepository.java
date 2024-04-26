@@ -33,6 +33,7 @@ public class WorkoutRepository {
 
                 Workout build = Workout.builder()
                         .id(resultSet.getInt("workout_id"))
+                        .user_id(resultSet.getInt("user_id"))
                         .timeOfWorkout(resultSet.getDate("adding_date").toLocalDate())
                         .caloriesBurned(resultSet.getDouble("calories_burned"))
                         .additionalInfo(resultSet.getString("additional_info"))
@@ -120,7 +121,7 @@ public class WorkoutRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setDouble(1, changeDuration);
             preparedStatement.setInt(2, workout_id);
-            preparedStatement.setInt(2, user_id);
+            preparedStatement.setInt(3, user_id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Fail to update minutes!");
@@ -142,7 +143,7 @@ public class WorkoutRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setDouble(1, changeCalories);
             preparedStatement.setInt(2, workout_id);
-            preparedStatement.setInt(2, user_id);
+            preparedStatement.setInt(3, user_id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Fail to update calories!");
@@ -164,7 +165,7 @@ public class WorkoutRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, newAddInfo);
             preparedStatement.setInt(2, workout_id);
-            preparedStatement.setInt(2, user_id);
+            preparedStatement.setInt(3, user_id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Fail to update additional info!");
@@ -186,7 +187,7 @@ public class WorkoutRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setDate(1, Date.valueOf(newDate));
             preparedStatement.setInt(2, workout_id);
-            preparedStatement.setInt(2, user_id);
+            preparedStatement.setInt(3, user_id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Fail to update date!");

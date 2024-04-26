@@ -75,6 +75,7 @@ public class UserRepository {
             return resultSet.next() ? ConsoleUser.builder()
                     .id(resultSet.getInt("user_id"))
                     .username(resultSet.getString("username"))
+                    .password(resultSet.getString("password"))
                     .role(resultSet.getString("role"))
                     .workouts(workoutRepository.getWorkoutsByUserId(resultSet.getInt("user_id")))
                     .build() : null;
@@ -91,7 +92,7 @@ public class UserRepository {
      **/
     public List<ConsoleUser> getAll() {
         String query = """
-                SELECT username, type, calories_burned, adding_date, minute_duration FROM entities.workouts as w 
+                SELECT username, us.user_id, role, password FROM entities.workouts as w 
                 LEFT JOIN entities.types as tp ON w.workout_type_id = tp.type_id
                 LEFT JOIN entities.users as us ON w.user_id = us.user_id
                 """;

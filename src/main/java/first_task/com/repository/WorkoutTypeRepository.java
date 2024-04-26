@@ -1,6 +1,7 @@
 package first_task.com.repository;
 
 import first_task.com.config.DataBaseConfig;
+import first_task.com.dto.WorkoutTypeDto;
 import first_task.com.exceptions.NotUniqueTypeTitleException;
 import first_task.com.model.WorkoutType;
 
@@ -35,9 +36,9 @@ public class WorkoutTypeRepository {
         return workoutTypes;
     }
 
-    public WorkoutType saveNewType(String newTypeTitle) throws NotUniqueTypeTitleException  {
+    public WorkoutType saveNewType(WorkoutTypeDto workoutTypeDto) throws NotUniqueTypeTitleException  {
         for (WorkoutType workoutType : findAll()) {
-            if (workoutType.getTypeTitle().toLowerCase().equals(newTypeTitle.toLowerCase())) {
+            if (workoutType.getTypeTitle().toLowerCase().equals(workoutTypeDto.getTypeTitle().toLowerCase())) {
                 throw new NotUniqueTypeTitleException("Not unique workout type!");
             }
         }
@@ -47,10 +48,10 @@ public class WorkoutTypeRepository {
         try (Connection connection = DataBaseConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, newTypeTitle.toUpperCase());
+            preparedStatement.setString(1, workoutTypeDto.getTypeTitle().toUpperCase());
             preparedStatement.executeUpdate();
 
-            return findByTitle(newTypeTitle);
+            return findByTitle(workoutTypeDto.getTypeTitle());
 
         } catch (SQLException e) {
             new RuntimeException("Fail to save new workout type!");
