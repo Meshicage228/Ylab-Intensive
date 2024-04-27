@@ -5,22 +5,21 @@ import first_task.com.exceptions.NotUniqueUserNameException;
 import first_task.com.mappers.UserMapper;
 import first_task.com.model.ConsoleUser;
 import first_task.com.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Optional;
 
 /**
  * класс для регистрации и входа в аккаунт
  */
 
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class AuthenticationService {
+    @NonNull
     private UserRepository userRepository;
-    private UserMapper userMapper;
+    private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
     /**
      * Метод регистрации пользователя.
      * @param username уникальное имя пользователя
@@ -64,7 +63,7 @@ public class AuthenticationService {
      * @see ConsoleUser пользователь приложения
      * @return boolean : наличие / отсутствие пользователя
      **/
-    private boolean userIsExists(String username) {
+    public boolean userIsExists(String username) {
         return userRepository.findUserByUsername(username);
     }
 }

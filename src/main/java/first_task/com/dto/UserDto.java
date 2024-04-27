@@ -4,10 +4,15 @@ import lombok.*;
 
 import java.util.ArrayList;
 
+/**
+ * Класс-dto, описывающий пользователя
+ **/
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class UserDto {
     private Integer id;
     /** имя пользователя */

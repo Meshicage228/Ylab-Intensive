@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'war'
+    id "io.freefair.aspectj" version "5.1.1"
 }
 
 group = 'org.example'
@@ -24,12 +25,15 @@ ext {
             junitJupiterEngine: '5.10.0',
             testcontainers    : '1.19.7',
             liquibase         : '4.27.0',
-            servlet_api       : '3.1.0'
+            servlet_api       : '4.1.0',
+            aspectjrt         : '1.9.21.1',
+            validation_api    : '3.0.2',
+            aspectjVersion    : '1.9.7'
     ]
 }
 dependencies {
     //web
-    compileOnly "javax.servlet:javax.servlet-api:${versions.servlet_api}"
+    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
 
     //db
 
@@ -37,6 +41,7 @@ dependencies {
     implementation "org.liquibase:liquibase-core:${versions.liquibase}"
 
     //utils
+    implementation "jakarta.validation:jakarta.validation-api:${versions.validation_api}"
     implementation "org.mapstruct:mapstruct:1.5.3.Final"
     annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
     annotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
@@ -45,6 +50,7 @@ dependencies {
     implementation "org.apache.commons:commons-collections4:${versions.commonsCollections}"
     implementation "org.apache.commons:commons-lang3:${versions.commonsLang}"
     implementation "log4j:log4j:${versions.log4j}"
+    implementation "org.aspectj:aspectjrt:${versions.aspectjVersion}"
 
     //tests
     implementation "org.assertj:assertj-core:${versions.assertjCore}"

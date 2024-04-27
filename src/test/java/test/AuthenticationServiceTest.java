@@ -21,9 +21,9 @@ class AuthenticationServiceTest {
     @Test
     @DisplayName("Неудачная регистрация пользователя")
     void registrationProcessFail(){
-//        Mockito.doReturn(true).when(service).userIsExists(Mockito.anyString());
+        Mockito.doReturn(true).when(service).userIsExists(Mockito.anyString());
 
-//        assertThrows(NotUniqueUserNameException.class, () -> service.registrationProcess(Mockito.anyString(), Mockito.anyString()));
+        assertThrows(NotUniqueUserNameException.class, () -> service.registrationProcess(Mockito.anyString(), Mockito.anyString()));
     }
 
 }

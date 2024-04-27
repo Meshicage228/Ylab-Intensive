@@ -11,10 +11,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.format.DateTimeParseException;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
-@WebServlet(name = "WorkoutUpdateServlet", urlPatterns = "/workout/*")
+/**
+ * Сервлет для обновлений статуса тренировки
+ **/
+@WebServlet(name = "WorkoutUpdateServlet",
+            urlPatterns = "/workout/*",
+            description = "Сервлет обновлений тренировки")
 public class WorkoutUpdateServlet extends HttpServlet {
     private WorkoutService workoutService;
     private ObjectMapper mapper;
@@ -28,7 +35,7 @@ public class WorkoutUpdateServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String endpoint = req.getRequestURI();
-        String jsonString = req.getReader().lines().reduce("", (accumulator, actual) -> accumulator + actual);
+        String jsonString = req.getReader().lines().collect(Collectors.joining());
         JsonNode jsonNode = mapper.readTree(jsonString);
         String jsonResponse = "";
 
@@ -38,9 +45,14 @@ public class WorkoutUpdateServlet extends HttpServlet {
 
         switch (endpoint) {
             case "/workout/changeDate" -> {
-                String newDate = jsonNode.get("date").textValue();
-                workoutDto = workoutService.changeDate(user_id, workout_id, newDate);
-                resp.setStatus(HttpServletResponse.SC_OK);
+                try {
+                    String newDate = jsonNode.get("date").textValue();
+                    workoutDto = workoutService.changeDate(user_id, workout_id, newDate);
+                    resp.setStatus(HttpServletResponse.SC_OK);
+                } catch (DateTimeParseException e) {
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    resp.getWriter().write(e.getMessage());
+                }
             }
             case "/workout/changeAdditionalInfo" -> {
                 String addInfo = jsonNode.get("additionalInfo").textValue();
@@ -69,8 +81,6 @@ public class WorkoutUpdateServlet extends HttpServlet {
         }
 
         resp.setContentType("application/json");
-        resp.getOutputStream().write(jsonResponse.getBytes());
+        resp.getWriter().write(jsonResponse);
     }
-
-
 }

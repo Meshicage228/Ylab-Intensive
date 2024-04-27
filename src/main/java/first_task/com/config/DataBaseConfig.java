@@ -7,9 +7,8 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.postgresql.Driver;
-
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,7 +20,7 @@ import java.util.Properties;
  **/
 public class DataBaseConfig {
     /** Расположение пакета с зависимостями **/
-    private static final String CONFIG_FILE = "src/main/webapp/WEB-INF/dataBase.properties";
+    private static final String CONFIG_FILE = "configs/dataBase.properties";
     /** URL базы данных **/
     private static String URL;
     /** имя пользователя базы данных **/
@@ -35,7 +34,7 @@ public class DataBaseConfig {
 
     static {
         try {
-//            loadConfig();
+            loadConfig();
             DriverManager.registerDriver(new Driver());
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -44,8 +43,9 @@ public class DataBaseConfig {
 
     private static void loadConfig() {
         Properties properties = new Properties();
-        try (FileInputStream fis = new FileInputStream(CONFIG_FILE)) {
-            properties.load(fis);
+
+        try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(CONFIG_FILE)) {
+            properties.load(in);
             URL = properties.getProperty("database.url");
             USER = properties.getProperty("database.user");
             PASSWORD = properties.getProperty("database.password");
@@ -63,16 +63,12 @@ public class DataBaseConfig {
     public static Connection getConnection() {
         try {
             Properties info = new Properties();
-            /*info.setProperty("user", USER);
+            info.setProperty("user", USER);
             info.setProperty("password",PASSWORD);
             info.setProperty("useUnicode",useUnicode);
-            info.setProperty("characterEncoding",characterEncoding);*/
+            info.setProperty("characterEncoding",characterEncoding);
 
-            info.setProperty("user", "testMan");
-            info.setProperty("password","123123");
-            info.setProperty("useUnicode","true");
-            info.setProperty("characterEncoding","utf-8");
-            return DriverManager.getConnection ("jdbc:postgresql://localhost:5431/y_lab", info);
+            return DriverManager.getConnection (URL, info);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

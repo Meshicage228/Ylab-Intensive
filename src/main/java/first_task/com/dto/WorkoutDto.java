@@ -2,12 +2,15 @@ package first_task.com.dto;
 
 import lombok.*;
 
+/**
+ * Класс-dto, описывающий тренировку
+ **/
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-
+@Builder
 public class WorkoutDto {
     /** id тренировки в базе данных */
     private Integer id;

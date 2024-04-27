@@ -6,15 +6,13 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+/**
+ * Запуск liquibase и подключение к бд
+ **/
 @WebListener
 public class MigrationServletContextListenerServlet implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         DataBaseConfig.liquibaseStart();
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent servletContextEvent) {
-
     }
 }

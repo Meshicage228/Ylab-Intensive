@@ -1,6 +1,5 @@
 package first_task.com.util;
 
-import first_task.com.mappers.UserMapperImpl;
 import first_task.com.repository.UserRepository;
 import first_task.com.repository.WorkoutRepository;
 import first_task.com.repository.WorkoutTypeRepository;
@@ -14,7 +13,7 @@ public class ServiceFactory {
     private ServiceFactory() {}
 
     public static AuthenticationService buildAuthentication() {
-        return new AuthenticationService(new UserRepository(new WorkoutRepository()), new UserMapperImpl());
+        return new AuthenticationService(new UserRepository(new WorkoutRepository()));
     }
     public static WorkoutService buildWorkout() {
         return new WorkoutServiceImpl(new WorkoutRepository(), new WorkoutTypeRepository());

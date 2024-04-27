@@ -1,6 +1,9 @@
 package first_task.com.dto;
 
 import lombok.*;
+/**
+ * Класс-dto, описывающий тип тренировки
+ **/
 
 @AllArgsConstructor
 @NoArgsConstructor

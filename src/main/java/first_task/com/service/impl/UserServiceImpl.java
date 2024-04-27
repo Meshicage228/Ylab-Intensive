@@ -1,15 +1,15 @@
 package first_task.com.service.impl;
 
+import first_task.com.annotations.LogWithDuration;
 import first_task.com.dto.UserDto;
 import first_task.com.dto.WorkoutDto;
+import first_task.com.exceptions.NotUniqueWorkoutException;
 import first_task.com.mappers.UserMapper;
 import first_task.com.mappers.WorkoutMapper;
-import first_task.com.exceptions.NotUniqueWorkoutException;
 import first_task.com.model.Workout;
 import first_task.com.repository.UserRepository;
 import first_task.com.repository.WorkoutRepository;
 import first_task.com.service.UserActionService;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserActionService {
      * Метод администратора для получения тренировок
      * @return List<UserDto> : вся информация о всех пользователях
      **/
+    @LogWithDuration
     @Override
     public List<UserDto> getAllUsers() {
         return userMapper.toDtos(userRepository.getAll());
