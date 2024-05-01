@@ -3,10 +3,11 @@ package first_task.com.repository;
 import first_task.com.model.ConsoleUser;
 import first_task.com.config.DataBaseConfig;
 import lombok.AllArgsConstructor;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static first_task.com.util.SQLUtilQueries.*;
 
 /**
  * Класс - репозиторий, ответственный за соединение с бд users
@@ -24,9 +25,8 @@ public class UserRepository {
      * @return ConsoleUser - сохраненный пользователь
      **/
     public ConsoleUser save(ConsoleUser newUser) {
-        String saveSql = "INSERT INTO entities.users (username, password, role) VALUES (?,?,?)";
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(saveSql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_USER)) {
             preparedStatement.setString(1, newUser.getUsername());
             preparedStatement.setString(2, newUser.getPassword());
             preparedStatement.setString(3, newUser.getRole());
@@ -44,9 +44,8 @@ public class UserRepository {
      * @return true/false пользователь найден / не найден
      **/
     public boolean findUserByUsername(String username) {
-        String findUserByUsernameSql = "SELECT * FROM entities.users WHERE username = ?";
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(findUserByUsernameSql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_USERNAME)) {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -65,9 +64,8 @@ public class UserRepository {
      * @return ConsoleUser найденный пользователь
      **/
     public ConsoleUser findByUsernameAndPassword(String username, String password) {
-        String findByUsernameAndPasswordSql = "SELECT * FROM entities.users WHERE username = ? AND password = ?";
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(findByUsernameAndPasswordSql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_USERNAME_AND_PASSWORD)) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -91,14 +89,9 @@ public class UserRepository {
      * @return Результирующая строка со всей информацией
      **/
     public List<ConsoleUser> getAll() {
-        String query = """
-                SELECT username, us.user_id, role, password FROM entities.workouts as w 
-                LEFT JOIN entities.types as tp ON w.workout_type_id = tp.type_id
-                LEFT JOIN entities.users as us ON w.user_id = us.user_id
-                """;
         ArrayList<ConsoleUser> users = new ArrayList<>();
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_ALL_USERS)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 ConsoleUser user = ConsoleUser.builder()

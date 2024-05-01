@@ -4,10 +4,11 @@ import first_task.com.dto.WorkoutDto;
 import first_task.com.model.Workout;
 import first_task.com.config.DataBaseConfig;
 import first_task.com.model.WorkoutType;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import static first_task.com.util.SQLUtilQueries.*;
 
 /**
  * Класс - репозиторий, ответственный за соединение с бд workouts
@@ -16,11 +17,8 @@ public class WorkoutRepository {
 
     public ArrayList<Workout> getWorkoutsByUserId(int userId) {
         ArrayList<Workout> workouts = new ArrayList<>();
-
-        String query = "SELECT * FROM entities.workouts as w LEFT JOIN entities.types as tp on w.workout_type_id = tp.type_id WHERE user_id = ?";
-
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_WORKOUT_BY_USER_ID)) {
             preparedStatement.setInt(1, userId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -45,16 +43,14 @@ public class WorkoutRepository {
                 workouts.add(build);
             }
         } catch (SQLException e) {
-            System.out.println("Fail to find your workouts!");
+            throw new RuntimeException("Error getting workouts", e);
         }
         return workouts;
     }
 
     public Workout getWorkoutById(int workoutId) {
-        String query = "SELECT * FROM entities.workouts as w LEFT JOIN entities.types as tp on w.workout_type_id = tp.type_id WHERE workout_id = ?";
-
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_WORKOUT_BY_WORKOUT_ID)) {
             preparedStatement.setInt(1, workoutId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -88,11 +84,8 @@ public class WorkoutRepository {
      * @return сохраненная тренировка
      *  **/
     public WorkoutDto saveWorkout(Integer user_id, WorkoutDto workout) {
-        String query = "INSERT INTO entities.workouts (user_id, training_date_creation, adding_date, additional_info, workout_type_id, calories_burned, minute_duration)" +
-                " VALUES(?,?,?,?,?,?,?)";
-
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_WORKOUT)) {
             preparedStatement.setInt(1, user_id);
             preparedStatement.setDate(2, Date.valueOf(LocalDate.now()));
             preparedStatement.setDate(3, Date.valueOf(workout.getTimeOfWorkout()));
@@ -102,7 +95,7 @@ public class WorkoutRepository {
             preparedStatement.setDouble(7, workout.getMinuteDuration());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Fail to save workout!");
+            throw new RuntimeException("Fail to save workout", e);
         }
         return workout;
     }
@@ -115,10 +108,8 @@ public class WorkoutRepository {
      * @return обновленная тренировка
      *  **/
     public Workout updateMinutes(Integer user_id, Integer workout_id, Double changeDuration) {
-        String query = "UPDATE entities.workouts SET minute_duration = ? WHERE workout_id = ? AND user_id = ?";
-
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_WORKOUT_MINUTES)) {
             preparedStatement.setDouble(1, changeDuration);
             preparedStatement.setInt(2, workout_id);
             preparedStatement.setInt(3, user_id);
@@ -137,10 +128,8 @@ public class WorkoutRepository {
      * @return обновленная тренировка
      *  **/
     public Workout changeCalories(Integer user_id, Integer workout_id, Double changeCalories) {
-        String query = "UPDATE entities.workouts SET calories_burned = ? WHERE workout_id = ? AND user_id = ?";
-
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_WORKOUT_CALORIES)) {
             preparedStatement.setDouble(1, changeCalories);
             preparedStatement.setInt(2, workout_id);
             preparedStatement.setInt(3, user_id);
@@ -159,10 +148,8 @@ public class WorkoutRepository {
      * @return обновленная тренировка
      *  **/
     public Workout changeAdditional(Integer user_id, Integer workout_id, String newAddInfo) {
-        String query = "UPDATE entities.workouts SET additional_info = ? WHERE workout_id = ? AND user_id = ?";
-
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_WORKOUT_ADDITIONAL)) {
             preparedStatement.setString(1, newAddInfo);
             preparedStatement.setInt(2, workout_id);
             preparedStatement.setInt(3, user_id);
@@ -181,10 +168,8 @@ public class WorkoutRepository {
      * @return обновленная тренировка
      *  **/
     public Workout changeDate(Integer user_id, Integer workout_id, LocalDate newDate) {
-        String query = "UPDATE entities.workouts SET adding_date = ? WHERE workout_id = ? AND user_id = ?";
-
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_WORKOUT_DATE)) {
             preparedStatement.setDate(1, Date.valueOf(newDate));
             preparedStatement.setInt(2, workout_id);
             preparedStatement.setInt(3, user_id);
@@ -201,10 +186,8 @@ public class WorkoutRepository {
      * @param user_id айди владельца тренировки
      *  **/
     public void deleteWorkout(Integer user_id, Integer workout_id) {
-        String query = "DELETE FROM entities.workouts WHERE workout_id = ? AND user_id = ?";
-
         try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(WORKOUT_DELETE)) {
             preparedStatement.setInt(1, workout_id);
             preparedStatement.setInt(2, user_id);
             preparedStatement.executeUpdate();
