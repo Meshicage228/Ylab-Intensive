@@ -35,7 +35,6 @@ public class AllUsersServlet extends HttpServlet {
         mapper = new ObjectMapper();
     }
     @LogWithDuration
-    @Loggable
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
