@@ -1,9 +1,10 @@
 package first_task.com.in.servlets.authorize;
 
 import first_task.com.annotations.Loggable;
+import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.UserDto;
 import first_task.com.exceptions.NotUniqueUserNameException;
-import first_task.com.service.AuthenticationService;
+import first_task.com.service.impl.AuthenticationServiceImpl;
 import first_task.com.util.ServiceFactory;
 import first_task.com.validators.Validators;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,11 +19,12 @@ import java.util.stream.Collectors;
 /**
  * Сервлет, позволяющий зарегистрироваться в приложении
  **/
+@Loggable
 @WebServlet(name = "RegisterUserServlet",
             urlPatterns = "/register",
             description = "Сервлет возможности регистрации")
 public class RegisterUserServlet extends HttpServlet {
-    private AuthenticationService authService;
+    private AuthenticationServiceImpl authService;
     private ObjectMapper mapper;
 
     public RegisterUserServlet() {
@@ -36,7 +38,6 @@ public class RegisterUserServlet extends HttpServlet {
         mapper = new ObjectMapper();
     }
 
-    @Loggable
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
@@ -44,7 +45,7 @@ public class RegisterUserServlet extends HttpServlet {
             resp.setCharacterEncoding("UTF-8");
 
             String jsonString = req.getReader().lines().collect(Collectors.joining());
-            UserDto person = mapper.readValue(jsonString, UserDto.class);
+            LoginUserDto person = mapper.readValue(jsonString, LoginUserDto.class);
 
             List<String> validate = Validators.userDtoValidator(person);
             if (!validate.isEmpty()) {

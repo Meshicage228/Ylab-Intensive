@@ -1,9 +1,10 @@
 package first_task.com.in.servlets.workout;
 
+import first_task.com.annotations.Loggable;
 import first_task.com.dto.WorkoutDto;
 import first_task.com.service.WorkoutService;
 import first_task.com.util.ServiceFactory;
-import first_task.com.util.Utils;
+import first_task.com.util.JSONUtils;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonNode;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +20,7 @@ import static java.util.Objects.nonNull;
 /**
  * Сервлет для обновлений статуса тренировки
  **/
+@Loggable
 @WebServlet(name = "WorkoutUpdateServlet",
             urlPatterns = "/workout/*",
             description = "Сервлет обновлений тренировки")
@@ -32,6 +34,7 @@ public class WorkoutUpdateServlet extends HttpServlet {
         mapper = new ObjectMapper();
     }
 
+
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String endpoint = req.getRequestURI();
@@ -39,15 +42,16 @@ public class WorkoutUpdateServlet extends HttpServlet {
         JsonNode jsonNode = mapper.readTree(jsonString);
         String jsonResponse = "";
 
-        Integer user_id = jsonNode.get("user_id").intValue();
-        Integer workout_id = jsonNode.get("workout_id").intValue();
+        Integer userId = Integer.valueOf(req.getParameter("userId"));
+        Integer workoutId = Integer.valueOf(req.getParameter("workoutId"));
+
         WorkoutDto workoutDto = null;
 
         switch (endpoint) {
             case "/workout/changeDate" -> {
                 try {
                     String newDate = jsonNode.get("date").textValue();
-                    workoutDto = workoutService.changeDate(user_id, workout_id, newDate);
+                    workoutDto = workoutService.changeDate(userId, workoutId, newDate);
                     resp.setStatus(HttpServletResponse.SC_OK);
                 } catch (DateTimeParseException e) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -56,24 +60,24 @@ public class WorkoutUpdateServlet extends HttpServlet {
             }
             case "/workout/changeAdditionalInfo" -> {
                 String addInfo = jsonNode.get("additionalInfo").textValue();
-                workoutDto = workoutService.changeAdditionalInfo(user_id, workout_id, addInfo);
+                workoutDto = workoutService.changeAdditionalInfo(userId, workoutId, addInfo);
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
 
             case "/workout/changeCalories" -> {
                 Double calories = jsonNode.get("calories").doubleValue();
-                workoutDto = workoutService.changeCalories(user_id, workout_id, calories);
+                workoutDto = workoutService.changeCalories(userId, workoutId, calories);
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
 
             case "/workout/changeMinuteDuration" -> {
                 Double minutes = jsonNode.get("minutes").doubleValue();
-                workoutDto = workoutService.changeMinuteDuration(user_id, workout_id, minutes);
+                workoutDto = workoutService.changeMinuteDuration(userId, workoutId, minutes);
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
 
             default -> {
-                jsonResponse = Utils.formJsonErrorMessage("Что-то пошло не так");
+                jsonResponse = JSONUtils.formJsonErrorMessage("Что-то пошло не так");
             }
         }
         if (nonNull(workoutDto)) {

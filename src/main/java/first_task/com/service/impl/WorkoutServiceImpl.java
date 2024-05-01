@@ -60,10 +60,11 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     /**
-     * Метод сохранения нового типа тренировки.
+     * Метод сохранения новой тренировки.
      *
-     * @param type новый тип тренировки
-     * @return workout : обновлённая тренировка
+     * @param user_id владелец новой тренировки
+     * @param workoutTypeDto : новая тренировка для сохранения
+     * @return workoutTypeDto : новая сохраненная тренировка
      * @throws NotUniqueTypeTitleException при неуникальном типе тренировки
      */
     @Override

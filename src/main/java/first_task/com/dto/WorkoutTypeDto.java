@@ -15,6 +15,4 @@ public class WorkoutTypeDto {
     private Integer type_id;
     /** Название типа тренировки **/
     private String typeTitle;
-
-    private Integer user_id;
 }

@@ -1,6 +1,6 @@
 package first_task.com.validators;
 
-import first_task.com.dto.UserDto;
+import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.WorkoutDto;
 import first_task.com.dto.WorkoutTypeDto;
 
@@ -13,7 +13,7 @@ import static org.junit.platform.commons.util.StringUtils.isBlank;
 public class Validators {
     private static final String DATE_PATTERN = "^\\d{4}-\\d{2}-\\d{2}$";
 
-    public static List<String> userDtoValidator(UserDto userDto) {
+    public static List<String> userDtoValidator(LoginUserDto userDto) {
         List<String> errors = new ArrayList<>();
         if (isNull(userDto.getUsername()) || isBlank(userDto.getUsername())) {
             errors.add("Требуется имя");
