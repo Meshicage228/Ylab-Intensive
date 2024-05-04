@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5431/y_lab
+    user: testMan
+    password: 123123
