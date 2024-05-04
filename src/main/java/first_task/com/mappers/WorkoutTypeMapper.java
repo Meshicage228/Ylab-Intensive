@@ -8,7 +8,9 @@ import org.mapstruct.Mapping;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper
+@Mapper(
+        componentModel = "spring"
+)
 public interface WorkoutTypeMapper {
 
     @Mapping(target = "type_id", source = "type_id")

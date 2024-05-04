@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(
+        componentModel = "spring",
         uses = WorkoutMapper.class
 )
 public interface UserMapper {

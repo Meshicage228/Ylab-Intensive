@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(
+        componentModel = "spring",
         uses = WorkoutTypeMapper.class
 )
 public interface WorkoutMapper {
