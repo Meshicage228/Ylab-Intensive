@@ -38,7 +38,7 @@ class UserServiceImplDBTest extends BaseTestDB {
     void addNewWorkout() throws NotUniqueWorkoutException {
         WorkoutDto newWorkout = WorkoutDto.builder()
                 .caloriesBurned(1000d)
-                .workoutType(new WorkoutTypeDto(1, "type", 1))
+                .workoutType(new WorkoutTypeDto(1, "type"))
                 .user_id(1)
                 .dateOfAdding("2022-12-12")
                 .additionalInfo("good")
