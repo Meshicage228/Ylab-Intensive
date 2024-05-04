@@ -1,9 +1,12 @@
 package first_task.com.repository;
 
+import first_task.com.mappers.rowMappers.ConsoleUserRowMapper;
 import first_task.com.model.ConsoleUser;
-import first_task.com.config.DataBaseConfig;
-import lombok.AllArgsConstructor;
-import java.sql.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +18,11 @@ import static first_task.com.util.SQLUtilQueries.*;
  * @see WorkoutRepository класс-репозиторий workouts
  **/
 
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Repository
 public class UserRepository {
-    private WorkoutRepository workoutRepository;
+    private final ConsoleUserRowMapper rowMapper;
+    private final JdbcTemplate jdbc;
     /**
      * Метод сохранения пользователя
      *
@@ -25,15 +30,7 @@ public class UserRepository {
      * @return ConsoleUser - сохраненный пользователь
      **/
     public ConsoleUser save(ConsoleUser newUser) {
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_USER)) {
-            preparedStatement.setString(1, newUser.getUsername());
-            preparedStatement.setString(2, newUser.getPassword());
-            preparedStatement.setString(3, newUser.getRole());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            new RuntimeException("Error while saving user: " + newUser.getUsername(), e);
-        }
+        jdbc.update(SAVE_USER, new Object[]{newUser.getUsername(), newUser.getPassword(), newUser.getRole()});
         return newUser;
     }
 
@@ -44,16 +41,8 @@ public class UserRepository {
      * @return true/false пользователь найден / не найден
      **/
     public boolean findUserByUsername(String username) {
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_USERNAME)) {
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            return resultSet.next();
-        } catch (SQLException e) {
-            new RuntimeException("Error while finding user: " + username, e);
-        }
-        return false;
+        List<ConsoleUser> query = jdbc.query(FIND_USER_BY_USERNAME, rowMapper, username);
+        return !query.isEmpty();
     }
 
     /**
@@ -64,22 +53,10 @@ public class UserRepository {
      * @return ConsoleUser найденный пользователь
      **/
     public ConsoleUser findByUsernameAndPassword(String username, String password) {
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_USERNAME_AND_PASSWORD)) {
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            return resultSet.next() ? ConsoleUser.builder()
-                    .id(resultSet.getInt("user_id"))
-                    .username(resultSet.getString("username"))
-                    .password(resultSet.getString("password"))
-                    .role(resultSet.getString("role"))
-                    .workouts(workoutRepository.getWorkoutsByUserId(resultSet.getInt("user_id")))
-                    .build() : null;
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error while finding user: " + username, e);
+        try {
+            return jdbc.queryForObject(FIND_USER_BY_USERNAME_AND_PASSWORD, rowMapper, username, password);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         }
     }
 
@@ -88,25 +65,7 @@ public class UserRepository {
      *
      * @return Результирующая строка со всей информацией
      **/
-    public List<ConsoleUser> getAll() {
-        ArrayList<ConsoleUser> users = new ArrayList<>();
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_ALL_USERS)) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                ConsoleUser user = ConsoleUser.builder()
-                        .id(resultSet.getInt("user_id"))
-                        .username(resultSet.getString("username"))
-                        .role(resultSet.getString("role"))
-                        .password(resultSet.getString("password"))
-                        .workouts(workoutRepository.getWorkoutsByUserId(resultSet.getInt("user_id")))
-                        .build();
-
-                users.add(user);
-            }
-        } catch (SQLException ex) {
-            throw new RuntimeException("Error while finding workouts: " + ex.getMessage(), ex);
-        }
-        return users;
+    public ArrayList<ConsoleUser> getAll() {
+       return (ArrayList<ConsoleUser>) jdbc.query(FIND_ALL_USERS, rowMapper);
     }
 }

@@ -1,9 +1,11 @@
 package first_task.com.repository;
 
 import first_task.com.dto.WorkoutDto;
+import first_task.com.mappers.rowMappers.WorkoutRowMapper;
 import first_task.com.model.Workout;
-import first_task.com.config.DataBaseConfig;
-import first_task.com.model.WorkoutType;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,69 +15,19 @@ import static first_task.com.util.SQLUtilQueries.*;
 /**
  * Класс - репозиторий, ответственный за соединение с бд workouts
  *  **/
+
+@Repository
+@RequiredArgsConstructor
 public class WorkoutRepository {
+    private final JdbcTemplate template;
+    private final WorkoutRowMapper rawMapper;
 
     public ArrayList<Workout> getWorkoutsByUserId(int userId) {
-        ArrayList<Workout> workouts = new ArrayList<>();
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_WORKOUT_BY_USER_ID)) {
-            preparedStatement.setInt(1, userId);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                WorkoutType type = WorkoutType.builder()
-                        .type_id(resultSet.getInt("type_id"))
-                        .typeTitle(resultSet.getString("type"))
-                        .build();
-
-                Workout build = Workout.builder()
-                        .id(resultSet.getInt("workout_id"))
-                        .user_id(resultSet.getInt("user_id"))
-                        .timeOfWorkout(resultSet.getDate("adding_date").toLocalDate())
-                        .caloriesBurned(resultSet.getDouble("calories_burned"))
-                        .additionalInfo(resultSet.getString("additional_info"))
-                        .dateOfAdding(resultSet.getDate("training_date_creation").toLocalDate())
-                        .minuteDuration(resultSet.getDouble("minute_duration"))
-                        .workoutType(type)
-                        .build();
-
-                workouts.add(build);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting workouts", e);
-        }
-        return workouts;
+        return (ArrayList<Workout>) template.query(GET_WORKOUT_BY_USER_ID, new Object[]{userId}, rawMapper);
     }
 
     public Workout getWorkoutById(int workoutId) {
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_WORKOUT_BY_WORKOUT_ID)) {
-            preparedStatement.setInt(1, workoutId);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                WorkoutType type = WorkoutType.builder()
-                        .type_id(resultSet.getInt("type_id"))
-                        .typeTitle(resultSet.getString("type"))
-                        .build();
-
-                return Workout.builder()
-                        .id(resultSet.getInt("workout_id"))
-                        .timeOfWorkout(resultSet.getDate("adding_date").toLocalDate())
-                        .caloriesBurned(resultSet.getDouble("calories_burned"))
-                        .additionalInfo(resultSet.getString("additional_info"))
-                        .dateOfAdding(resultSet.getDate("training_date_creation").toLocalDate())
-                        .minuteDuration(resultSet.getDouble("minute_duration"))
-                        .workoutType(type)
-                        .user_id(resultSet.getInt("user_id"))
-                        .build();
-            }
-        } catch (SQLException e) {
-            System.out.println("Fail to find workout!");
-        }
-        return null;
+        return template.queryForObject(GET_WORKOUT_BY_WORKOUT_ID, rawMapper, new Object[]{workoutId});
     }
 
     /**
@@ -84,19 +36,14 @@ public class WorkoutRepository {
      * @return сохраненная тренировка
      *  **/
     public WorkoutDto saveWorkout(Integer user_id, WorkoutDto workout) {
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_WORKOUT)) {
-            preparedStatement.setInt(1, user_id);
-            preparedStatement.setDate(2, Date.valueOf(LocalDate.now()));
-            preparedStatement.setDate(3, Date.valueOf(workout.getTimeOfWorkout()));
-            preparedStatement.setString(4, workout.getAdditionalInfo());
-            preparedStatement.setInt(5, workout.getWorkoutType().getType_id());
-            preparedStatement.setDouble(6, workout.getCaloriesBurned());
-            preparedStatement.setDouble(7, workout.getMinuteDuration());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Fail to save workout", e);
-        }
+        template.update(SAVE_WORKOUT, user_id,
+                Date.valueOf(LocalDate.now()),
+                Date.valueOf(workout.getTimeOfWorkout()),
+                workout.getAdditionalInfo(),
+                workout.getWorkoutType().getType_id(),
+                workout.getCaloriesBurned(),
+                workout.getMinuteDuration()
+                );
         return workout;
     }
 
@@ -108,15 +55,7 @@ public class WorkoutRepository {
      * @return обновленная тренировка
      *  **/
     public Workout updateMinutes(Integer user_id, Integer workout_id, Double changeDuration) {
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_WORKOUT_MINUTES)) {
-            preparedStatement.setDouble(1, changeDuration);
-            preparedStatement.setInt(2, workout_id);
-            preparedStatement.setInt(3, user_id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Fail to update minutes!");
-        }
+        template.update(UPDATE_WORKOUT_MINUTES, new Object[]{changeDuration, workout_id, user_id});
         return getWorkoutById(workout_id);
     }
 
@@ -128,15 +67,7 @@ public class WorkoutRepository {
      * @return обновленная тренировка
      *  **/
     public Workout changeCalories(Integer user_id, Integer workout_id, Double changeCalories) {
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_WORKOUT_CALORIES)) {
-            preparedStatement.setDouble(1, changeCalories);
-            preparedStatement.setInt(2, workout_id);
-            preparedStatement.setInt(3, user_id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Fail to update calories!");
-        }
+        template.update(UPDATE_WORKOUT_CALORIES, new Object[]{changeCalories, workout_id, user_id});
         return getWorkoutById(workout_id);
     }
 
@@ -148,15 +79,7 @@ public class WorkoutRepository {
      * @return обновленная тренировка
      *  **/
     public Workout changeAdditional(Integer user_id, Integer workout_id, String newAddInfo) {
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_WORKOUT_ADDITIONAL)) {
-            preparedStatement.setString(1, newAddInfo);
-            preparedStatement.setInt(2, workout_id);
-            preparedStatement.setInt(3, user_id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Fail to update additional info!");
-        }
+        template.update(UPDATE_WORKOUT_ADDITIONAL, new Object[]{newAddInfo, workout_id, user_id});
         return getWorkoutById(workout_id);
     }
 
@@ -168,15 +91,7 @@ public class WorkoutRepository {
      * @return обновленная тренировка
      *  **/
     public Workout changeDate(Integer user_id, Integer workout_id, LocalDate newDate) {
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_WORKOUT_DATE)) {
-            preparedStatement.setDate(1, Date.valueOf(newDate));
-            preparedStatement.setInt(2, workout_id);
-            preparedStatement.setInt(3, user_id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Fail to update date!");
-        }
+        template.update(UPDATE_WORKOUT_DATE, new Object[]{Date.valueOf(newDate), workout_id, user_id});
         return getWorkoutById(workout_id);
     }
 
@@ -186,13 +101,6 @@ public class WorkoutRepository {
      * @param user_id айди владельца тренировки
      *  **/
     public void deleteWorkout(Integer user_id, Integer workout_id) {
-        try (Connection connection = DataBaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(WORKOUT_DELETE)) {
-            preparedStatement.setInt(1, workout_id);
-            preparedStatement.setInt(2, user_id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Fail to delete workout!");
-        }
+        template.update(WORKOUT_DELETE, workout_id, user_id);
     }
 }
