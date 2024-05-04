@@ -1,9 +1,8 @@
 package test.test_containers.service;
 
+import first_task.com.dto.WorkoutDto;
+import first_task.com.dto.WorkoutTypeDto;
 import first_task.com.exceptions.NotUniqueWorkoutException;
-import first_task.com.model.ConsoleUser;
-import first_task.com.model.Workout;
-import first_task.com.model.WorkoutType;
 import first_task.com.repository.WorkoutRepository;
 import first_task.com.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -15,10 +14,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.LocalDate;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 /**
@@ -29,9 +27,6 @@ import static org.mockito.Mockito.when;
 @Testcontainers
 class UserServiceImplDBTest extends BaseTestDB {
     @Mock
-    private ConsoleUser consoleUser;
-
-    @Mock
     private WorkoutRepository workoutRepository;
 
     @InjectMocks
@@ -41,19 +36,19 @@ class UserServiceImplDBTest extends BaseTestDB {
     @Test
     @DisplayName("Добавление пользователем тренировки")
     void addNewWorkout() throws NotUniqueWorkoutException {
-        Workout newWorkout = Workout.builder()
+        WorkoutDto newWorkout = WorkoutDto.builder()
                 .caloriesBurned(1000d)
-                .workoutType(new WorkoutType(1, "type"))
+                .workoutType(new WorkoutTypeDto(1, "type"))
                 .user_id(1)
-                .dateOfAdding(LocalDate.now())
+                .dateOfAdding("2022-12-12")
                 .additionalInfo("good")
                 .minuteDuration(123d)
-                .timeOfWorkout(LocalDate.parse("2024-12-10"))
+                .timeOfWorkout("2022-12-12")
                 .build();
 
-        when(consoleUser.getWorkouts()).thenReturn(new LinkedList<>());
-        when(workoutRepository.saveWorkout(Mockito.any())).thenReturn(newWorkout);
+        when(workoutRepository.getWorkoutsByUserId(Mockito.anyInt())).thenReturn(new ArrayList<>());
+        when(workoutRepository.saveWorkout(Mockito.anyInt() ,Mockito.any())).thenReturn(newWorkout);
 
-        assertEquals(userService.addNewWorkout(consoleUser, newWorkout), newWorkout);
+        assertEquals(userService.addNewWorkout(Mockito.anyInt(), newWorkout), newWorkout);
     }
 }

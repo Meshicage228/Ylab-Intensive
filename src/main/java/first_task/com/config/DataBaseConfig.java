@@ -7,9 +7,8 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.postgresql.Driver;
-
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,7 +20,7 @@ import java.util.Properties;
  **/
 public class DataBaseConfig {
     /** Расположение пакета с зависимостями **/
-    private static final String CONFIG_FILE = "src/main/resources/configs/dataBase.properties";
+    private static final String CONFIG_FILE = "configs/dataBase.properties";
     /** URL базы данных **/
     private static String URL;
     /** имя пользователя базы данных **/
@@ -44,8 +43,9 @@ public class DataBaseConfig {
 
     private static void loadConfig() {
         Properties properties = new Properties();
-        try (FileInputStream fis = new FileInputStream(CONFIG_FILE)) {
-            properties.load(fis);
+
+        try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(CONFIG_FILE)) {
+            properties.load(in);
             URL = properties.getProperty("database.url");
             USER = properties.getProperty("database.user");
             PASSWORD = properties.getProperty("database.password");
@@ -67,6 +67,7 @@ public class DataBaseConfig {
             info.setProperty("password",PASSWORD);
             info.setProperty("useUnicode",useUnicode);
             info.setProperty("characterEncoding",characterEncoding);
+
             return DriverManager.getConnection (URL, info);
         } catch (SQLException e) {
             throw new RuntimeException(e);

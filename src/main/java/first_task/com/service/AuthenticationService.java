@@ -1,22 +1,12 @@
 package first_task.com.service;
 
+import first_task.com.dto.LoginUserDto;
+import first_task.com.dto.UserDto;
 import first_task.com.exceptions.NotUniqueUserNameException;
 import first_task.com.model.ConsoleUser;
-import first_task.com.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
-import java.util.LinkedList;
 import java.util.Optional;
 
-/**
- * класс для регистрации и входа в аккаунт
- */
-
-@AllArgsConstructor
-@NoArgsConstructor
-public class AuthenticationService {
-    private UserRepository userRepository;
+public interface AuthenticationService {
     /**
      * Метод регистрации пользователя.
      * @param username уникальное имя пользователя
@@ -24,33 +14,14 @@ public class AuthenticationService {
      * @exception NotUniqueUserNameException исключение неуникального имени
      * @see ConsoleUser пользователь приложения
      **/
-    public void registrationProcess(String username, String password) throws NotUniqueUserNameException {
-        if (!userIsExists(username)) {
-            String role = "USER";
-            if(username.toLowerCase().equals("admin")){
-                role = "ADMIN";
-            }
-            ConsoleUser newUser = ConsoleUser.builder()
-                    .username(username)
-                    .password(password)
-                    .workouts(new LinkedList<>())
-                    .role(role)
-                    .build();
-            userRepository.save(newUser);
-        } else {
-            throw new NotUniqueUserNameException("Пользователь с таким именем уже существует");
-        }
-    }
+    UserDto registrationProcess(String username, String password) throws NotUniqueUserNameException;
     /**
      * Метод входа в аккаунт.
-     * @param username уникальное имя пользователя
-     * @param password пароль пользователя
+     * @param userDto параметры для входа в приложение
      * @see ConsoleUser пользователь приложения
      * @return Optional<ConsoleUser> : optional обёртка полученного зарегестрированного пользователя
      **/
-    public Optional<ConsoleUser> logIn(String username, String password) {
-        return Optional.ofNullable(userRepository.findByUsernameAndPassword(username, password));
-    }
+    Optional<UserDto> logIn(LoginUserDto userDto);
 
     /**
      * Метод проверки на существование пользователя.
@@ -58,7 +29,5 @@ public class AuthenticationService {
      * @see ConsoleUser пользователь приложения
      * @return boolean : наличие / отсутствие пользователя
      **/
-    public boolean userIsExists(String username) {
-        return userRepository.findUserByUsername(username);
-    }
+    boolean userIsExists(String username);
 }

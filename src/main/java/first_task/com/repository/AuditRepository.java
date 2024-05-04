@@ -5,6 +5,8 @@ import first_task.com.config.DataBaseConfig;
 import java.sql.*;
 import java.time.LocalDate;
 
+import static first_task.com.util.SQLUtilQueries.*;
+
 /**
  * Класс - репозиторий, который связывается с базой данных audit_logs
  *  **/
@@ -16,9 +18,8 @@ public class AuditRepository {
      * @param user_id Внешний ключ пользователя
      *  **/
     public void saveAudit(String actionDescription, Integer user_id){
-        String saveSql = "INSERT INTO audit_log.audit_logs (time_of_action, action_description, user_id) VALUES(?,?,?)";
         try(Connection connection = DataBaseConfig.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(saveSql)){
+            PreparedStatement preparedStatement = connection.prepareStatement(SAVE_AUDIT)){
             preparedStatement.setDate(1, Date.valueOf(LocalDate.now()));
             preparedStatement.setString(2, actionDescription);
             if (user_id != null) {

@@ -2,6 +2,7 @@ package first_task.com.model;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 
@@ -25,7 +26,7 @@ public class ConsoleUser {
     /** Пароль пользователя */
     private String password;
     /** Все личные тренировки пользователя */
-    private LinkedList<Workout> workouts;
+    private ArrayList<Workout> workouts;
     /** Роль пользователя в приложении */
     private String role;
 

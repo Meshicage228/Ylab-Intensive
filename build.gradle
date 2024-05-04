@@ -1,5 +1,8 @@
 plugins {
     id 'java'
+    id 'war'
+    id("io.freefair.aspectj.post-compile-weaving") version "8.6"
+    id("io.freefair.lombok") version "8.6"
 }
 
 group = 'org.example'
@@ -22,21 +25,38 @@ ext {
             junitJupiterApi   : '5.10.2',
             junitJupiterEngine: '5.10.0',
             testcontainers    : '1.19.7',
-            liquibase         : '4.27.0'
+            liquibase         : '4.27.0',
+            servlet_api       : '4.0.1',
+            aspectjrt         : '1.9.21.1',
+            validation_api    : '3.0.2',
+            aspectjVersion    : '1.9.7'
     ]
 }
 dependencies {
+    //web
+    implementation "javax.servlet:javax.servlet-api:${versions.servlet_api}"
+
     //db
 
     implementation "org.postgresql:postgresql:${versions.postgresql}"
     implementation "org.liquibase:liquibase-core:${versions.liquibase}"
 
     //utils
+    implementation "jakarta.validation:jakarta.validation-api:${versions.validation_api}"
+    implementation "org.mapstruct:mapstruct:1.5.3.Final"
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.5.3.Final"
     compileOnly "org.projectlombok:lombok:${versions.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
     implementation "org.apache.commons:commons-collections4:${versions.commonsCollections}"
     implementation "org.apache.commons:commons-lang3:${versions.commonsLang}"
-    implementation "log4j:log4j:${versions.log4j}"
+    implementation "org.apache.logging.log4j:log4j-api:2.23.1"
+    implementation "org.apache.logging.log4j:log4j-core:2.23.1"
+
+    // AOP
+
+    runtimeOnly "org.aspectj:aspectjweaver:1.9.8"
+    implementation "org.aspectj:aspectjtools:1.9.8"
 
     //tests
     implementation "org.assertj:assertj-core:${versions.assertjCore}"
