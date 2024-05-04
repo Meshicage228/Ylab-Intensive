@@ -1,6 +1,5 @@
 package first_task.com.service.impl;
 
-import first_task.com.annotations.LogWithDuration;
 import first_task.com.dto.UserDto;
 import first_task.com.dto.WorkoutDto;
 import first_task.com.exceptions.NotUniqueWorkoutException;
@@ -14,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -24,14 +24,12 @@ import java.util.*;
  */
 
 @RequiredArgsConstructor
-@NoArgsConstructor
+@Service
 public class UserServiceImpl implements UserActionService {
-    @NonNull
-    private WorkoutRepository workoutRepository;
-    @NonNull
-    private UserRepository userRepository;
-    private final WorkoutMapper workoutMapper = Mappers.getMapper(WorkoutMapper.class);
-    private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+    private final WorkoutRepository workoutRepository;
+    private final UserRepository userRepository;
+    private final WorkoutMapper workoutMapper;
+    private final UserMapper userMapper;
     /**
      * Метод добавления новой тренировки:
      * @param user_id id пользователя приложения
@@ -95,7 +93,6 @@ public class UserServiceImpl implements UserActionService {
      * Метод администратора для получения тренировок
      * @return List<UserDto> : вся информация о всех пользователях
      **/
-    @LogWithDuration
     @Override
     public List<UserDto> getAllUsers() {
         return userMapper.toDtos(userRepository.getAll());

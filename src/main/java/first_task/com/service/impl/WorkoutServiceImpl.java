@@ -8,14 +8,12 @@ import first_task.com.mappers.WorkoutTypeMapper;
 import first_task.com.repository.WorkoutRepository;
 import first_task.com.repository.WorkoutTypeRepository;
 import first_task.com.service.WorkoutService;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
 
-import static org.junit.platform.commons.util.Preconditions.notNull;
 
 /**
  * Класс для изменений выбранной тренировки
@@ -24,16 +22,12 @@ import static org.junit.platform.commons.util.Preconditions.notNull;
  */
 
 @RequiredArgsConstructor
+@Service
 public class WorkoutServiceImpl implements WorkoutService {
-    @NonNull
-    private WorkoutRepository workoutRepository;
-
-    @NonNull
-    private WorkoutTypeRepository workoutTypeRepository;
-
-    private final WorkoutTypeMapper workoutTypeMapper = Mappers.getMapper(WorkoutTypeMapper.class);
-
-    private final WorkoutMapper workoutMapper = Mappers.getMapper(WorkoutMapper.class);
+    private final WorkoutRepository workoutRepository;
+    private final WorkoutTypeRepository workoutTypeRepository;
+    private final WorkoutTypeMapper workoutTypeMapper;
+    private final WorkoutMapper workoutMapper;
 
     /**
      * Метод изменения даты тренировки.

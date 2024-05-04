@@ -10,6 +10,8 @@ import first_task.com.service.AuthenticationService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -19,10 +21,10 @@ import java.util.Optional;
  */
 
 @RequiredArgsConstructor
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    @NonNull
-    private UserRepository userRepository;
-    private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
     /**
      * Метод регистрации пользователя.
      * @param username уникальное имя пользователя
