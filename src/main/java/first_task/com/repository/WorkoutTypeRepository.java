@@ -34,10 +34,10 @@ public class WorkoutTypeRepository {
         }
         template.update(SAVE_TYPE, workoutTypeDto.getTypeTitle().toUpperCase());
 
-        return findByTitle(workoutTypeDto.getTypeTitle());
+        return findByTitle(workoutTypeDto.getTypeTitle().toUpperCase());
     }
 
     public WorkoutType findByTitle(String title) {
-        return template.queryForObject(TYPE_FIND_BY_TITLE, new Object[]{title}, WorkoutType.class);
+        return template.query(TYPE_FIND_BY_TITLE, new Object[]{title}, rowMapper).get(0);
     }
 }
