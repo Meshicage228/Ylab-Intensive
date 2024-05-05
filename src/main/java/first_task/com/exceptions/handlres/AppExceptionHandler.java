@@ -1,4 +1,4 @@
-package first_task.com.in.controllers.handlres;
+package first_task.com.exceptions.handlres;
 
 import first_task.com.exceptions.InappropriateDataException;
 import first_task.com.exceptions.NotUniqueTypeTitleException;
@@ -26,7 +26,7 @@ public class AppExceptionHandler {
     @ExceptionHandler(NotUniqueUserNameException.class)
     public ResponseEntity<String> handleException(NotUniqueUserNameException e) {
         return ResponseEntity
-                .status(CONFLICT)
+                .status(UNAUTHORIZED)
                 .body(jsonUtils.formJsonErrorMessage(e.getMessage()));
     }
 

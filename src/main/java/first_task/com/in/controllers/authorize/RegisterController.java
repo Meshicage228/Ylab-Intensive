@@ -7,8 +7,8 @@ import first_task.com.exceptions.NotUniqueUserNameException;
 import first_task.com.service.AuthenticationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,8 +32,8 @@ public class RegisterController {
             response = ResponseEntity.class
     )
     @PostMapping
-    public ResponseEntity<UserDto> login(@RequestBody LoginUserDto loginUserDto,
-                                         BindingResult bindingResult) throws NotUniqueUserNameException, InappropriateDataException {
+    public ResponseEntity<UserDto> authorize(@Valid @RequestBody LoginUserDto loginUserDto,
+                                             BindingResult bindingResult) throws NotUniqueUserNameException, InappropriateDataException {
         if (bindingResult.hasErrors()) {
             throw new InappropriateDataException(bindingResult);
         }

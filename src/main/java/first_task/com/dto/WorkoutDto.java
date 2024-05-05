@@ -1,10 +1,12 @@
 package first_task.com.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * Класс-dto, описывающий тренировку
@@ -25,6 +27,7 @@ public class WorkoutDto {
     @NotBlank(message = "Введите дату тренировки")
     private String timeOfWorkout;
     /** Тип тренировки */
+    @Valid
     private WorkoutTypeDto workoutType;
 
     @NotNull(message = "Введите продолжительность тренировки")

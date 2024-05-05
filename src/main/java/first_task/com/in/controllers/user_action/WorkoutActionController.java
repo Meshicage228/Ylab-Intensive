@@ -8,7 +8,9 @@ import first_task.com.service.UserActionService;
 import first_task.com.service.WorkoutService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import jakarta.validation.Valid;
+
+import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +49,8 @@ public class WorkoutActionController {
             response = ResponseEntity.class
     )
     @DeleteMapping("/{workoutId}")
-    public ResponseEntity<Void> deleteWorkout(@PathVariable("userId") int userId, @PathVariable("workoutId") int workoutId) {
+    public ResponseEntity<Void> deleteWorkout(@PathVariable("userId") int userId,
+                                              @PathVariable("workoutId") int workoutId) {
         workoutService.deleteWorkout(userId, workoutId);
         return ResponseEntity.status(OK).build();
     }

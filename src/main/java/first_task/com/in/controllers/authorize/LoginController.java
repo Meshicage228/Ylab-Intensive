@@ -6,12 +6,12 @@ import first_task.com.exceptions.InappropriateDataException;
 import first_task.com.service.AuthenticationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
@@ -31,7 +31,7 @@ public class LoginController {
     )
     @PostMapping
     public ResponseEntity<UserDto> login(@Valid @RequestBody LoginUserDto loginUserDto,
-                                BindingResult bindingResult) throws InappropriateDataException {
+                                         BindingResult bindingResult) throws InappropriateDataException {
         if (bindingResult.hasErrors()) {
             throw new InappropriateDataException(bindingResult);
         }
