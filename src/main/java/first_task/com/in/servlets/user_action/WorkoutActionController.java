@@ -6,6 +6,8 @@ import first_task.com.dto.WorkoutUpdateDto;
 import first_task.com.exceptions.NotUniqueWorkoutException;
 import first_task.com.service.UserActionService;
 import first_task.com.service.WorkoutService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,23 +22,41 @@ import static java.util.Objects.nonNull;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/users/{userId}/workouts")
+@Api(value = "/users/{userId}/workouts", tags = "Users actions on workouts")
 public class WorkoutActionController {
     private final WorkoutService workoutService;
     private final UserActionService userService;
 
-
+    @ApiOperation(
+            value = "Gives all workouts of specific user",
+            httpMethod = "GET",
+            produces = "application/json",
+            response = ResponseEntity.class
+    )
     @GetMapping
     public ResponseEntity<ArrayList<WorkoutDto>> getAllUsersWorkouts(@PathVariable("userId") int userId) {
      ArrayList<WorkoutDto> workoutDtos = userService.showAllWorkoutsDateSorted(userId);
         return ResponseEntity.ok(workoutDtos);
     }
 
+    @ApiOperation(
+            value = "Delete users workout",
+            httpMethod = "DELETE",
+            produces = "application/json",
+            response = ResponseEntity.class
+    )
     @DeleteMapping("/{workoutId}")
     public ResponseEntity<Void> deleteWorkout(@PathVariable("userId") int userId, @PathVariable("workoutId") int workoutId) {
         workoutService.deleteWorkout(userId, workoutId);
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(
+            value = "Save specific workout for user",
+            httpMethod = "POST",
+            produces = "application/json",
+            response = ResponseEntity.class
+    )
     @PostMapping
     public ResponseEntity<WorkoutDto> saveWorkout(@PathVariable("userId") int userId,
                                                   @Valid @RequestBody WorkoutDto workout,
@@ -52,6 +72,12 @@ public class WorkoutActionController {
         }
     }
 
+    @ApiOperation(
+            value = "Patch update for users workout",
+            httpMethod = "PATCH",
+            produces = "application/json",
+            response = ResponseEntity.class
+    )
     @PatchMapping("/{workoutId}")
     public ResponseEntity updateWorkout(@PathVariable("userId") int userId,
                                         @PathVariable("workoutId") int workoutId,

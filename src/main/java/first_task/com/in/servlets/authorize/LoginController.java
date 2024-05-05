@@ -3,6 +3,8 @@ package first_task.com.in.servlets.authorize;
 import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.UserDto;
 import first_task.com.service.AuthenticationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,16 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequestMapping("/login")
 @RequiredArgsConstructor
+@Api(value = "/login", tags = "Login controller")
 public class LoginController {
     private final AuthenticationService service;
 
+    @ApiOperation(
+            value = "Login existing user to the app",
+            httpMethod = "POST",
+            produces = "application/json",
+            response = ResponseEntity.class
+    )
     @PostMapping
     public ResponseEntity login(@Valid @RequestBody LoginUserDto loginUserDto,
                                 BindingResult bindingResult) {

@@ -5,6 +5,8 @@ import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.UserDto;
 import first_task.com.exceptions.NotUniqueUserNameException;
 import first_task.com.service.AuthenticationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,16 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequestMapping("/register")
 @RequiredArgsConstructor
+@Api(value = "/register", tags = "Authorization Controller")
 public class RegisterController {
     private final AuthenticationService service;
 
+    @ApiOperation(
+            value = "Registers user to the app",
+            httpMethod = "POST",
+            produces = "application/json",
+            response = ResponseEntity.class
+    )
     @PostMapping
     public ResponseEntity login(@RequestBody LoginUserDto loginUserDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
