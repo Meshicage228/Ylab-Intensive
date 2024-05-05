@@ -1,8 +1,8 @@
-package first_task.com.in.servlets.user_action;
+package first_task.com.in.controllers.user_action;
 
-import first_task.com.annotations.Loggable;
 import first_task.com.dto.WorkoutDto;
 import first_task.com.dto.WorkoutUpdateDto;
+import first_task.com.exceptions.InappropriateDataException;
 import first_task.com.exceptions.NotUniqueWorkoutException;
 import first_task.com.service.UserActionService;
 import first_task.com.service.WorkoutService;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 import static java.util.Objects.nonNull;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class WorkoutActionController {
     )
     @GetMapping
     public ResponseEntity<ArrayList<WorkoutDto>> getAllUsersWorkouts(@PathVariable("userId") int userId) {
-     ArrayList<WorkoutDto> workoutDtos = userService.showAllWorkoutsDateSorted(userId);
+        ArrayList<WorkoutDto> workoutDtos = userService.showAllWorkoutsDateSorted(userId);
         return ResponseEntity.ok(workoutDtos);
     }
 
@@ -48,7 +49,7 @@ public class WorkoutActionController {
     @DeleteMapping("/{workoutId}")
     public ResponseEntity<Void> deleteWorkout(@PathVariable("userId") int userId, @PathVariable("workoutId") int workoutId) {
         workoutService.deleteWorkout(userId, workoutId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(OK).build();
     }
 
     @ApiOperation(
@@ -60,16 +61,12 @@ public class WorkoutActionController {
     @PostMapping
     public ResponseEntity<WorkoutDto> saveWorkout(@PathVariable("userId") int userId,
                                                   @Valid @RequestBody WorkoutDto workout,
-                                                  BindingResult bindingResult) {
+                                                  BindingResult bindingResult) throws NotUniqueWorkoutException, InappropriateDataException {
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new InappropriateDataException(bindingResult);
         }
-        try {
-            WorkoutDto answer = userService.addNewWorkout(userId, workout);
-            return ResponseEntity.status(HttpStatus.CREATED).body(answer);
-        } catch (NotUniqueWorkoutException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(workout);
-        }
+        WorkoutDto answer = userService.addNewWorkout(userId, workout);
+        return ResponseEntity.status(HttpStatus.CREATED).body(answer);
     }
 
     @ApiOperation(
@@ -79,14 +76,14 @@ public class WorkoutActionController {
             response = ResponseEntity.class
     )
     @PatchMapping("/{workoutId}")
-    public ResponseEntity updateWorkout(@PathVariable("userId") int userId,
-                                        @PathVariable("workoutId") int workoutId,
-                                        WorkoutUpdateDto workout) {
+    public ResponseEntity<WorkoutDto> updateWorkout(@PathVariable("userId") int userId,
+                                                    @PathVariable("workoutId") int workoutId,
+                                                    WorkoutUpdateDto workout) {
         WorkoutDto updated = null;
 
-        if(nonNull(workout.getAdditionalInfo())){
+        if (nonNull(workout.getAdditionalInfo())) {
             updated = workoutService.changeAdditionalInfo(userId, workoutId, workout.getAdditionalInfo());
-        } else if(nonNull(workout.getCaloriesBurned())){
+        } else if (nonNull(workout.getCaloriesBurned())) {
             updated = workoutService.changeCalories(userId, workoutId, workout.getCaloriesBurned());
         } else if (nonNull(workout.getMinuteDuration())) {
             updated = workoutService.changeMinuteDuration(userId, workoutId, workout.getMinuteDuration());

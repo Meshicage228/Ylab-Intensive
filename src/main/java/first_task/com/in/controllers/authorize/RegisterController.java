@@ -1,8 +1,8 @@
-package first_task.com.in.servlets.authorize;
+package first_task.com.in.controllers.authorize;
 
-import first_task.com.annotations.Loggable;
 import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.UserDto;
+import first_task.com.exceptions.InappropriateDataException;
 import first_task.com.exceptions.NotUniqueUserNameException;
 import first_task.com.service.AuthenticationService;
 import io.swagger.annotations.Api;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -34,18 +32,12 @@ public class RegisterController {
             response = ResponseEntity.class
     )
     @PostMapping
-    public ResponseEntity login(@RequestBody LoginUserDto loginUserDto, BindingResult bindingResult) {
+    public ResponseEntity<UserDto> login(@RequestBody LoginUserDto loginUserDto,
+                                         BindingResult bindingResult) throws NotUniqueUserNameException, InappropriateDataException {
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            throw new InappropriateDataException(bindingResult);
         }
-        try {
-            UserDto userDto = service.registrationProcess(loginUserDto.getUsername(), loginUserDto.getPassword());
-
-            return ResponseEntity.status(CREATED).body(userDto);
-        } catch (NotUniqueUserNameException e) {
-            return ResponseEntity.status(CONFLICT).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+        UserDto userDto = service.registrationProcess(loginUserDto.getUsername(), loginUserDto.getPassword());
+        return ResponseEntity.status(CREATED).body(userDto);
     }
 }

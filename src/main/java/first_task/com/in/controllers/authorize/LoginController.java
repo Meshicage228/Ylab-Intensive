@@ -1,13 +1,13 @@
-package first_task.com.in.servlets.authorize;
+package first_task.com.in.controllers.authorize;
 
 import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.UserDto;
+import first_task.com.exceptions.InappropriateDataException;
 import first_task.com.service.AuthenticationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -30,20 +30,15 @@ public class LoginController {
             response = ResponseEntity.class
     )
     @PostMapping
-    public ResponseEntity login(@Valid @RequestBody LoginUserDto loginUserDto,
-                                BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginUserDto loginUserDto,
+                                BindingResult bindingResult) throws InappropriateDataException {
+        if (bindingResult.hasErrors()) {
+            throw new InappropriateDataException(bindingResult);
         }
 
-        try {
-            Optional<UserDto> user = service.logIn(loginUserDto);
+        Optional<UserDto> user = service.logIn(loginUserDto);
 
-            return user.<ResponseEntity>
-                    map(userDto -> ResponseEntity.status(OK).body(userDto))
-                    .orElseGet(() -> ResponseEntity.status(UNAUTHORIZED).build());
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+        return user.map(userDto -> ResponseEntity.ok().body(userDto))
+                .orElseGet(() -> ResponseEntity.status(UNAUTHORIZED).build());
     }
 }

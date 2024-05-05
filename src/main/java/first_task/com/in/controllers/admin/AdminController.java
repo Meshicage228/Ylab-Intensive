@@ -1,4 +1,4 @@
-package first_task.com.in.servlets.admin;
+package first_task.com.in.controllers.admin;
 
 import first_task.com.dto.UserDto;
 import first_task.com.service.UserActionService;

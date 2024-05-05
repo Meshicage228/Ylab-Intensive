@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import first_task.com.dto.UserDto;
-import first_task.com.in.servlets.authorize.RegisterUserServlet;
+import first_task.com.in.controllers.authorize.RegisterUserServlet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

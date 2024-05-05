@@ -22,7 +22,7 @@ import java.util.List;
 @ComponentScan("first_task.com")
 @EnableAspectJAutoProxy
 @PropertySource("classpath:application.yaml")
-public class WebApp implements WebMvcConfigurer{
+public class WebAppConfiguration implements WebMvcConfigurer{
     private final Environment env;
 
     @Override

@@ -1,6 +1,7 @@
-package first_task.com.in.servlets.workout;
+package first_task.com.in.controllers.workout;
 
 import first_task.com.dto.WorkoutTypeDto;
+import first_task.com.exceptions.InappropriateDataException;
 import first_task.com.exceptions.NotUniqueTypeTitleException;
 import first_task.com.service.WorkoutService;
 import io.swagger.annotations.Api;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -26,20 +29,14 @@ public class WorkoutTypeController {
             response = ResponseEntity.class
     )
     @PostMapping
-    public ResponseEntity workoutTypeSave(@RequestBody WorkoutTypeDto workoutType,
-                                          BindingResult bindingResult,
-                                          @PathVariable int userId) {
+    public ResponseEntity<WorkoutTypeDto> workoutTypeSave(@RequestBody WorkoutTypeDto workoutType,
+                                                          BindingResult bindingResult,
+                                                          @PathVariable int userId) throws NotUniqueTypeTitleException, InappropriateDataException {
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult);
+            throw new InappropriateDataException(bindingResult);
         }
-        try {
-            WorkoutTypeDto answer = workoutService.saveWorkoutType(userId, workoutType);
-            return ResponseEntity.status(CREATED).body(answer);
-        } catch (NotUniqueTypeTitleException e) {
-            return ResponseEntity.status(CONFLICT).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+        WorkoutTypeDto answer = workoutService.saveWorkoutType(userId, workoutType);
+        return ResponseEntity.status(CREATED).body(answer);
     }
 
     @ApiOperation(
@@ -49,7 +46,7 @@ public class WorkoutTypeController {
             response = ResponseEntity.class
     )
     @GetMapping
-    public ResponseEntity getWorkoutTypes() {
+    public ResponseEntity<List<WorkoutTypeDto>> getWorkoutTypes() {
         return ResponseEntity.ok(workoutService.getAllTypes());
     }
 }

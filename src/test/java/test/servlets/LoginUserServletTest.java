@@ -4,7 +4,7 @@ import static org.mockito.Mockito.*;
 
 import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.UserDto;
-import first_task.com.in.servlets.authorize.LoginUserServlet;
+import first_task.com.in.controllers.authorize.LoginUserServlet;
 import first_task.com.service.impl.AuthenticationServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

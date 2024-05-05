@@ -1,7 +1,7 @@
 package test.servlets;
 
 import first_task.com.dto.UserDto;
-import first_task.com.in.servlets.admin.AllUsersServlet;
+import first_task.com.in.controllers.admin.AllUsersServlet;
 import first_task.com.service.UserActionService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
