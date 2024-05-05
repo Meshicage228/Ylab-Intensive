@@ -1,5 +1,6 @@
 package first_task.com.config;
 
+import liquibase.integration.spring.SpringLiquibase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -9,6 +10,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
@@ -17,8 +19,9 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebMvc
+@ComponentScan("first_task.com")
 @EnableAspectJAutoProxy
-@PropertySource("classpath:app.yaml")
+@PropertySource("classpath:application.yaml")
 public class WebApp implements WebMvcConfigurer{
     private final Environment env;
 
@@ -41,5 +44,24 @@ public class WebApp implements WebMvcConfigurer{
     @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
+    }
+
+    @Bean
+    public SpringLiquibase liquibase(DataSource dataSource, JdbcTemplate template) {
+        template.update("CREATE SCHEMA IF NOT EXISTS " + env.getProperty("schemaName"));
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setChangeLog(env.getProperty("changeLog"));
+        liquibase.setDataSource(dataSource);
+        liquibase.setDefaultSchema(env.getProperty("schemaName"));
+        return liquibase;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }

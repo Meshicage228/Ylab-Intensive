@@ -1,5 +1,6 @@
 package first_task.com.service.impl;
 
+import first_task.com.annotations.Loggable;
 import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.UserDto;
 import first_task.com.exceptions.NotUniqueUserNameException;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Loggable
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;

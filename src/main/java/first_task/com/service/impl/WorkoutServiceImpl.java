@@ -1,5 +1,6 @@
 package first_task.com.service.impl;
 
+import first_task.com.annotations.LogWithDuration;
 import first_task.com.dto.WorkoutDto;
 import first_task.com.dto.WorkoutTypeDto;
 import first_task.com.exceptions.NotUniqueTypeTitleException;
@@ -23,6 +24,7 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Service
+@LogWithDuration
 public class WorkoutServiceImpl implements WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final WorkoutTypeRepository workoutTypeRepository;

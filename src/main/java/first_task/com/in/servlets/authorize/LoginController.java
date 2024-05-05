@@ -3,9 +3,11 @@ package first_task.com.in.servlets.authorize;
 import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.UserDto;
 import first_task.com.service.AuthenticationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -19,7 +21,12 @@ public class LoginController {
     private final AuthenticationService service;
 
     @PostMapping
-    public ResponseEntity login(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity login(@Valid @RequestBody LoginUserDto loginUserDto,
+                                BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
         try {
             Optional<UserDto> user = service.logIn(loginUserDto);
 

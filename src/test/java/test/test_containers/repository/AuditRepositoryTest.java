@@ -1,6 +1,5 @@
 package test.test_containers.repository;
 
-import first_task.com.config.DataBaseConfig;
 import first_task.com.repository.AuditRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

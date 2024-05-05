@@ -1,12 +1,16 @@
 package first_task.com.in.servlets.user_action;
 
+import first_task.com.annotations.Loggable;
 import first_task.com.dto.WorkoutDto;
+import first_task.com.dto.WorkoutUpdateDto;
 import first_task.com.exceptions.NotUniqueWorkoutException;
 import first_task.com.service.UserActionService;
 import first_task.com.service.WorkoutService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -35,7 +39,11 @@ public class WorkoutActionController {
 
     @PostMapping
     public ResponseEntity<WorkoutDto> saveWorkout(@PathVariable("userId") int userId,
-                                                  @RequestBody WorkoutDto workout) {
+                                                  @Valid @RequestBody WorkoutDto workout,
+                                                  BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         try {
             WorkoutDto answer = userService.addNewWorkout(userId, workout);
             return ResponseEntity.status(HttpStatus.CREATED).body(answer);
@@ -47,7 +55,7 @@ public class WorkoutActionController {
     @PatchMapping("/{workoutId}")
     public ResponseEntity updateWorkout(@PathVariable("userId") int userId,
                                         @PathVariable("workoutId") int workoutId,
-                                        @RequestBody WorkoutDto workout) {
+                                        WorkoutUpdateDto workout) {
         WorkoutDto updated = null;
 
         if(nonNull(workout.getAdditionalInfo())){
@@ -56,8 +64,8 @@ public class WorkoutActionController {
             updated = workoutService.changeCalories(userId, workoutId, workout.getCaloriesBurned());
         } else if (nonNull(workout.getMinuteDuration())) {
             updated = workoutService.changeMinuteDuration(userId, workoutId, workout.getMinuteDuration());
-        } else if (nonNull(workout.getDateOfAdding())) {
-            updated = workoutService.changeDate(userId, workoutId, workout.getDateOfAdding());
+        } else if (nonNull(workout.getTimeOfWorkout())) {
+            updated = workoutService.changeDate(userId, workoutId, workout.getTimeOfWorkout());
         }
 
         return ResponseEntity.ok(updated);

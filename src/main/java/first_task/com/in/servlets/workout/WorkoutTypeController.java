@@ -5,6 +5,7 @@ import first_task.com.exceptions.NotUniqueTypeTitleException;
 import first_task.com.service.WorkoutService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.*;
@@ -16,7 +17,12 @@ public class WorkoutTypeController {
     private final WorkoutService workoutService;
 
     @PostMapping
-    public ResponseEntity workoutType(@RequestBody WorkoutTypeDto workoutType, @PathVariable int userId) {
+    public ResponseEntity workoutTypeSave(@RequestBody WorkoutTypeDto workoutType,
+                                          BindingResult bindingResult,
+                                          @PathVariable int userId) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult);
+        }
         try {
             WorkoutTypeDto answer = workoutService.saveWorkoutType(userId, workoutType);
             return ResponseEntity.status(CREATED).body(answer);
@@ -26,8 +32,9 @@ public class WorkoutTypeController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
     @GetMapping
-    public ResponseEntity workoutTypes() {
+    public ResponseEntity getWorkoutTypes() {
         return ResponseEntity.ok(workoutService.getAllTypes());
     }
 }

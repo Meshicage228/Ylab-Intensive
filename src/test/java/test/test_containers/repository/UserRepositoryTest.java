@@ -1,6 +1,5 @@
 package test.test_containers.repository;
 
-import first_task.com.config.DataBaseConfig;
 import first_task.com.model.ConsoleUser;
 import first_task.com.repository.UserRepository;
 import first_task.com.repository.WorkoutRepository;

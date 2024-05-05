@@ -1,32 +1,33 @@
 package first_task.com.aspect;
 
-import first_task.com.util.AuditLog;
+import first_task.com.service.AuditLogService;
+import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
+
 @Aspect
+@RequiredArgsConstructor
+@Component
 public class LoggingAspect {
+
+    private final AuditLogService auditLogService;
 
     @Pointcut("within(@first_task.com.annotations.Loggable *) && execution(* * (..))")
     public void annotatedByLoggable() {}
 
-    @Around("annotatedByLoggable()")
-    public Object log(ProceedingJoinPoint proceedingJoinPoint) {
+    @After("annotatedByLoggable()")
+    public void log(JoinPoint joinPoint) {
         String message = "Calling method : %s";
-        AuditLog.addLogEntry(String.format(message, proceedingJoinPoint.getSignature()) ,null);
-        Arrays.stream(proceedingJoinPoint.getArgs()).forEach(System.out::println);
-        try {
-            return proceedingJoinPoint.proceed();
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+        auditLogService.addLogEntry(String.format(message, joinPoint.getSignature()) ,null);
+        Arrays.stream(joinPoint.getArgs()).forEach(System.out::println);
     }
 
-    @Pointcut("within(@first_task.com.annotations.LogWithDuration *) && execution(* * (..))")
+    @Pointcut("within(@first_task.com.annotations.LogWithDuration *) && execution(* *(..))")
     public void annotatedByLoggableWithDuration() {}
 
     @Around("annotatedByLoggableWithDuration()")
@@ -35,7 +36,7 @@ public class LoggingAspect {
         long start = System.currentTimeMillis();
         Object result = proceedingJoinPoint.proceed();
         long end = System.currentTimeMillis() - start;
-        AuditLog.addLogEntry(String.format(message, proceedingJoinPoint.getSignature(), end), null);
+        auditLogService.addLogEntry(String.format(message, proceedingJoinPoint.getSignature(), end), null);
         return result;
     }
 }

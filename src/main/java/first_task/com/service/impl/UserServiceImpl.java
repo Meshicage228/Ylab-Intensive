@@ -1,5 +1,6 @@
 package first_task.com.service.impl;
 
+import first_task.com.annotations.Loggable;
 import first_task.com.dto.UserDto;
 import first_task.com.dto.WorkoutDto;
 import first_task.com.exceptions.NotUniqueWorkoutException;
@@ -25,6 +26,7 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Service
+@Loggable
 public class UserServiceImpl implements UserActionService {
     private final WorkoutRepository workoutRepository;
     private final UserRepository userRepository;

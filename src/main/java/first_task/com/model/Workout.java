@@ -1,5 +1,6 @@
 package first_task.com.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class Workout {
     /** Дата внесенной тренировки YYYY-MM-DD */
     private LocalDate timeOfWorkout;
     /** Тип тренировки */
+    @JsonIgnore
     private WorkoutType workoutType;
     /** Длительность тренировки */
     private Double minuteDuration;
