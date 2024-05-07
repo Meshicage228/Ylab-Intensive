@@ -46,6 +46,7 @@ dependencies {
     implementation "org.springframework:spring-jdbc:${versions.springVersion}"
     implementation "org.springframework:spring-aop:${versions.springVersion}"
     implementation "org.springframework:spring-aspects:${versions.springVersion}"
+    implementation "org.springframework:spring-test:${versions.springVersion}"
 
     // Swagger
     implementation "io.springfox:springfox-swagger2:${versions.swaggerVersion}"
