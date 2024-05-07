@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
     protected ApiInfo apiInfo(){
         return new ApiInfo(
-                "Meter Reading Monitoring Service",
+                "Training Diary Application",
                 "Rest API documentation",
                 "1",
                 "Terms of Service",
