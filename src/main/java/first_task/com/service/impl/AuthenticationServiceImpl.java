@@ -5,12 +5,10 @@ import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.UserDto;
 import first_task.com.exceptions.NotUniqueUserNameException;
 import first_task.com.mappers.UserMapper;
-import first_task.com.model.ConsoleUser;
+import first_task.com.model.AppUser;
 import first_task.com.repository.UserRepository;
 import first_task.com.service.AuthenticationService;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @param username уникальное имя пользователя
      * @param password пароль пользователя
      * @exception NotUniqueUserNameException исключение неуникального имени
-     * @see ConsoleUser пользователь приложения
+     * @see AppUser пользователь приложения
      **/
     public UserDto registrationProcess(String username, String password) throws NotUniqueUserNameException {
         if (!userIsExists(username)) {
@@ -40,7 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             if(username.toLowerCase().equals("admin")){
                 role = "ADMIN";
             }
-            ConsoleUser newUser = ConsoleUser.builder()
+            AppUser newUser = AppUser.builder()
                     .username(username)
                     .password(password)
                     .workouts(new ArrayList<>())
@@ -54,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     /**
      * Метод входа в аккаунт.
      * @param loginUserDto параметры для входа в приложение
-     * @see ConsoleUser пользователь приложения
+     * @see AppUser пользователь приложения
      * @return Optional<ConsoleUser> : optional обёртка полученного зарегестрированного пользователя
      **/
     public Optional<UserDto> logIn(LoginUserDto loginUserDto) {
@@ -66,7 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     /**
      * Метод проверки на существование пользователя.
      * @param username уникальное имя пользователя
-     * @see ConsoleUser пользователь приложения
+     * @see AppUser пользователь приложения
      * @return boolean : наличие / отсутствие пользователя
      **/
     public boolean userIsExists(String username) {

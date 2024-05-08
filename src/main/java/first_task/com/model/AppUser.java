@@ -3,7 +3,6 @@ package first_task.com.model;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 
 /**
@@ -18,7 +17,7 @@ import java.util.LinkedList;
 @Getter
 @Setter
 @Builder
-public class ConsoleUser {
+public class AppUser {
     /** id пользователя в базе данных */
     private Integer id;
     /** имя пользователя */

@@ -1,5 +1,6 @@
 package first_task.com.in.controllers.admin;
 
+import first_task.com.annotations.AdminAccessCheck;
 import first_task.com.dto.UserDto;
 import first_task.com.service.UserActionService;
 import io.swagger.annotations.Api;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 @Api(value = "/admin", tags = "Admin's controller")
+@AdminAccessCheck
 public class AdminController {
     private final UserActionService userService;
 

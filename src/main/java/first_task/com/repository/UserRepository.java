@@ -1,7 +1,7 @@
 package first_task.com.repository;
 
 import first_task.com.mappers.rowMappers.ConsoleUserRowMapper;
-import first_task.com.model.ConsoleUser;
+import first_task.com.model.AppUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,10 +26,10 @@ public class UserRepository {
     /**
      * Метод сохранения пользователя
      *
-     * @param newUser {@link ConsoleUser пользователь приложения}
+     * @param newUser {@link AppUser пользователь приложения}
      * @return ConsoleUser - сохраненный пользователь
      **/
-    public ConsoleUser save(ConsoleUser newUser) {
+    public AppUser save(AppUser newUser) {
         jdbc.update(SAVE_USER, new Object[]{newUser.getUsername(), newUser.getPassword(), newUser.getRole()});
         return newUser;
     }
@@ -41,7 +41,7 @@ public class UserRepository {
      * @return true/false пользователь найден / не найден
      **/
     public boolean findUserByUsername(String username) {
-        List<ConsoleUser> query = jdbc.query(FIND_USER_BY_USERNAME, rowMapper, username);
+        List<AppUser> query = jdbc.query(FIND_USER_BY_USERNAME, rowMapper, username);
         return !query.isEmpty();
     }
 
@@ -52,7 +52,7 @@ public class UserRepository {
      * @param password пароль пользователя
      * @return ConsoleUser найденный пользователь
      **/
-    public ConsoleUser findByUsernameAndPassword(String username, String password) {
+    public AppUser findByUsernameAndPassword(String username, String password) {
         try {
             return jdbc.queryForObject(FIND_USER_BY_USERNAME_AND_PASSWORD, rowMapper, username, password);
         } catch (EmptyResultDataAccessException e) {
@@ -65,7 +65,7 @@ public class UserRepository {
      *
      * @return Результирующая строка со всей информацией
      **/
-    public ArrayList<ConsoleUser> getAll() {
-       return (ArrayList<ConsoleUser>) jdbc.query(FIND_ALL_USERS, rowMapper);
+    public ArrayList<AppUser> getAll() {
+       return (ArrayList<AppUser>) jdbc.query(FIND_ALL_USERS, rowMapper);
     }
 }

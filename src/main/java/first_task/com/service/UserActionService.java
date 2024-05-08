@@ -2,12 +2,10 @@ package first_task.com.service;
 
 import first_task.com.dto.UserDto;
 import first_task.com.dto.WorkoutDto;
-import first_task.com.model.ConsoleUser;
 import first_task.com.model.Workout;
 import first_task.com.exceptions.NotUniqueWorkoutException;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

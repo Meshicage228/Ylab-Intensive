@@ -1,5 +1,8 @@
 package first_task.com.aspect;
 
+import first_task.com.dto.CurrentUser;
+import first_task.com.dto.UserDto;
+import first_task.com.model.AppUser;
 import first_task.com.service.AuditLogService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
@@ -16,6 +19,7 @@ import java.util.Arrays;
 public class LoggingAspect {
 
     private final AuditLogService auditLogService;
+    private final CurrentUser appUser;
 
     @Pointcut("within(@first_task.com.annotations.Loggable *) && execution(* * (..))")
     public void annotatedByLoggable() {}
@@ -23,7 +27,7 @@ public class LoggingAspect {
     @After("annotatedByLoggable()")
     public void log(JoinPoint joinPoint) {
         String message = "Calling method : %s";
-        auditLogService.addLogEntry(String.format(message, joinPoint.getSignature()) ,null);
+        auditLogService.addLogEntry(String.format(message, joinPoint.getSignature()) , appUser.getId());
         Arrays.stream(joinPoint.getArgs()).forEach(System.out::println);
     }
 
@@ -36,7 +40,7 @@ public class LoggingAspect {
         long start = System.currentTimeMillis();
         Object result = proceedingJoinPoint.proceed();
         long end = System.currentTimeMillis() - start;
-        auditLogService.addLogEntry(String.format(message, proceedingJoinPoint.getSignature(), end), null);
+        auditLogService.addLogEntry(String.format(message, proceedingJoinPoint.getSignature(), end), appUser.getId());
         return result;
     }
 }
