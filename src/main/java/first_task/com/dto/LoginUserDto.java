@@ -18,6 +18,6 @@ public class LoginUserDto {
     @NotBlank(message = "Введите имя")
     @NotNull(message = "Введите имя")
     private String username;
-    @Size(min = 5, message = "Пароль от 5 символов")
+    @Size(min = 2, message = "Пароль от 2 символов")
     private String password;
 }
