@@ -1,14 +1,12 @@
 package first_task.com.aspect;
 
 import first_task.com.dto.CurrentUser;
-import first_task.com.dto.UserDto;
 import first_task.com.service.AuditLogService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 

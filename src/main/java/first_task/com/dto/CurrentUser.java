@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Builder
+
+/**
+ * Класс, описывающий пользователя, который использует в приложение в данный момент
+ **/
+
 public class CurrentUser {
     private Integer id;
     /** имя пользователя */
