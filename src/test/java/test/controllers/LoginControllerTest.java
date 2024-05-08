@@ -1,6 +1,8 @@
 package test.controllers;
 
 import java.util.Optional;
+
+import first_task.com.dto.CurrentUser;
 import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.UserDto;
 import first_task.com.in.controllers.authorize.LoginController;
@@ -29,6 +31,9 @@ class LoginControllerTest {
     private MockMvc mockMvc;
 
     private LoginUserDto loginUserDto;
+
+    @Mock
+    private CurrentUser currentUser;
 
     @Mock
     private AuthenticationService service;

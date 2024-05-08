@@ -1,5 +1,6 @@
 package first_task.com.in.controllers.authorize;
 
+import first_task.com.dto.CurrentUser;
 import first_task.com.dto.LoginUserDto;
 import first_task.com.dto.UserDto;
 import first_task.com.exceptions.InappropriateDataException;
@@ -22,6 +23,7 @@ import static org.springframework.http.HttpStatus.*;
 @Api(value = "/login", tags = "Login controller")
 public class LoginController {
     private final AuthenticationService service;
+    private final CurrentUser userDto;
 
     @ApiOperation(
             value = "Login existing user to the app",
@@ -38,7 +40,14 @@ public class LoginController {
 
         Optional<UserDto> user = service.logIn(loginUserDto);
 
-        return user.map(userDto -> ResponseEntity.ok().body(userDto))
-                .orElseGet(() -> ResponseEntity.status(UNAUTHORIZED).build());
+        if(user.isPresent()) {
+            UserDto dto = user.get();
+            userDto.setId(dto.getId());
+            userDto.setRole(dto.getRole());
+            userDto.setUsername(dto.getUsername());
+            return ResponseEntity.ok(dto);
+        }
+
+        return ResponseEntity.status(UNAUTHORIZED).build();
     }
 }
