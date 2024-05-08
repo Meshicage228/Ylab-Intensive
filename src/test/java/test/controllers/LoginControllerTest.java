@@ -52,7 +52,7 @@ class LoginControllerTest {
 
     @DisplayName("Success login")
     @Test
-    void successLogIn() throws Exception {
+    public void successLogIn() throws Exception {
         when(service.logIn(ArgumentMatchers.any(LoginUserDto.class)))
                 .thenReturn(Optional.of(new UserDto()));
 
@@ -67,7 +67,7 @@ class LoginControllerTest {
 
     @DisplayName("Fail while login")
     @Test
-    void noUserFound() throws Exception {
+    public void noUserFound() throws Exception {
         when(service.logIn(ArgumentMatchers.any(LoginUserDto.class))).thenReturn(Optional.empty());
 
         mockMvc.perform(post("/login")
