@@ -1,11 +1,11 @@
 package test.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import first_task.com.dto.WorkoutDto;
-import first_task.com.exceptions.NotUniqueWorkoutException;
-import first_task.com.in.controllers.user_action.WorkoutActionController;
-import first_task.com.service.UserActionService;
-import first_task.com.service.WorkoutService;
+import trainingDiary.com.dto.WorkoutDto;
+import trainingDiary.com.exceptions.NotUniqueWorkoutException;
+import trainingDiary.com.in.controllers.user_action.WorkoutActionController;
+import trainingDiary.com.service.UserActionService;
+import trainingDiary.com.service.WorkoutService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,12 +1,12 @@
 /*
 package test;
 
-import first_task.com.dto.WorkoutDto;
-import first_task.com.model.Workout;
-import first_task.com.model.WorkoutType;
-import first_task.com.repository.UserRepository;
-import first_task.com.repository.WorkoutRepository;
-import first_task.com.service.impl.UserServiceImpl;
+import dto.trainingDiary.com.WorkoutDto;
+import model.trainingDiary.com.Workout;
+import model.trainingDiary.com.WorkoutType;
+import repository.trainingDiary.com.UserRepository;
+import repository.trainingDiary.com.WorkoutRepository;
+import impl.service.trainingDiary.com.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

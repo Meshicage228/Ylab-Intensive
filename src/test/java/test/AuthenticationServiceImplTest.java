@@ -1,8 +1,8 @@
 /*
 package test;
 
-import first_task.com.exceptions.NotUniqueUserNameException;
-import first_task.com.service.impl.AuthenticationServiceImpl;
+import exceptions.trainingDiary.com.NotUniqueUserNameException;
+import impl.service.trainingDiary.com.AuthenticationServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

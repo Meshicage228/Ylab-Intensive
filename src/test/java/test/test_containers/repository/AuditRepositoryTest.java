@@ -1,7 +1,7 @@
 /*
 package test.test_containers.repository;
 
-import first_task.com.repository.AuditRepository;
+import repository.trainingDiary.com.AuditRepository;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

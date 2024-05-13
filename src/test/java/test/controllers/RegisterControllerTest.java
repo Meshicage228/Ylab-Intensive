@@ -1,11 +1,11 @@
 package test.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import first_task.com.dto.LoginUserDto;
-import first_task.com.exceptions.NotUniqueUserNameException;
-import first_task.com.exceptions.handlres.AppExceptionHandler;
-import first_task.com.in.controllers.authorize.RegisterController;
-import first_task.com.service.AuthenticationService;
+import trainingDiary.com.dto.LoginUserDto;
+import trainingDiary.com.exceptions.NotUniqueUserNameException;
+import trainingDiary.com.exceptions.handlres.AppExceptionHandler;
+import trainingDiary.com.in.controllers.authorize.RegisterController;
+import trainingDiary.com.service.AuthenticationService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

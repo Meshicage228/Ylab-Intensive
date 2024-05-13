@@ -2,11 +2,11 @@ package test.controllers;
 
 import java.util.Optional;
 
-import first_task.com.dto.CurrentUser;
-import first_task.com.dto.LoginUserDto;
-import first_task.com.dto.UserDto;
-import first_task.com.in.controllers.authorize.LoginController;
-import first_task.com.service.AuthenticationService;
+import trainingDiary.com.dto.CurrentUser;
+import trainingDiary.com.dto.LoginUserDto;
+import trainingDiary.com.dto.UserDto;
+import trainingDiary.com.in.controllers.authorize.LoginController;
+import trainingDiary.com.service.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
