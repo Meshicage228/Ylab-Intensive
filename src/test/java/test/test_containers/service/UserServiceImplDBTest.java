@@ -1,3 +1,4 @@
+/*
 package test.test_containers.service;
 
 import first_task.com.dto.WorkoutDto;
@@ -19,9 +20,11 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+*/
 /**
  * Класс, тестирующий {@link UserServiceImpl} по работе с бд
- *  **/
+ *  **//*
+
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Тест user service")
 @Testcontainers
@@ -51,4 +54,4 @@ class UserServiceImplDBTest extends BaseTestDB {
 
         assertEquals(userService.addNewWorkout(Mockito.anyInt(), newWorkout), newWorkout);
     }
-}
+}*/

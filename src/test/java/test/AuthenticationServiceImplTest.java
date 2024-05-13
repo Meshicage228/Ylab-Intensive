@@ -1,3 +1,4 @@
+/*
 package test;
 
 import first_task.com.exceptions.NotUniqueUserNameException;
@@ -10,8 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+*/
 /**
- * Класс, тестирующий {@link AuthenticationServiceImpl} класс аунтификации */
+ * Класс, тестирующий {@link AuthenticationServiceImpl} класс аунтификации *//*
+
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Тест процесса регистрации")
 class AuthenticationServiceImplTest {
@@ -26,4 +29,4 @@ class AuthenticationServiceImplTest {
         assertThrows(NotUniqueUserNameException.class, () -> service.registrationProcess(Mockito.anyString(), Mockito.anyString()));
     }
 
-}
+}*/

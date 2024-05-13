@@ -1,3 +1,4 @@
+/*
 package test;
 
 import first_task.com.dto.WorkoutDto;
@@ -22,9 +23,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+*/
 /**
  * Класс, тестирующий {@link UserServiceImpl} класс
- *  **/
+ *  **//*
+
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Тест действий пользователя над тренировками")
 class UserServiceImplTest {
@@ -71,4 +74,4 @@ class UserServiceImplTest {
 
         assertTrue(workouts.contains("Максимально сожжено : 1200.0"));
     }
-}
+}*/

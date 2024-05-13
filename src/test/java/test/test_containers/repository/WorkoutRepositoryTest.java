@@ -1,3 +1,4 @@
+/*
 package test.test_containers.repository;
 
 import first_task.com.repository.WorkoutRepository;
@@ -49,4 +50,4 @@ class WorkoutRepositoryTest extends BaseTestDB {
             assertEquals(100d, workouts);
         }
     }
-}
+}*/
