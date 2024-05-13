@@ -1,5 +1,7 @@
 package trainingDiary.com.in.controllers.workout;
 
+import trainingDiary.com.annotations.UserIsLogInCheck;
+import trainingDiary.com.dto.CurrentUser;
 import trainingDiary.com.dto.WorkoutTypeDto;
 import trainingDiary.com.exceptions.InappropriateDataException;
 import trainingDiary.com.exceptions.NotUniqueTypeTitleException;
@@ -18,10 +20,12 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/users/{userId}/workoutType")
-@Api(value = "/users/{userId}/workoutType", tags = "Users actions on workoutType")
+@RequestMapping(path = "/users/workoutType")
+@Api(value = "/users/workoutType", tags = "Users actions on workoutType")
+@UserIsLogInCheck
 public class WorkoutTypeController {
     private final WorkoutService workoutService;
+    private final CurrentUser currentUser;
 
     @ApiOperation(
             value = "Save new workoutType",
@@ -31,12 +35,11 @@ public class WorkoutTypeController {
     )
     @PostMapping
     public ResponseEntity<WorkoutTypeDto> workoutTypeSave(@RequestBody @Valid WorkoutTypeDto workoutType,
-                                                          BindingResult bindingResult,
-                                                          @PathVariable int userId) throws NotUniqueTypeTitleException, InappropriateDataException {
+                                                          BindingResult bindingResult) throws NotUniqueTypeTitleException, InappropriateDataException {
         if (bindingResult.hasErrors()) {
             throw new InappropriateDataException(bindingResult);
         }
-        WorkoutTypeDto answer = workoutService.saveWorkoutType(userId, workoutType);
+        WorkoutTypeDto answer = workoutService.saveWorkoutType(currentUser.getId(), workoutType);
         return ResponseEntity.status(CREATED).body(answer);
     }
 

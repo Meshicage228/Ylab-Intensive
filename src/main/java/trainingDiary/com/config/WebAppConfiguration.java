@@ -19,7 +19,7 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebMvc
-@ComponentScan("first_task.com")
+@ComponentScan("trainingDiary.com")
 @EnableAspectJAutoProxy
 @PropertySource("classpath:application.yaml")
 public class WebAppConfiguration implements WebMvcConfigurer{

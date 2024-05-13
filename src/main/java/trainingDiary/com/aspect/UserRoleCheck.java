@@ -16,7 +16,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class AdminCheckAspect {
+public class UserRoleCheck {
     private final CurrentUser currentUser;
     private final AuditLogService auditLogService;
 
@@ -25,15 +25,25 @@ public class AdminCheckAspect {
 
     @Around("adminMethods()")
     public Object aroundAdminMethods(ProceedingJoinPoint joinPoint) throws Throwable {
-        if(isNull(currentUser.getRole())){
+        String role = currentUser.getRole();
+        if (isNull(role) || !role.equalsIgnoreCase("admin")) {
             auditLogService.addLogEntry("Access denied: Administrator only", currentUser.getId());
             return new ResponseEntity<>("Access denied: Administrator only", FORBIDDEN);
         }
-        else if(!currentUser.getRole().toLowerCase().equals("admin")){
-            auditLogService.addLogEntry("Access denied: Administrator only", currentUser.getId());
-            return new ResponseEntity<>("Access denied: Administrator only", FORBIDDEN);
-        };
         auditLogService.addLogEntry("Admin : get all users and workouts", currentUser.getId());
+        return joinPoint.proceed();
+    }
+
+    @Pointcut("within(@trainingDiary.com.annotations.UserIsLogInCheck *) && execution(* * (..))")
+    public void userLogInMethods() {}
+
+    @Around("userLogInMethods()")
+    public Object aroundUserLogInMethods(ProceedingJoinPoint joinPoint) throws Throwable {
+        Integer id = currentUser.getId();
+        if (isNull(id)) {
+            auditLogService.addLogEntry("Access denied: You should me log in", null);
+            return new ResponseEntity<>("Access denied: You should me log in", FORBIDDEN);
+        }
         return joinPoint.proceed();
     }
 }

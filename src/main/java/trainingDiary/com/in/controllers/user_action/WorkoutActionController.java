@@ -1,5 +1,7 @@
 package trainingDiary.com.in.controllers.user_action;
 
+import trainingDiary.com.annotations.UserIsLogInCheck;
+import trainingDiary.com.dto.CurrentUser;
 import trainingDiary.com.dto.WorkoutDto;
 import trainingDiary.com.dto.WorkoutUpdateDto;
 import trainingDiary.com.exceptions.InappropriateDataException;
@@ -24,11 +26,13 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/users/{userId}/workouts")
-@Api(value = "/users/{userId}/workouts", tags = "Users actions on workouts")
+@RequestMapping(path = "/users/workouts")
+@Api(value = "/users/workouts", tags = "Users actions on workouts")
+@UserIsLogInCheck
 public class WorkoutActionController {
     private final WorkoutService workoutService;
     private final UserActionService userService;
+    private final CurrentUser currentUser;
 
     @ApiOperation(
             value = "Gives all workouts of specific user",
@@ -37,8 +41,8 @@ public class WorkoutActionController {
             response = ResponseEntity.class
     )
     @GetMapping
-    public ResponseEntity<ArrayList<WorkoutDto>> getAllUsersWorkouts(@PathVariable("userId") int userId) {
-        ArrayList<WorkoutDto> workoutDtos = userService.showAllWorkoutsDateSorted(userId);
+    public ResponseEntity<ArrayList<WorkoutDto>> getAllUsersWorkouts() {
+            ArrayList<WorkoutDto> workoutDtos = userService.showAllWorkoutsDateSorted(currentUser.getId());
         return ResponseEntity.ok(workoutDtos);
     }
 
@@ -49,9 +53,8 @@ public class WorkoutActionController {
             response = ResponseEntity.class
     )
     @DeleteMapping("/{workoutId}")
-    public ResponseEntity<Void> deleteWorkout(@PathVariable("userId") int userId,
-                                              @PathVariable("workoutId") int workoutId) {
-        workoutService.deleteWorkout(userId, workoutId);
+    public ResponseEntity<Void> deleteWorkout(@PathVariable("workoutId") int workoutId) {
+        workoutService.deleteWorkout(currentUser.getId(), workoutId);
         return ResponseEntity.status(OK).build();
     }
 
@@ -62,13 +65,12 @@ public class WorkoutActionController {
             response = ResponseEntity.class
     )
     @PostMapping
-    public ResponseEntity<WorkoutDto> saveWorkout(@PathVariable("userId") int userId,
-                                                  @Valid @RequestBody WorkoutDto workout,
+    public ResponseEntity<WorkoutDto> saveWorkout(@Valid @RequestBody WorkoutDto workout,
                                                   BindingResult bindingResult) throws NotUniqueWorkoutException, InappropriateDataException {
         if (bindingResult.hasErrors()) {
             throw new InappropriateDataException(bindingResult);
         }
-        WorkoutDto answer = userService.addNewWorkout(userId, workout);
+        WorkoutDto answer = userService.addNewWorkout(currentUser.getId(), workout);
         return ResponseEntity.status(HttpStatus.CREATED).body(answer);
     }
 
@@ -79,19 +81,18 @@ public class WorkoutActionController {
             response = ResponseEntity.class
     )
     @PatchMapping("/{workoutId}")
-    public ResponseEntity<WorkoutDto> updateWorkout(@PathVariable("userId") int userId,
-                                                    @PathVariable("workoutId") int workoutId,
+    public ResponseEntity<WorkoutDto> updateWorkout(@PathVariable("workoutId") int workoutId,
                                                     WorkoutUpdateDto workout) {
         WorkoutDto updated = null;
 
         if (nonNull(workout.getAdditionalInfo())) {
-            updated = workoutService.changeAdditionalInfo(userId, workoutId, workout.getAdditionalInfo());
+            updated = workoutService.changeAdditionalInfo(currentUser.getId(), workoutId, workout.getAdditionalInfo());
         } else if (nonNull(workout.getCaloriesBurned())) {
-            updated = workoutService.changeCalories(userId, workoutId, workout.getCaloriesBurned());
+            updated = workoutService.changeCalories(currentUser.getId(), workoutId, workout.getCaloriesBurned());
         } else if (nonNull(workout.getMinuteDuration())) {
-            updated = workoutService.changeMinuteDuration(userId, workoutId, workout.getMinuteDuration());
+            updated = workoutService.changeMinuteDuration(currentUser.getId(), workoutId, workout.getMinuteDuration());
         } else if (nonNull(workout.getTimeOfWorkout())) {
-            updated = workoutService.changeDate(userId, workoutId, workout.getTimeOfWorkout());
+            updated = workoutService.changeDate(currentUser.getId(), workoutId, workout.getTimeOfWorkout());
         }
 
         return ResponseEntity.ok(updated);

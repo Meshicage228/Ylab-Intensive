@@ -26,5 +26,6 @@ public class SQLUtilQueries {
     public static final String TYPES_GET_ALL = "SELECT * FROM entities.types";
     public static final String SAVE_TYPE = "INSERT INTO entities.types (type) VALUES (?)";
     public static final String TYPE_FIND_BY_TITLE = "SELECT * FROM entities.types WHERE type = ?";
+    public static final String GET_ALL_AUDIT_LOGS = "SELECT * FROM audit_log.audit_logs";
 
 }

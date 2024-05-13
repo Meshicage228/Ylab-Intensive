@@ -63,7 +63,7 @@ public class UserRepository {
     /**
      * Метод получения всех тренировок от всех пользователей
      *
-     * @return Результирующая строка со всей информацией
+     * @return Список всех пользователей с их тренировками
      **/
     public ArrayList<AppUser> getAll() {
        return (ArrayList<AppUser>) jdbc.query(FIND_ALL_USERS, rowMapper);
