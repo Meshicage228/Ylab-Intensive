@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5431/y_lab
+    user: testMan
+    password: 123123
+  liquibase:
+    schemaName: service_liquibase
+    changeLog: db.changelog/change-logs.xml

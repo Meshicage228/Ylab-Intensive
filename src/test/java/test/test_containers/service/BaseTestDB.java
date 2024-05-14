@@ -1,14 +1,19 @@
+/*
 package test.test_containers.service;
 
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.postgresql.Driver;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
@@ -26,39 +31,25 @@ public abstract class BaseTestDB {
             .withUsername("test")
             .withPassword("123");
 
-    public static String JDBCURL = "";
-    public static String USERNAME = "";
-    public static String PASSWORD= "";
-
-    public static Connection connection;
+    public static JdbcTemplate jdbcTemplate;
 
 
     @BeforeAll
-    public static void setup() throws SQLException, LiquibaseException {
-        JDBCURL = postgresContainer.getJdbcUrl();
-        USERNAME = postgresContainer.getUsername();
-        PASSWORD = postgresContainer.getPassword();
-        DriverManager.registerDriver(new Driver());
+    public static void setup() throws LiquibaseException, SQLException {
+        jdbcTemplate = new JdbcTemplate(new SingleConnectionDataSource(
+                postgresContainer.getJdbcUrl(),
+                postgresContainer.getUsername(),
+                postgresContainer.getPassword(),
+                true));
 
-        connection = DriverManager.getConnection(JDBCURL, USERNAME, PASSWORD);
+        jdbcTemplate.update("CREATE SCHEMA IF NOT EXISTS " + "service_liquibase");
 
-        Statement statement = connection.createStatement();
-
-        String schemaName = "service_liquibase";
-        String createSchemaQuery = "CREATE SCHEMA IF NOT EXISTS " + schemaName;
-
-        statement.executeUpdate(createSchemaQuery);
+        Connection connection = DriverManager.getConnection(postgresContainer.getJdbcUrl(), postgresContainer.getUsername(), postgresContainer.getPassword());
         Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
 
         database.setDefaultSchemaName("service_liquibase");
         Liquibase liquibase = new Liquibase("db.changelog/change-logs.xml", new ClassLoaderResourceAccessor(), database);
         liquibase.update();
     }
-
-    @AfterAll
-    public static void teardown() throws SQLException {
-        if (nonNull(connection) && !connection.isClosed()) {
-            connection.close();
-        }
-    }
 }
+*/

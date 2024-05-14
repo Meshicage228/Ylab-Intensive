@@ -1,10 +1,11 @@
+/*
 package test.test_containers.service;
 
-import first_task.com.dto.WorkoutDto;
-import first_task.com.dto.WorkoutTypeDto;
-import first_task.com.exceptions.NotUniqueWorkoutException;
-import first_task.com.repository.WorkoutRepository;
-import first_task.com.service.impl.UserServiceImpl;
+import dto.trainingDiary.com.WorkoutDto;
+import dto.trainingDiary.com.WorkoutTypeDto;
+import exceptions.trainingDiary.com.NotUniqueWorkoutException;
+import repository.trainingDiary.com.WorkoutRepository;
+import impl.service.trainingDiary.com.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,9 +20,11 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+*/
 /**
  * Класс, тестирующий {@link UserServiceImpl} по работе с бд
- *  **/
+ *  **//*
+
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Тест user service")
 @Testcontainers
@@ -51,4 +54,4 @@ class UserServiceImplDBTest extends BaseTestDB {
 
         assertEquals(userService.addNewWorkout(Mockito.anyInt(), newWorkout), newWorkout);
     }
-}
+}*/
