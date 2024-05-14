@@ -1,12 +1,12 @@
 package trainingDiary.com.in.controllers.workout;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import trainingDiary.com.annotations.UserIsLogInCheck;
 import trainingDiary.com.dto.CurrentUser;
-import trainingDiary.com.dto.UserDto;
 import trainingDiary.com.dto.WorkoutTypeDto;
 import trainingDiary.com.exceptions.InappropriateDataException;
 import trainingDiary.com.exceptions.NotUniqueTypeTitleException;
@@ -61,7 +61,8 @@ public class WorkoutTypeController {
                             responseCode = "200",
                             description = "all workout types",
                             content = {
-                                    @Content(schema = @Schema(implementation = WorkoutTypeDto[].class),
+                                    @Content(array = @ArraySchema(
+                                            schema = @Schema(implementation = WorkoutTypeDto.class)),
                                             mediaType = "application/json")
                             }
                     ),

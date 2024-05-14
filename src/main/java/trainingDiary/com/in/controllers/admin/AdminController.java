@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -55,7 +56,8 @@ public class AdminController {
                             responseCode = "200",
                             description = "users and their workouts",
                             content = {
-                                    @Content(schema = @Schema(implementation = UserDto[].class),
+                                    @Content(array = @ArraySchema(
+                                            schema = @Schema(implementation = UserDto.class)),
                                             mediaType = "application/json")
                             }
                     ),
@@ -95,7 +97,8 @@ public class AdminController {
                             responseCode = "200",
                             description = "workouts of selected user",
                             content = {
-                                    @Content(schema = @Schema(implementation = WorkoutDto[].class),
+                                    @Content(array = @ArraySchema(
+                                            schema = @Schema(implementation = WorkoutDto.class)),
                                             mediaType = "application/json")
                             }
                     ),
@@ -115,7 +118,8 @@ public class AdminController {
                             responseCode = "200",
                             description = "audit logs of app",
                             content = {
-                                    @Content(schema = @Schema(implementation = AuditDto[].class),
+                                    @Content(array = @ArraySchema(
+                                            schema = @Schema(implementation = AuditDto.class)),
                                             mediaType = "application/json")
                             }
                     ),

@@ -3,6 +3,7 @@ package trainingDiary.com.in.controllers.user_action;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -46,7 +47,8 @@ public class WorkoutActionController {
                             responseCode = "200",
                             description = "all workouts",
                             content = {
-                                    @Content(schema = @Schema(implementation = WorkoutDto[].class),
+                                    @Content(array = @ArraySchema(
+                                            schema = @Schema(implementation = WorkoutDto.class)),
                                             mediaType = "application/json")
                             }
                     ),
