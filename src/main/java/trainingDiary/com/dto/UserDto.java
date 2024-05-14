@@ -1,5 +1,6 @@
 package trainingDiary.com.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -13,6 +14,11 @@ import java.util.ArrayList;
 @Getter
 @Setter
 @Builder
+
+@Schema(
+        name = "User dto object",
+        description = "Class designed to be shown from server"
+)
 public class UserDto {
     private Integer id;
     /** имя пользователя */

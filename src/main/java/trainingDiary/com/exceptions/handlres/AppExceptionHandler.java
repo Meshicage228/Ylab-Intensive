@@ -38,10 +38,10 @@ public class AppExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException() {
+    public ResponseEntity<String> handleException(Exception e) {
         return ResponseEntity
                 .status(INTERNAL_SERVER_ERROR)
-                .body(jsonUtils.formJsonErrorMessage("Smth went wrong!"));
+                .body(jsonUtils.formJsonErrorMessage(e.getMessage()));
     }
 
     @ExceptionHandler(NotUniqueTypeTitleException.class)

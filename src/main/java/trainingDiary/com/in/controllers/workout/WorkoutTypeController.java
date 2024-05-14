@@ -1,13 +1,16 @@
 package trainingDiary.com.in.controllers.workout;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import trainingDiary.com.annotations.UserIsLogInCheck;
 import trainingDiary.com.dto.CurrentUser;
+import trainingDiary.com.dto.UserDto;
 import trainingDiary.com.dto.WorkoutTypeDto;
 import trainingDiary.com.exceptions.InappropriateDataException;
 import trainingDiary.com.exceptions.NotUniqueTypeTitleException;
 import trainingDiary.com.service.WorkoutService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,17 +24,24 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/users/workoutType")
-@Api(value = "/users/workoutType", tags = "Users actions on workoutType")
 @UserIsLogInCheck
 public class WorkoutTypeController {
     private final WorkoutService workoutService;
     private final CurrentUser currentUser;
 
-    @ApiOperation(
-            value = "Save new workoutType",
-            httpMethod = "POST",
-            produces = "application/json",
-            response = ResponseEntity.class
+    @Operation(
+            description = "Will save new workout type in application",
+            summary = "new workout type",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "saved workout type",
+                            content = {
+                                    @Content(schema = @Schema(implementation = WorkoutTypeDto.class),
+                                            mediaType = "application/json")
+                            }
+                    ),
+            }
     )
     @PostMapping
     public ResponseEntity<WorkoutTypeDto> workoutTypeSave(@RequestBody @Valid WorkoutTypeDto workoutType,
@@ -43,11 +53,19 @@ public class WorkoutTypeController {
         return ResponseEntity.status(CREATED).body(answer);
     }
 
-    @ApiOperation(
-            value = "Gives all workoutTypes",
-            httpMethod = "GET",
-            produces = "application/json",
-            response = ResponseEntity.class
+    @Operation(
+            description = "Will give all workout types in application",
+            summary = "get all workout type",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "all workout types",
+                            content = {
+                                    @Content(schema = @Schema(implementation = WorkoutTypeDto[].class),
+                                            mediaType = "application/json")
+                            }
+                    ),
+            }
     )
     @GetMapping
     public ResponseEntity<List<WorkoutTypeDto>> getWorkoutTypes() {
