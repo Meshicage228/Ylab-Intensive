@@ -1,9 +1,12 @@
+server:
+  port: 8080
 spring:
   datasource:
-    driver: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5431/y_lab
-    user: testMan
     password: 123123
+    driver-class-name: org.postgresql.Driver
+    username: testMan
   liquibase:
-    schemaName: service_liquibase
-    changeLog: db.changelog/change-logs.xml
+    liquibase-schema: public
+    change-log: db.changelog/change-logs.xml
+    default-schema: service_liquibase
