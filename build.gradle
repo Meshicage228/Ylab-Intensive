@@ -28,16 +28,10 @@ ext {
             junitJupiterEngine: '5.10.0',
             testcontainers    : '1.19.7',
             liquibase         : '4.27.0',
-            servlet_api       : '4.0.1',
             aspectjrt         : '1.9.21.1',
-            swaggerVersion    : '2.9.2',
-            swaggerAnnotation : '1.6.6',
-            jaksonVersion     : '2.17.0',
             hibernateValidator: '6.0.0.Final',
             javaxValidation   : '2.0.1.Final',
-            jakartaValidation : '3.0.2',
-            aspectVersion     : '1.9.8',
-            springVersion     : '5.3.30'
+            springDoc         : '2.5.0'
     ]
 }
 dependencies {
@@ -51,7 +45,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.5.0'
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.springDoc}"
 
     // Validation
     implementation "org.hibernate.validator:hibernate-validator:${versions.hibernateValidator}"
@@ -69,6 +63,7 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
     implementation "org.apache.commons:commons-collections4:${versions.commonsCollections}"
     implementation "org.apache.commons:commons-lang3:${versions.commonsLang}"
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 
     // Tests
     implementation "org.assertj:assertj-core:${versions.assertjCore}"
