@@ -1,6 +1,6 @@
 package trainingDiary.com.service.impl;
 
-import trainingDiary.com.annotations.Loggable;
+import org.example.loggingaspectstarter.aop.annotations.Loggable;
 import trainingDiary.com.dto.LoginUserDto;
 import trainingDiary.com.dto.UserDto;
 import trainingDiary.com.exceptions.NotUniqueUserNameException;
@@ -20,8 +20,8 @@ import java.util.Optional;
  */
 
 @RequiredArgsConstructor
-@Service
 @Loggable
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;

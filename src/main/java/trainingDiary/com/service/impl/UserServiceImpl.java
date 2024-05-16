@@ -1,6 +1,6 @@
 package trainingDiary.com.service.impl;
 
-import trainingDiary.com.annotations.Loggable;
+import org.example.loggingaspectstarter.aop.annotations.Loggable;
 import trainingDiary.com.dto.UserDto;
 import trainingDiary.com.dto.WorkoutDto;
 import trainingDiary.com.exceptions.NotUniqueWorkoutException;
@@ -12,7 +12,6 @@ import trainingDiary.com.repository.WorkoutRepository;
 import trainingDiary.com.service.UserActionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.*;
 
@@ -22,8 +21,8 @@ import java.util.*;
  */
 
 @RequiredArgsConstructor
-@Service
 @Loggable
+@Service
 public class UserServiceImpl implements UserActionService {
     private final WorkoutRepository workoutRepository;
     private final UserRepository userRepository;

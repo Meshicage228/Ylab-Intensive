@@ -11,8 +11,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.auditlogaspectstarter.annotations.AdminAccessCheck;
 import org.springframework.web.bind.annotation.*;
-import trainingDiary.com.annotations.AdminAccessCheck;
 import trainingDiary.com.dto.AuditDto;
 import trainingDiary.com.dto.UserDto;
 import trainingDiary.com.dto.WorkoutDto;
@@ -40,9 +40,9 @@ import static org.springframework.http.HttpStatus.OK;
 
 
 @RestController
+@AdminAccessCheck
 @Tag(name = ApiTags.ADMIN)
 @RequestMapping("/admin")
-@AdminAccessCheck
 public class AdminController {
     private final UserActionService userService;
     private final WorkoutService workoutService;

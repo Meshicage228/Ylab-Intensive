@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import trainingDiary.com.annotations.UserIsLogInCheck;
+import org.example.auditlogaspectstarter.annotations.UserIsLogInCheck;
 import trainingDiary.com.dto.CurrentUser;
 import trainingDiary.com.dto.WorkoutTypeDto;
 import trainingDiary.com.exceptions.InappropriateDataException;
@@ -23,8 +23,8 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/users/workoutType")
 @UserIsLogInCheck
+@RequestMapping(path = "/users/workoutType")
 public class WorkoutTypeController {
     private final WorkoutService workoutService;
     private final CurrentUser currentUser;

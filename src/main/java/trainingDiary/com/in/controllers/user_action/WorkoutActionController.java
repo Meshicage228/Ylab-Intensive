@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import trainingDiary.com.annotations.UserIsLogInCheck;
+import org.example.auditlogaspectstarter.annotations.UserIsLogInCheck;
 import trainingDiary.com.dto.CurrentUser;
 import trainingDiary.com.dto.WorkoutDto;
 import trainingDiary.com.dto.WorkoutUpdateDto;
@@ -32,8 +32,8 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/users/workouts")
-@Tag(name = ApiTags.User)
 @UserIsLogInCheck
+@Tag(name = ApiTags.User)
 public class WorkoutActionController {
     private final WorkoutService workoutService;
     private final UserActionService userService;

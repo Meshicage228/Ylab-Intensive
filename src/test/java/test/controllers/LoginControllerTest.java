@@ -2,6 +2,8 @@ package test.controllers;
 
 import java.util.Optional;
 
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import trainingDiary.com.dto.CurrentUser;
 import trainingDiary.com.dto.LoginUserDto;
 import trainingDiary.com.dto.UserDto;
@@ -25,8 +27,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@DisplayName("LoginController tests")
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = LoginController.class)
+@AutoConfigureMockMvc
 class LoginControllerTest {
     private MockMvc mockMvc;
 

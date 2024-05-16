@@ -1,9 +1,8 @@
 package trainingDiary.com.service;
 
-import trainingDiary.com.annotations.LogWithDuration;
+import org.example.loggingaspectstarter.aop.annotations.LogWithDuration;
 import trainingDiary.com.dto.AuditDto;
 import trainingDiary.com.mappers.AuditLogMapper;
-import trainingDiary.com.model.Audit;
 import trainingDiary.com.repository.AuditRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
