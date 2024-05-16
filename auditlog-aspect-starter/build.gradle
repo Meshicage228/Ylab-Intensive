@@ -21,21 +21,6 @@ ext  {
             javaxValidation : '2.0.1.Final'
     ]
 }
-publishing{
-    publications{
-        maven(MavenPublication){
-            from components.java
-            versionMapping{
-                usage('java-api'){
-                    fromResolutionOf('runtimeClasspath')
-                }
-                usage('java-runtime'){
-                    fromResolutionResult()
-                }
-            }
-        }
-    }
-}
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation group: 'org.springframework.boot', name: 'spring-boot-maven-plugin', version: '3.2.5'
