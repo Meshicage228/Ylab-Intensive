@@ -18,12 +18,13 @@ repositories {
 
 ext  {
     versionsCustom = [
-            javaxValidation : '2.0.1.Final'
+            javaxValidation : '2.0.1.Final',
+            mavenPlugin     : '3.2.5'
     ]
 }
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-maven-plugin', version: '3.2.5'
+    implementation "org.springframework.boot:spring-boot-maven-plugin:${versionsCustom.mavenPlugin}"
     implementation "javax.validation:validation-api:${versionsCustom.javaxValidation}"
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
