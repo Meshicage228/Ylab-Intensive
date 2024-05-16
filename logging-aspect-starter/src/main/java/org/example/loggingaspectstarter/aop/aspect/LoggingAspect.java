@@ -1,35 +1,30 @@
-package trainingDiary.com.aspect;
+package org.example.loggingaspectstarter.aop.aspect;
 
-import trainingDiary.com.dto.CurrentUser;
-import trainingDiary.com.service.AuditLogService;
-import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-
 import java.util.Arrays;
 
 
 @Aspect
-@RequiredArgsConstructor
 @Component
 public class LoggingAspect {
 
-    private final AuditLogService auditLogService;
-    private final CurrentUser appUser;
-
-    @Pointcut("within(@trainingDiary.com.annotations.Loggable *) && execution(* * (..))")
+    @Pointcut("within(@org.example.loggingaspectstarter.aop.annotations.Loggable *) && execution(* * (..))")
     public void annotatedByLoggable() {}
 
     @After("annotatedByLoggable()")
     public void log(JoinPoint joinPoint) {
         String message = "Calling method : %s";
-        auditLogService.addLogEntry(String.format(message, joinPoint.getSignature()) , appUser.getId());
+        System.out.println(String.format(message, joinPoint.getSignature()));
         Arrays.stream(joinPoint.getArgs()).forEach(System.out::println);
     }
 
-    @Pointcut("within(@trainingDiary.com.annotations.LogWithDuration *) && execution(* *(..))")
+    @Pointcut("within(@org.example.loggingaspectstarter.aop.annotations.LogWithDuration *) && execution(* *(..))")
     public void annotatedByLoggableWithDuration() {}
 
     @Around("annotatedByLoggableWithDuration()")
@@ -38,7 +33,7 @@ public class LoggingAspect {
         long start = System.currentTimeMillis();
         Object result = proceedingJoinPoint.proceed();
         long end = System.currentTimeMillis() - start;
-        auditLogService.addLogEntry(String.format(message, proceedingJoinPoint.getSignature(), end), appUser.getId());
+        System.out.println(String.format(message, proceedingJoinPoint.getSignature(), end));
         return result;
     }
 }

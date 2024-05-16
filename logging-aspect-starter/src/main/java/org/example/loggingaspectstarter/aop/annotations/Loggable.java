@@ -1,4 +1,4 @@
-package trainingDiary.com.annotations;
+package org.example.loggingaspectstarter.aop.annotations;
 
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;
@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
-public @interface LogWithDuration {
+public @interface Loggable {
     String message() default "";
 
     Class<?>[] groups() default { };
