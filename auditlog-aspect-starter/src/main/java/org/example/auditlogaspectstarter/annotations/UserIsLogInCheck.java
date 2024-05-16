@@ -1,4 +1,4 @@
-package trainingDiary.com.annotations;
+package org.example.auditlogaspectstarter.annotations;
 
 import javax.validation.Payload;
 
