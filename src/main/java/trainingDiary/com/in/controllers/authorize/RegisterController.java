@@ -1,12 +1,14 @@
 package trainingDiary.com.in.controllers.authorize;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import trainingDiary.com.dto.LoginUserDto;
 import trainingDiary.com.dto.UserDto;
 import trainingDiary.com.exceptions.InappropriateDataException;
 import trainingDiary.com.exceptions.NotUniqueUserNameException;
 import trainingDiary.com.service.AuthenticationService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +23,22 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequestMapping("/register")
 @RequiredArgsConstructor
-@Api(value = "/register", tags = "Authorization Controller")
 public class RegisterController {
     private final AuthenticationService service;
 
-    @ApiOperation(
-            value = "Registers user to the app",
-            httpMethod = "POST",
-            produces = "application/json",
-            response = ResponseEntity.class
+    @Operation(
+            description = "Will register new user in application",
+            summary = "register new user",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "saved user",
+                            content = {
+                                    @Content(schema = @Schema(implementation = UserDto.class),
+                                            mediaType = "application/json")
+                            }
+                    ),
+            }
     )
     @PostMapping
     public ResponseEntity<UserDto> authorize(@Valid @RequestBody LoginUserDto loginUserDto,

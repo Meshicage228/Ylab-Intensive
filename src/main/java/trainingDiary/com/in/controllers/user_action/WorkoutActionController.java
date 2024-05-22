@@ -1,6 +1,14 @@
 package trainingDiary.com.in.controllers.user_action;
 
-import trainingDiary.com.annotations.UserIsLogInCheck;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.auditlogaspectstarter.annotations.UserIsLogInCheck;
 import trainingDiary.com.dto.CurrentUser;
 import trainingDiary.com.dto.WorkoutDto;
 import trainingDiary.com.dto.WorkoutUpdateDto;
@@ -8,37 +16,43 @@ import trainingDiary.com.exceptions.InappropriateDataException;
 import trainingDiary.com.exceptions.NotUniqueWorkoutException;
 import trainingDiary.com.service.UserActionService;
 import trainingDiary.com.service.WorkoutService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 import javax.validation.Valid;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import trainingDiary.com.util.ApiTags;
 
 import java.util.ArrayList;
 
 import static java.util.Objects.nonNull;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/users/workouts")
-@Api(value = "/users/workouts", tags = "Users actions on workouts")
 @UserIsLogInCheck
+@Tag(name = ApiTags.User)
 public class WorkoutActionController {
     private final WorkoutService workoutService;
     private final UserActionService userService;
     private final CurrentUser currentUser;
 
-    @ApiOperation(
-            value = "Gives all workouts of specific user",
-            httpMethod = "GET",
-            produces = "application/json",
-            response = ResponseEntity.class
+    @Operation(tags = ApiTags.User,
+            description = "Will return full information about all users workouts",
+            summary = "get all workouts",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "all workouts",
+                            content = {
+                                    @Content(array = @ArraySchema(
+                                            schema = @Schema(implementation = WorkoutDto.class)),
+                                            mediaType = "application/json")
+                            }
+                    ),
+            }
     )
     @GetMapping
     public ResponseEntity<ArrayList<WorkoutDto>> getAllUsersWorkouts() {
@@ -46,11 +60,10 @@ public class WorkoutActionController {
         return ResponseEntity.ok(workoutDtos);
     }
 
-    @ApiOperation(
-            value = "Delete users workout",
-            httpMethod = "DELETE",
-            produces = "application/json",
-            response = ResponseEntity.class
+    @Operation(tags = ApiTags.User,
+            description = "Will delete specific workout",
+            parameters = @Parameter(in = ParameterIn.PATH, name = "workoutId", description = "Id of workout to be deleted"),
+            summary = "delete selected workout"
     )
     @DeleteMapping("/{workoutId}")
     public ResponseEntity<Void> deleteWorkout(@PathVariable("workoutId") int workoutId) {
@@ -58,11 +71,19 @@ public class WorkoutActionController {
         return ResponseEntity.status(OK).build();
     }
 
-    @ApiOperation(
-            value = "Save specific workout for user",
-            httpMethod = "POST",
-            produces = "application/json",
-            response = ResponseEntity.class
+    @Operation(tags = ApiTags.User,
+            description = "Will save new workout formed by log in user",
+            summary = "save new workout",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "saved workout",
+                            content = {
+                                    @Content(schema = @Schema(implementation = WorkoutDto.class),
+                                            mediaType = "application/json")
+                            }
+                    ),
+            }
     )
     @PostMapping
     public ResponseEntity<WorkoutDto> saveWorkout(@Valid @RequestBody WorkoutDto workout,
@@ -71,14 +92,24 @@ public class WorkoutActionController {
             throw new InappropriateDataException(bindingResult);
         }
         WorkoutDto answer = userService.addNewWorkout(currentUser.getId(), workout);
-        return ResponseEntity.status(HttpStatus.CREATED).body(answer);
+        return ResponseEntity.status(CREATED).body(answer);
     }
 
-    @ApiOperation(
-            value = "Patch update for users workout",
-            httpMethod = "PATCH",
-            produces = "application/json",
-            response = ResponseEntity.class
+
+    @Operation(tags = ApiTags.User,
+            description = "Part-update of workout",
+            parameters = @Parameter(in = ParameterIn.PATH, name = "workoutId", description = "Id of workout to be updated"),
+            summary = "workout update",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "updated workout",
+                            content = {
+                                    @Content(schema = @Schema(implementation = WorkoutDto.class),
+                                            mediaType = "application/json")
+                            }
+                    ),
+            }
     )
     @PatchMapping("/{workoutId}")
     public ResponseEntity<WorkoutDto> updateWorkout(@PathVariable("workoutId") int workoutId,

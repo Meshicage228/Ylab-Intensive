@@ -1,5 +1,6 @@
 package trainingDiary.com.aspect;
 
+import org.example.auditlogaspectstarter.service.RoleCheckService;
 import trainingDiary.com.dto.CurrentUser;
 import trainingDiary.com.service.AuditLogService;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +13,14 @@ import org.springframework.stereotype.Component;
 
 import static java.util.Objects.isNull;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
-
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class UserRoleCheck {
+public class UserRoleCheck implements RoleCheckService {
     private final CurrentUser currentUser;
     private final AuditLogService auditLogService;
 
-    @Pointcut("within(@trainingDiary.com.annotations.AdminAccessCheck *) && execution(* * (..))")
+    @Pointcut("within(@org.example.auditlogaspectstarter.annotations.AdminAccessCheck *) && execution(* * (..))")
     public void adminMethods() {}
 
     @Around("adminMethods()")
@@ -34,7 +34,7 @@ public class UserRoleCheck {
         return joinPoint.proceed();
     }
 
-    @Pointcut("within(@trainingDiary.com.annotations.UserIsLogInCheck *) && execution(* * (..))")
+    @Pointcut("within(@org.example.auditlogaspectstarter.annotations.UserIsLogInCheck *) && execution(* * (..))")
     public void userLogInMethods() {}
 
     @Around("userLogInMethods()")

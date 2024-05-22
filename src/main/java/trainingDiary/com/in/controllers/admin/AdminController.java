@@ -1,17 +1,27 @@
 package trainingDiary.com.in.controllers.admin;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.auditlogaspectstarter.annotations.AdminAccessCheck;
 import org.springframework.web.bind.annotation.*;
-import trainingDiary.com.annotations.AdminAccessCheck;
 import trainingDiary.com.dto.AuditDto;
 import trainingDiary.com.dto.UserDto;
 import trainingDiary.com.dto.WorkoutDto;
 import trainingDiary.com.service.AuditLogService;
 import trainingDiary.com.service.UserActionService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import trainingDiary.com.service.WorkoutService;
+import trainingDiary.com.util.ApiTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,30 +30,56 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RequiredArgsConstructor
 
+@OpenAPIDefinition(
+        info = @Info(title = "TrainingDiary controllers documentation", description = "Here you can find info about controllers and endpoints", version = "1.0"),
+        servers = @Server(url = "http://localhost:8080/trainingDiary-app-springboot-1.0.0", description = "LocalHost"),
+        tags = {
+                @Tag(name = ApiTags.ADMIN),
+                @Tag(name = ApiTags.User)
+        })
+
+
 @RestController
-@RequestMapping("/admin")
-@Api(value = "/admin", tags = "Admin's controller")
 @AdminAccessCheck
+@Tag(name = ApiTags.ADMIN)
+@RequestMapping("/admin")
 public class AdminController {
     private final UserActionService userService;
     private final WorkoutService workoutService;
     private final AuditLogService auditLogService;
 
-    @ApiOperation(
-            value = "Get all users with their workouts",
-            httpMethod = "GET",
-            produces = "application/json",
-            response = ResponseEntity.class
+    @Operation(tags = ApiTags.ADMIN,
+            description = "Will return full information about all users with their workouts description",
+            summary = "get all users with workouts",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "users and their workouts",
+                            content = {
+                                    @Content(array = @ArraySchema(
+                                            schema = @Schema(implementation = UserDto.class)),
+                                            mediaType = "application/json")
+                            }
+                    ),
+            }
     )
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
-    @ApiOperation(
-            value = "Delete users workout for admin",
-            httpMethod = "DELETE",
-            produces = "application/json",
-            response = ResponseEntity.class
+
+    @Operation(tags = ApiTags.ADMIN,
+            parameters = {
+                @Parameter(in = ParameterIn.PATH, name = "userId", description = "Id of user, whose workout will be deleted"),
+                @Parameter(in = ParameterIn.PATH, name = "workoutId", description = "Id of workout which will be deleted")
+            },
+            description = "Will remove from registered user selected workout",
+            summary = "delete user workout",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200"
+                    ),
+            }
     )
     @DeleteMapping("/users/{userId}/{workoutId}")
     public ResponseEntity<Void> deleteWorkout(@PathVariable("userId") int userId,
@@ -52,11 +88,21 @@ public class AdminController {
         return ResponseEntity.status(OK).build();
     }
 
-    @ApiOperation(
-            value = "Gives all workouts of specific user for admin",
-            httpMethod = "GET",
-            produces = "application/json",
-            response = ResponseEntity.class
+    @Operation(tags = ApiTags.ADMIN,
+            description = "Will return all workouts of registered user",
+            parameters = @Parameter(in = ParameterIn.PATH, name = "userId", description = "Id of user, whose workout will be shown"),
+            summary = "get all workouts of specific user",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "workouts of selected user",
+                            content = {
+                                    @Content(array = @ArraySchema(
+                                            schema = @Schema(implementation = WorkoutDto.class)),
+                                            mediaType = "application/json")
+                            }
+                    ),
+            }
     )
     @GetMapping("/users/{userId}")
     public ResponseEntity<ArrayList<WorkoutDto>> getAllUsersWorkouts(@PathVariable("userId") int userId) {
@@ -64,11 +110,20 @@ public class AdminController {
         return ResponseEntity.ok(workoutDtos);
     }
 
-    @ApiOperation(
-            value = "Gives all audit logs of application",
-            httpMethod = "GET",
-            produces = "application/json",
-            response = ResponseEntity.class
+    @Operation(tags = ApiTags.ADMIN,
+            description = "Will return all audit logs of application",
+            summary = "get all audit logs",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "audit logs of app",
+                            content = {
+                                    @Content(array = @ArraySchema(
+                                            schema = @Schema(implementation = AuditDto.class)),
+                                            mediaType = "application/json")
+                            }
+                    ),
+            }
     )
     @GetMapping("/audit")
     public ResponseEntity<ArrayList<AuditDto>> getAllAuditLogs() {

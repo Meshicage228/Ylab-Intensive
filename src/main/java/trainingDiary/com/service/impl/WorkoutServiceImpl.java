@@ -1,6 +1,6 @@
 package trainingDiary.com.service.impl;
 
-import trainingDiary.com.annotations.LogWithDuration;
+import org.example.loggingaspectstarter.aop.annotations.LogWithDuration;
 import trainingDiary.com.dto.WorkoutDto;
 import trainingDiary.com.dto.WorkoutTypeDto;
 import trainingDiary.com.exceptions.NotUniqueTypeTitleException;

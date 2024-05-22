@@ -1,0 +1,52 @@
+plugins {
+    id 'java-library'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'maven-publish'
+}
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+    withSourcesJar()
+}
+
+publishing{
+    publications{
+        maven(MavenPublication){
+            from components.java
+                versionMapping{
+                    usage('java-api'){
+                        fromResolutionOf('runtimeClasspath')
+                    }
+                    usage('java-runtime'){
+                        fromResolutionResult()
+                    }
+                }
+        }
+    }
+}
+
+ext  {
+    versionsCustom = [
+       javaxValidation : '2.0.1.Final'
+    ]
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation "javax.validation:validation-api:${versionsCustom.javaxValidation}"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
